@@ -18,6 +18,7 @@ The dates start when practical implementation begins; dates are goals, not guara
 
 ## Days 31–60: integrations
 - [x] Deterministic provider-neutral execution preflight, connector manifests and evidence-backed task transition contracts (not connected to live providers)
+- [x] Deterministic offline model selection plan based on capability, authorization and budget
 - [ ] Authenticated provider-neutral AI request schema and one tested inference adapter
 - [ ] Add a second authorized provider with capability-aware fallback
 - [ ] True provider-side quota/cost verification and strict $0 paid API preflight

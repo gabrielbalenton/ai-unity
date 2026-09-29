@@ -6,7 +6,7 @@ The dates start when practical implementation begins; dates are goals, not guara
 - [x] Public repository initialized
 - [x] Personal workspace UI and browser-only project namespaces
 - [x] Brain dumps: drafts and deliberate approval
-- [x] Public read-only model discovery
+- [x] OpenRouter and sampled Hugging Face public model discovery (catalog-only)
 - [ ] Real Supabase authentication and backend persistence
 - [ ] Automated project isolation tests
 - [x] Validation and safe import/export for local browser workspaces (all imports require reapproval)

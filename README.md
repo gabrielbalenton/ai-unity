@@ -8,7 +8,7 @@ Personal alpha: a provider-independent AI workspace, built in public during the 
 - Read-only OpenRouter and sampled Hugging Face model discovery, with **no inference requests or paid APIs**.
 - Read-only official MCP registry search. Discovering a tool does NOT install, authorize, or execute it.
 - Optional **push-to-talk brain dump** in supported browsers. Browser speech providers may process audio.
-- Deterministic runtime foundation: project-scoped permission and $0 cost preflight, inert connector manifests, evidence-aware task context, and task state transitions. These are tested contracts, **not live integrations**.
+- Deterministic runtime foundation: project-scoped permission and $0 cost preflight, inert connector manifests, evidence-aware task context, revisioned tasks and provider-neutral model planning. These are tested contracts, **not live integrations**.
 - Architecture and a planned Supabase schema; no real account connections yet.
 
 See `docs/LOCAL_FIRST_CONTRACT.md` for the GitHub-first development and deployment boundary.

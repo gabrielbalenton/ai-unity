@@ -2,13 +2,14 @@ import "server-only";
 import {createServerClient} from "@supabase/ssr";
 import {cookies} from "next/headers";
 import {requireSupabaseConfig} from "./config";
+import type {CookieUpdate} from "./cookie-types";
 export async function createServerSupabase() {
  const {url,key}=requireSupabaseConfig();
  const cookieStore=await cookies();
  return createServerClient(url,key,{
   cookies:{
    getAll(){return cookieStore.getAll();},
-   setAll(changes){
+   setAll(changes:CookieUpdate[]){
     try {changes.forEach(({name,value,options})=>cookieStore.set(name,value,options))}
     catch{
      // Server Components cannot set cookies. Middleware refreshes supported auth paths.

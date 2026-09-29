@@ -43,7 +43,8 @@ Owner's development sequence: **GitHub first. No Vercel deployment or external a
 - [x] Expanded SQL design for conversations, tasks, revisions, approvals, usage and agents, **not applied**.
 - [x] Offline approved-memory-only task context and project-scope tests.
 - [ ] Create a **separate** non-production UNITY backend; never reuse another client's database.
-- [ ] Set up current supported Supabase Auth with verified server-side token checks.
+- [x] Optional Supabase SSR Auth and owner-scoped API source code scaffolded (not connected or live-tested).
+- [ ] Set up current supported Supabase Auth with real server-side token checks against a dedicated database.
 - [ ] Implement real per-project persistent tables, transactional writes and signed audit history.
 - [ ] Execute SQL migrations on a dedicated local/test database and run security advisors.
 - [ ] Two-user and two-project tests for all table reads, writes, searches and imported data.

@@ -10,7 +10,8 @@ The dates start when practical implementation begins; dates are goals, not guara
 - [ ] Real Supabase authentication and backend persistence
 - [ ] Automated project isolation tests
 - [ ] Source-linked, versioned memory and import safety
-- [ ] Read-only multi-repository GitHub installation access
+- [x] Multiple public GitHub repository metadata links (unauthenticated read-only preview)
+- [ ] Authenticated read-only GitHub App with explicit repository selection
 
 **Exit:** an authorized user can inspect two independent repositories with approved, separate context.
 

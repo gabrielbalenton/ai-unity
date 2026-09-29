@@ -12,6 +12,7 @@ The dates start when practical implementation begins; dates are goals, not guara
 - [x] Validation and safe import/export for local browser workspaces (all imports require reapproval)
 - [ ] Source-linked, versioned server-side memory and full audit trail
 - [x] Multiple public GitHub repository metadata links (unauthenticated read-only preview)
+- [x] Offline-tested policy-gated GitHub read adapter with mock transport (no credentials)
 - [ ] Authenticated read-only GitHub App with explicit repository selection
 
 **Exit:** an authorized user can inspect two independent repositories with approved, separate context.

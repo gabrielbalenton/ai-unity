@@ -31,3 +31,12 @@ test("no secrets are included in template or package",()=>{
  assert.doesNotMatch(read(".env.example"),/sk-[a-zA-Z0-9]{16,}/);
  assert.match(read(".gitignore"),/\.env/);
 });
+
+test("public GitHub preview restricts repository inputs and never sends credentials",()=>{
+ const route=read("app/api/github/repository/route.ts");
+ assert.match(route,/api.github.com\/repos/);
+ assert.match(route,/Only public repositories/);
+ assert.doesNotMatch(route,/process\.env/);
+ const workspace=read("lib/workspace.ts");
+ assert.match(workspace,/githubLinks/);
+});

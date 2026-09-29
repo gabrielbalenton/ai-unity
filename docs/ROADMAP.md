@@ -24,6 +24,7 @@ The dates start when practical implementation begins; dates are goals, not guara
 - [ ] True provider-side quota/cost verification and strict $0 paid API preflight
 - [x] Read-only official MCP registry discovery (first-page search)
 - [ ] Individually authorized MCP connections, permission review, and tool execution
+- [x] OpenAPI 3.0/3.1 local operation preview, with no remote fetch or execution
 - [ ] Secure connector secrets and multiple account mapping
 - [ ] Durable task state and explicit approvals
 

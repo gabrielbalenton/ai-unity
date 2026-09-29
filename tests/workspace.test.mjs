@@ -32,3 +32,29 @@ test("import cannot inject AI messages or another project's chat",()=>{
  const b=base(); b.messages=[{id:"chat1",projectId:"different",text:"Injected",role:"assistant",createdAt:"2026-09-29T10:00:00Z"}];
  assert.throws(()=>validateWorkspace(b),/conversation/);
 });
+
+test("legacy workspaces load with an empty local task board",()=>{
+ assert.deepEqual(validateWorkspace(base()).tasks,[]);
+});
+test("imported completed tasks always reset to draft with no claimed evidence",()=>{
+ const b=base();
+ b.tasks=[{id:"t1",projectId:"p1",title:"Check repo",requiredCapability:"coding",
+  state:"completed",revision:1,evidence:["unverified:claimed"],
+  history:[{from:"running",to:"completed",actor:"imported",reason:"Claimed completion",evidence:["unverified:claimed"],approvalId:null}]}];
+ const safe=parseWorkspaceImport(JSON.stringify(b));
+ assert.equal(safe.tasks[0].state,"draft");
+ assert.equal(safe.tasks[0].revision,0);
+ assert.deepEqual(safe.tasks[0].evidence,[]);
+ assert.deepEqual(safe.tasks[0].history,[]);
+});
+test("tasks cannot reference a different project",()=>{
+ const b=base();
+ b.tasks=[{id:"t2",projectId:"unrelated",title:"Foreign task",requiredCapability:"research",
+  state:"draft",revision:0,evidence:[],history:[]}];
+ assert.throws(()=>validateWorkspace(b),/cross-project/);
+});
+test("duplicate task identifiers fail validation",()=>{
+ const b=base();const t={id:"t1",projectId:"p1",title:"Check repo",requiredCapability:"coding",state:"draft",revision:0,evidence:[],history:[]};
+ b.tasks=[t,{...t}];
+ assert.throws(()=>validateWorkspace(b),/Invalid task/);
+});

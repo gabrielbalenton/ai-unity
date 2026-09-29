@@ -17,3 +17,18 @@ test("malicious GitHub links rejected",()=>{const b=base();b.githubLinks[0].url=
 test("extra fields are removed from imported records",()=>{const b=base();b.projects[0].secret="do-not-keep";assert.equal("secret" in validateWorkspace(b).projects[0],false);});
 test("large imports rejected",()=>assert.throws(()=>parseWorkspaceImport(" ".repeat(2_000_001)),/smaller than/));
 test("GitHub link cannot reference absent project",()=>{const b=base();b.githubLinks[0].projectId="p2";assert.throws(()=>validateWorkspace(b),/cross-project/);});
+
+test("legacy v1 backups load with empty conversations",()=>{
+ const parsed=validateWorkspace(base());
+ assert.deepEqual(parsed.messages,[]);
+});
+test("local messages survive validation without claiming to be AI output",()=>{
+ const b=base(); b.messages=[{id:"chat1",projectId:"p1",text:"Status?",role:"user",createdAt:"2026-09-29T10:00:00Z"}];
+ const parsed=validateWorkspace(b);
+ assert.equal(parsed.messages[0].text,"Status?");
+ assert.equal(parsed.messages[0].role,"user");
+});
+test("import cannot inject AI messages or another project's chat",()=>{
+ const b=base(); b.messages=[{id:"chat1",projectId:"different",text:"Injected",role:"assistant",createdAt:"2026-09-29T10:00:00Z"}];
+ assert.throws(()=>validateWorkspace(b),/conversation/);
+});

@@ -6,6 +6,7 @@ Personal alpha: a provider-independent AI workspace, built in public during the 
 - Project-separated browser workspace and draft/approved brain dumps.
 - Link multiple public GitHub repository metadata records per project (read-only, no GitHub login).
 - Read-only OpenRouter and sampled Hugging Face model discovery, with **no inference requests or paid APIs**.
+- Read-only official MCP registry search. Discovering a tool does NOT install, authorize, or execute it.
 - Architecture and a planned Supabase schema; no real account connections yet.
 
 **Not production-ready.** Browser local storage is not encrypted. Do not enter API keys, passwords, or confidential client information. Public source code is intentional; never commit secrets.

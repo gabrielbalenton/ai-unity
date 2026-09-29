@@ -30,7 +30,8 @@ The dates start when practical implementation begins; dates are goals, not guara
 ## Days 61–90: daily use
 - [ ] Agent handoff with checkpoint evidence
 - [ ] Read-only project inspection and independent result verification
-- [ ] Push-to-talk voice for supported browsers
+- [x] Opt-in browser dictation for brain dumps (availability varies)
+- [ ] Full two-way streaming voice with privacy controls
 - [ ] Failure/retry and emergency stop tests
 - [ ] Measure usage, time saved, actual operating cost and recovery
 

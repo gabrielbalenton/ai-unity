@@ -20,7 +20,8 @@ The dates start when practical implementation begins; dates are goals, not guara
 - [ ] Provider-neutral AI request schema and one tested inference adapter
 - [ ] Add a second authorized provider with capability-aware fallback
 - [ ] True provider-side quota/cost verification and strict $0 paid API preflight
-- [ ] MCP registry discovery and independently authorized servers
+- [x] Read-only official MCP registry discovery (first-page search)
+- [ ] Individually authorized MCP connections, permission review, and tool execution
 - [ ] Secure connector secrets and multiple account mapping
 - [ ] Durable task state and explicit approvals
 

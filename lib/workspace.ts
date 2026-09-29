@@ -1,7 +1,7 @@
 import type { Workspace } from "./types";
 import { parseWorkspaceImport, validateWorkspace } from "./workspace-validation.mjs";
 const storageKey = "unity-personal-alpha-v1";
-export function initialWorkspace(): Workspace { return { version: 1, projects: [], memories: [], githubLinks: [], messages: [] }; }
+export function initialWorkspace(): Workspace { return { version: 1, projects: [], memories: [], githubLinks: [], messages: [], tasks: [] }; }
 export function loadWorkspace(): Workspace {
  if (typeof window === "undefined") return initialWorkspace();
  const raw = localStorage.getItem(storageKey);

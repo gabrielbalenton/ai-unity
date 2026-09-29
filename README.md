@@ -4,6 +4,7 @@ Personal alpha: a provider-independent AI workspace, built in public during the 
 
 ## Current scope
 - Project-separated browser workspace and draft/approved brain dumps.
+- Link multiple public GitHub repository metadata records per project (read-only, no GitHub login).
 - Read-only public model discovery, with **no inference requests or paid APIs**.
 - Architecture and a planned Supabase schema; no real account connections yet.
 

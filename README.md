@@ -22,6 +22,9 @@ npm run typecheck
 
 Open http://localhost:3000.
 
+## Backup and restore
+The local alpha offers validated JSON import/export. Imports deliberately reset every memory approval to draft: importing a file must not let untrusted JSON become authoritative instructions. Back up your browser data before importing.
+
 ## Principles
 One approved source of truth per project; evidence over model claims; no production changes or spending without approval; portable providers and memory.
 

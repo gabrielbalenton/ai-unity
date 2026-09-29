@@ -1,25 +1,33 @@
 import type { Workspace } from "./types";
+import { parseWorkspaceImport, validateWorkspace } from "./workspace-validation.mjs";
 const storageKey = "unity-personal-alpha-v1";
 export function initialWorkspace(): Workspace { return { version: 1, projects: [], memories: [], githubLinks: [] }; }
 export function loadWorkspace(): Workspace {
  if (typeof window === "undefined") return initialWorkspace();
- try {
-  const parsed: unknown = JSON.parse(localStorage.getItem(storageKey) || "null");
-  if (parsed && typeof parsed === "object" && "version" in parsed && parsed.version === 1 &&
-      "projects" in parsed && Array.isArray(parsed.projects) && "memories" in parsed && Array.isArray(parsed.memories)) {
-   const state=parsed as Workspace;
-   return { ...state, githubLinks: Array.isArray(state.githubLinks) ? state.githubLinks : [] };
-  }
- } catch { /* Corrupt or inaccessible local data; return fresh workspace. */ }
- return initialWorkspace();
+ const raw = localStorage.getItem(storageKey);
+ if (raw === null) return initialWorkspace();
+ let value: unknown;
+ try { value = JSON.parse(raw); }
+ catch { throw new Error("Your existing workspace is not valid JSON. It was NOT overwritten. Please preserve your browser data."); }
+ try { return validateWorkspace(value); }
+ catch { throw new Error("Your stored workspace failed validation. It was NOT overwritten. Please preserve your browser data."); }
 }
 export function saveWorkspace(workspace: Workspace): void {
- if (typeof window !== "undefined") localStorage.setItem(storageKey, JSON.stringify(workspace));
+ if (typeof window !== "undefined") {
+  // Validate every write so malformed data cannot silently replace a valid workspace.
+  const safe = validateWorkspace(workspace);
+  localStorage.setItem(storageKey, JSON.stringify(safe));
+ }
+}
+export function previewWorkspaceImport(text: string): Workspace {
+ return parseWorkspaceImport(text);
 }
 export function exportWorkspace(workspace: Workspace): void {
- const blob = new Blob([JSON.stringify(workspace, null, 2)], {type:"application/json"});
+ const safe = validateWorkspace(workspace);
+ const blob = new Blob([JSON.stringify(safe, null, 2)], {type:"application/json"});
  const url = URL.createObjectURL(blob);
  const anchor = document.createElement("a");
  anchor.href = url; anchor.download = "unity-workspace.json"; anchor.click();
- URL.revokeObjectURL(url);
+ // Delay revocation until the browser has started downloading.
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
 }

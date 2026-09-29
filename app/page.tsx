@@ -15,6 +15,8 @@ export default function Home() {
  const [memoryTitle,setMemoryTitle] = useState("");
  const [memoryBody,setMemoryBody] = useState("");
  const [notice,setNotice] = useState("");
+ const [githubRepo,setGithubRepo] = useState("");
+ const [githubBusy,setGithubBusy] = useState(false);
  const [catalog,setCatalog] = useState<CatalogModel[]>([]);
  const [catalogNotice,setCatalogNotice] = useState("Not retrieved");
  const [search,setSearch] = useState("");
@@ -45,6 +47,22 @@ export default function Home() {
   setWorkspace(old=>({...old,memories:old.memories.map(m=>m.id===id?{...m,status:"approved",updatedAt:new Date().toISOString()}:m)}));
   setNotice("Approved for the selected project.");
  }
+ async function linkPublicGithub(event:React.FormEvent<HTMLFormElement>){
+  event.preventDefault();
+  if(!currentProject){setNotice("Select or create a project first.");return}
+  setGithubBusy(true);setNotice("");
+  try{
+   const response=await fetch("/api/github/repository?repo="+encodeURIComponent(githubRepo.trim()));
+   const data: {error?:string;fullName?:string;url?:string;defaultBranch?:string}=await response.json();
+   if(!response.ok || !data.fullName || !data.url) throw new Error(data.error||"Lookup failed");
+   if(workspace.githubLinks.some(l=>l.projectId===projectId&&l.fullName.toLowerCase()===data.fullName!.toLowerCase()))
+    throw new Error("This repository is already linked to the selected project.");
+   const link={id:uid(),projectId,fullName:data.fullName,url:data.url,defaultBranch:data.defaultBranch||"",checkedAt:new Date().toISOString()};
+   setWorkspace(old=>({...old,githubLinks:[...old.githubLinks,link]}));
+   setGithubRepo("");setNotice("Linked read-only public repository metadata. No GitHub authorization or write access.");
+  }catch(error){setNotice(error instanceof Error?error.message:"Unable to link repository.")}
+  finally{setGithubBusy(false)}
+ }
  async function discover(){
   setCatalogNotice("Loading...");
   try {const response=await fetch("/api/catalog",{cache:"no-store"});if(!response.ok)throw new Error("Unavailable");
@@ -66,7 +84,7 @@ export default function Home() {
    {tab==="Projects"&&<div className="columns"><section className="panel"><h2>New project</h2><form onSubmit={createProject}><label>Name<input required minLength={2} maxLength={100} value={projectName} onChange={e=>setProjectName(e.target.value)} placeholder="Project name"/></label><label>Description<textarea maxLength={500} value={projectDescription} onChange={e=>setProjectDescription(e.target.value)} placeholder="What is this project for?"/></label><button className="primary">Create project</button></form></section><section className="panel"><h2>Your local projects</h2>{workspace.projects.length===0?<p className="muted">No projects yet.</p>:workspace.projects.map(p=><article className="entry" key={p.id}><div className="entry-head"><strong>{p.name}</strong><span className="pill">{workspace.memories.filter(m=>m.projectId===p.id).length} memories</span></div><p>{p.description||"No description"}</p><button onClick={()=>{setProjectId(p.id);setTab("Memory")}}>Open project memory</button></article>)}</section></div>}
    {tab==="Memory"&&<><section className="panel"><label>Active project<select value={projectId} onChange={e=>setProjectId(e.target.value)}><option value="">Choose a project</option>{workspace.projects.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label></section><div className="columns"><section className="panel"><h2>Brain dump</h2><p className="muted">All new entries start as drafts, not instructions.</p><form onSubmit={createMemory}><label>Title<input maxLength={140} value={memoryTitle} onChange={e=>setMemoryTitle(e.target.value)} placeholder="What should UNITY remember?"/></label><label>Raw information<textarea className="large" maxLength={20000} value={memoryBody} onChange={e=>setMemoryBody(e.target.value)} placeholder="Write your thoughts, decisions, constraints or procedures."/></label><button className="primary" disabled={!projectId}>Save draft</button></form></section><section className="panel"><h2>{currentProject?.name||"Project"} knowledge</h2>{!projectId?<p className="muted">Select or create a project.</p>:memories.length===0?<p className="muted">No entries yet.</p>:memories.map(m=><article className="entry" key={m.id}><div className="entry-head"><strong>{m.title}</strong><span className={m.status==="approved"?"pill approved":"pill"}>{m.status}</span></div><p className="prewrap">{m.body}</p><small>{new Date(m.updatedAt).toLocaleString()}</small>{m.status==="draft"&&<button onClick={()=>approve(m.id)}>Approve for project</button>}</article>)}</section></div></>}
    {tab==="Models"&&<section className="panel"><h2>Public AI catalog</h2><p className="muted">Read-only OpenRouter listing. Zero published prompt and completion token prices do not guarantee free access, free tools or remaining quota.</p><div className="controls"><button className="primary" onClick={discover}>Refresh catalog</button><span>{catalogNotice}</span></div><div className="controls"><input aria-label="Search models" placeholder="Search models" value={search} onChange={e=>setSearch(e.target.value)}/><label className="inline"><input type="checkbox" checked={zeroPriceOnly} onChange={e=>setZeroPriceOnly(e.target.checked)}/> Zero text-price only</label></div><small>Showing first {visibleModels.length} matches of {catalog.length} total entries.</small><div className="model-list">{visibleModels.map(m=><div className="entry" key={m.id}><div className="entry-head"><strong>{m.name}</strong><span className="pill">{m.zeroTextPrice?"Zero text price":"Price unknown/paid"}</span></div><small>{m.id} · Context: {m.contextLength?.toLocaleString()||"Unknown"}</small></div>)}</div></section>}
-   {tab==="Connections"&&<section className="panel"><h2>Connection manager</h2><p>Planned: multiple GitHub installations, model gateways, MCP servers, general REST and GraphQL APIs, and credential authorization.</p><p className="muted">Connections are disabled until server-side authentication, credential storage and permission checks have been implemented and tested.</p></section>}
+   {tab==="Connections"&&<><section className="panel"><h2>Public GitHub repository explorer</h2><p className="muted">Preview: link multiple PUBLIC repository metadata records to isolated local projects. No login, code access, cloning or write operations. GitHub API rate limits apply. Private repositories require a future authorized GitHub App.</p><label>Project<select value={projectId} onChange={e=>setProjectId(e.target.value)}><option value="">Choose a project</option>{workspace.projects.map(p=><option value={p.id} key={p.id}>{p.name}</option>)}</select></label><form onSubmit={linkPublicGithub}><label>Public repository (owner/name)<input value={githubRepo} onChange={e=>setGithubRepo(e.target.value)} placeholder="owner/repository" required/></label><button className="primary" disabled={!projectId||githubBusy}>{githubBusy?"Checking GitHub...":"Link public repository"}</button></form></section><section className="panel"><h2>Linked repositories for {currentProject?.name||"selected project"}</h2>{workspace.githubLinks.filter(l=>l.projectId===projectId).length===0?<p className="muted">No public repositories linked yet.</p>:workspace.githubLinks.filter(l=>l.projectId===projectId).map(l=><article className="entry" key={l.id}><div className="entry-head"><strong>{l.fullName}</strong><span className="pill">Read-only metadata</span></div><p><a href={l.url} target="_blank" rel="noopener noreferrer">{l.url}</a></p><small>Default branch: {l.defaultBranch||"unknown"} · Checked: {new Date(l.checkedAt).toLocaleString()}</small><br/><button onClick={()=>setWorkspace(old=>({...old,githubLinks:old.githubLinks.filter(x=>x.id!==l.id)}))}>Remove local link</button></article>)}</section><section className="panel"><h2>Additional integrations</h2><p className="muted">Authenticated private GitHub installations, model gateways, MCP and API credentials remain disabled until server-side authorization and encrypted credential storage are implemented.</p></section></>}
   </main>
  </div>;
 }

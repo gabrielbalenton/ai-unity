@@ -31,6 +31,9 @@ Open http://localhost:3000.
 ## Backup and restore
 The local alpha offers validated JSON import/export. Imports deliberately reset every memory approval to draft: importing a file must not let untrusted JSON become authoritative instructions. Back up your browser data before importing.
 
+## GitHub-first completion checklist
+See [Deployment and infrastructure checklist](docs/DEPLOYMENT_CHECKLIST.md) for verified offline code versus integration work still required. `npm run readiness` reports the current repository infrastructure gates without exposing environment variable values. No connection to Vercel or a new database will be made until explicitly authorized.
+
 ## Principles
 One approved source of truth per project; evidence over model claims; no production changes or spending without approval; portable providers and memory.
 

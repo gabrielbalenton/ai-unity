@@ -3,7 +3,7 @@
 Personal alpha: a provider-independent AI workspace, built in public during the initial experiment.
 
 ## Current scope
-- Project-separated browser workspace and draft/approved brain dumps.
+- Project-separated browser workspace, local project chat, and draft/approved brain dumps. Local chat stores your own messages only; it does not produce AI responses.
 - Link multiple public GitHub repository metadata records per project (read-only, no GitHub login).
 - Read-only OpenRouter and sampled Hugging Face model discovery, with **no inference requests or paid APIs**.
 - Read-only official MCP registry search. Discovering a tool does NOT install, authorize, or execute it.

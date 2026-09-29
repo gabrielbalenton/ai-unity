@@ -4,7 +4,7 @@ The dates start when practical implementation begins; dates are goals, not guara
 
 ## Days 1–30: foundation
 - [x] Public repository initialized
-- [x] Personal workspace UI and browser-only project namespaces
+- [x] Personal workspace UI, browser-only project namespaces and project-scoped local chat (no live AI)
 - [x] Brain dumps: drafts and deliberate approval
 - [x] OpenRouter and sampled Hugging Face public model discovery (catalog-only)
 - [ ] Real Supabase authentication and backend persistence

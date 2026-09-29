@@ -17,7 +17,8 @@ The dates start when practical implementation begins; dates are goals, not guara
 **Exit:** an authorized user can inspect two independent repositories with approved, separate context.
 
 ## Days 31–60: integrations
-- [ ] Provider-neutral AI request schema and one tested inference adapter
+- [x] Deterministic provider-neutral execution preflight, connector manifests and evidence-backed task transition contracts (not connected to live providers)
+- [ ] Authenticated provider-neutral AI request schema and one tested inference adapter
 - [ ] Add a second authorized provider with capability-aware fallback
 - [ ] True provider-side quota/cost verification and strict $0 paid API preflight
 - [x] Read-only official MCP registry discovery (first-page search)

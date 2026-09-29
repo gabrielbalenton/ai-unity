@@ -7,7 +7,8 @@ The dates start when practical implementation begins; dates are goals, not guara
 - [x] Personal workspace UI, project-scoped local chat and manual task board (no live AI)
 - [x] Brain dumps: drafts and deliberate approval
 - [x] OpenRouter and sampled Hugging Face public model discovery (catalog-only)
-- [ ] Real Supabase authentication and backend persistence
+- [x] Optional auth middleware, private project/memory draft routes and disconnected sign-in screen (code only)
+- [ ] Real Supabase authentication and backend persistence, validated on a dedicated environment
 - [ ] Automated project isolation tests
 - [x] Validation and safe import/export for local browser workspaces (all imports require reapproval)
 - [ ] Source-linked, versioned server-side memory and full audit trail

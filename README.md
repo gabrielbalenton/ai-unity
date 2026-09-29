@@ -33,4 +33,4 @@ The local alpha offers validated JSON import/export. Imports deliberately reset 
 ## Principles
 One approved source of truth per project; evidence over model claims; no production changes or spending without approval; portable providers and memory.
 
-See `docs/ARCHITECTURE.md`, `docs/ROADMAP.md` and `supabase/migrations/0001_core.sql`. The migration is a design artifact until backend authentication and server authorization are implemented.
+Start with `AGENTS.md` and `docs/FEATURE_MATRIX.md` to understand the current verified scope. Architectural decisions are recorded in `docs/DECISIONS.md`. See `docs/ARCHITECTURE.md`, `docs/ROADMAP.md` and `supabase/migrations/0001_core.sql`. The migration is a design artifact until backend authentication and server authorization are implemented.

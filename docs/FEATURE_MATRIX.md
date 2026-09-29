@@ -10,7 +10,7 @@ Status definitions: **Implemented** = code exists; **Verified offline** = automa
 | Model routing | Verified offline policy and planning functions | At least two real authorized providers with hard budget guard and provider-side billing verification |
 | Universal tools | Public MCP registry discovery | Authorized and sandboxed MCP/REST/GraphQL connectors, permissions, revocation, audit trail |
 | GitHub | Multiple read-only public repository metadata links | GitHub App installs, multi-account private repositories, file reads, isolated PR workflows |
-| Agent tasks | Offline revisioned state transition contract | Durable resumable tasks, audit records, project-specific tool execution and evidence-backed completion |
+| Agent tasks | Offline revisioned task contract and project-scoped manual task board | Durable resumable tasks, audit records, project-specific tool execution and evidence-backed completion |
 | Verification | Offline unit tests and CI | Independent output validation, integration tests and rollback drills |
 | Voice | Opt-in browser dictation | User-approved real-time two-way conversation, wake-word desktop client and privacy controls |
 | Analytics | Minimal local overview | Actual usage, quotas, costs, task reliability and test baselines |

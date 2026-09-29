@@ -20,7 +20,7 @@
 - **Deployments**: Build/test on isolated branches and environments. No automatic production deployment in alpha.
 
 ## Phase 0 implemented
-Local browser project namespaces, draft/approved brain dumps, JSON export, public catalog discovery.
+Local browser project namespaces, draft/approved brain dumps, JSON export, public catalog discovery, and unauthenticated read-only public GitHub repository metadata links.
 Important limitations: browser storage is not secure or shared between devices; statuses are local only;
 there are no live agent calls, identity verification, GitHub installations, MCP connections, or spend enforcement.
 Treat this as an interface prototype. Do not store client secrets or real sensitive information.

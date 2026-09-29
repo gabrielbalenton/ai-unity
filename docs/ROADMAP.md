@@ -9,7 +9,8 @@ The dates start when practical implementation begins; dates are goals, not guara
 - [x] Public read-only model discovery
 - [ ] Real Supabase authentication and backend persistence
 - [ ] Automated project isolation tests
-- [ ] Source-linked, versioned memory and import safety
+- [x] Validation and safe import/export for local browser workspaces (all imports require reapproval)
+- [ ] Source-linked, versioned server-side memory and full audit trail
 - [x] Multiple public GitHub repository metadata links (unauthenticated read-only preview)
 - [ ] Authenticated read-only GitHub App with explicit repository selection
 

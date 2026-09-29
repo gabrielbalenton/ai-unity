@@ -10,9 +10,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: npm
-          cache-dependency-path: package-lock.json
-      - run: npm ci
+      # Lockfile not yet committed. Pin the dependency tree in a follow-up PR.
+      - run: npm install --no-audit --no-fund
       - run: npm test
       - run: npm run typecheck
       - run: npm run build

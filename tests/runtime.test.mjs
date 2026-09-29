@@ -23,7 +23,10 @@ test("revoked connection and emergency stop both fail closed",()=>{
 test("writes require an operation-specific human approval",()=>{
  const write={...request,action:"write",approvalId:"a1"};
  assert.equal(evaluateExecution(write,policy,[connection]).allowed,false);
- assert.equal(evaluateExecution(write,{...policy,approvedOperations:["a1"]},[connection]).allowed,true);
+ const granted={id:"a1",projectId:"project-a",connectorId:"github-1",resourceId:"owner/repo",action:"write",status:"approved"};
+ assert.equal(evaluateExecution(write,{...policy,approvedOperations:[granted]},[connection]).allowed,true);
+ assert.equal(evaluateExecution({...write,resourceId:"owner/other"},{...policy,approvedOperations:[granted]},[{...connection,resources:["owner/repo","owner/other"]}]).allowed,false);
+ assert.equal(evaluateExecution({...write,action:"deploy"},{...policy,approvedOperations:[granted]},[{...connection,actions:["read","write","deploy"]}]).allowed,false);
 });
 test("the default zero-dollar rule blocks paid, unknown and unverified free inference",()=>{
  const model={...request,type:"model_inference"};

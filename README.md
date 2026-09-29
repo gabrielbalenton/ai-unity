@@ -7,6 +7,7 @@ Personal alpha: a provider-independent AI workspace, built in public during the 
 - Link multiple public GitHub repository metadata records per project (read-only, no GitHub login).
 - Read-only OpenRouter and sampled Hugging Face model discovery, with **no inference requests or paid APIs**.
 - Read-only official MCP registry search. Discovering a tool does NOT install, authorize, or execute it.
+- Offline OpenAPI 3.0/3.1 JSON connector designer: inspect API operations without networking, authentication or execution.
 - Optional **push-to-talk brain dump** in supported browsers. Browser speech providers may process audio.
 - Deterministic runtime foundation: project-scoped permission and $0 cost preflight, inert connector manifests, evidence-aware task context, revisioned tasks and provider-neutral model planning. These are tested contracts, **not live integrations**.
 - Architecture and a planned Supabase schema; no real account connections yet.

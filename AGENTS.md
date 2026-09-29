@@ -25,10 +25,11 @@ Browser-only project workspace, draft/approved brain dumps, local project messag
 1. Inspect relevant source and tracked issues. Compare requirements to the current implementation.
 2. Work on a fresh branch. Do not overwrite unrelated changes or confuse another repository.
 3. Implement the smallest coherent increment, unit tests and documentation.
-4. Check GitHub Actions and correct errors before merger.
-5. Do not claim completion based only on successful code generation or an AI's assertion.
-6. Update the feature matrix and decision records whenever interfaces or architecture change.
-7. Stop rather than inventing external credentials, API authorization, provider quotas or test results.
+4. Quiet CI: accumulate related changes on a development branch, then open a draft PR. Mark it ready once the milestone is complete to trigger verification. The workflow is NOT triggered by each push. If checks fail, fix the issues and explicitly request one fresh milestone run; do not create repeated failing runs.
+5. Check GitHub Actions and correct errors before merger.
+6. Do not claim completion based only on successful code generation or an AI's assertion.
+7. Update the feature matrix and decision records whenever interfaces or architecture change.
+8. Stop rather than inventing external credentials, API authorization, provider quotas or test results.
 
 ## Source-of-truth order
 - Original authorized repository or live system for actual state.

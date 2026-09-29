@@ -1,13 +1,14 @@
 import type { Workspace } from "./types";
 const storageKey = "unity-personal-alpha-v1";
-export function initialWorkspace(): Workspace { return { version: 1, projects: [], memories: [] }; }
+export function initialWorkspace(): Workspace { return { version: 1, projects: [], memories: [], githubLinks: [] }; }
 export function loadWorkspace(): Workspace {
  if (typeof window === "undefined") return initialWorkspace();
  try {
   const parsed: unknown = JSON.parse(localStorage.getItem(storageKey) || "null");
   if (parsed && typeof parsed === "object" && "version" in parsed && parsed.version === 1 &&
       "projects" in parsed && Array.isArray(parsed.projects) && "memories" in parsed && Array.isArray(parsed.memories)) {
-   return parsed as Workspace;
+   const state=parsed as Workspace;
+   return { ...state, githubLinks: Array.isArray(state.githubLinks) ? state.githubLinks : [] };
   }
  } catch { /* Corrupt or inaccessible local data; return fresh workspace. */ }
  return initialWorkspace();

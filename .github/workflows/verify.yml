@@ -1,18 +1,30 @@
-name: Verify UNITY alpha
+name: Verify UNITY milestone
+
+# Quiet CI: no push-triggered builds. A draft PR can collect many commits
+# without duplicate emails; the developer marks it ready once for review.
+# Reopen after changes to request a fresh check, or dispatch it manually.
 on:
-  push:
+  workflow_dispatch:
   pull_request:
+    types: [ready_for_review, reopened]
+
+concurrency:
+  group: unity-verify-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
+
 jobs:
   validate:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      # Lockfile not yet committed. Pin the dependency tree in a follow-up PR.
+      # Existing lockfile task remains pending; use npm ci after pinning.
       - run: npm install --no-audit --no-fund
       - run: npm test
       - run: npm run typecheck

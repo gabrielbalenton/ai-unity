@@ -8,6 +8,7 @@ Personal alpha: a provider-independent AI workspace, built in public during the 
 - Tested, **unactivated** server-side GitHub read adapter for project-scoped repository metadata and file content; credentials and authorization must be configured later.
 - Offline GitHub App signing, HMAC verification, limited installation transport and dormant durable webhook ingestion; see `docs/GITHUB_APP_INTEGRATION.md`.
 - Read-only OpenRouter and sampled Hugging Face model discovery, with **no inference requests or paid APIs**.
+- Tested offline provider-neutral multimodal conversation, scoped approved context, bounded streaming frames and eligible-provider fallback; still no live AI responses.
 - Read-only official MCP registry search. Discovering a tool does NOT install, authorize, or execute it.
 - Offline OpenAPI 3.0/3.1 JSON connector designer: inspect API operations without networking, authentication or execution.
 - Optional **push-to-talk brain dump** in supported browsers. Browser speech providers may process audio.

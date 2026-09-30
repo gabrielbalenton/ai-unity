@@ -48,8 +48,6 @@ const statusLabel = {
 export default function CommandCenter({workspace,selectedProjectId,onNavigate,onExport}:Props){
  const [showAll,setShowAll]=useState(false);
  const [activityOpen,setActivityOpen]=useState(true);
- const project=workspace.projects.find(item=>item.id===selectedProjectId);
- const relevantTasks=workspace.tasks.filter(task=>task.projectId===selectedProjectId);
  const approved=workspace.memories.filter(note=>note.status==="approved");
  const upcoming=useMemo(()=>workspace.tasks
   .filter(task=>!["completed","cancelled"].includes(task.state))
@@ -66,14 +64,14 @@ export default function CommandCenter({workspace,selectedProjectId,onNavigate,on
    </div>
    <div className="hero-content">
     <div className="hero-kicker"><span className="live-dot"/> UNITY / DEVELOPMENT ENVIRONMENT <span className="hero-kicker-rule"/></div>
-    <h2 id="unity-hero-title">One system.<br/><span>Everything connected.</span></h2>
+    <h2 id="unity-hero-title">One system.<br/><span>Every possibility.</span></h2>
     <p>One workspace for your knowledge, models, projects and future agents. Every connection stays within your control.</p>
     <div className="hero-actions">
      <button type="button" className="hero-primary" onClick={()=>onNavigate("Projects")}>Open workspace <ArrowRight size={16}/></button>
      <button type="button" className="hero-secondary" onClick={()=>onNavigate("Models")}>Explore models <ArrowUpRight size={15}/></button>
     </div>
    </div>
-   <div className="hero-bottom"><span><CircleDot size={12}/> PERSONAL ALPHA</span><span><LockKeyhole size={12}/> EXECUTION LOCKED</span><span>BUILD / 0.18+</span></div>
+   <div className="hero-bottom"><span><CircleDot size={12}/> PERSONAL ALPHA</span><span><LockKeyhole size={12}/> EXECUTION LOCKED</span><span>BUILD / GITHUB ALPHA</span></div>
   </section>
   <section className="stat-strip" aria-label="Current verified local workspace statistics">
    <div className="stat-item"><span className="stat-icon"><Layers3 size={17}/></span><div><strong>{workspace.projects.length.toString().padStart(2,"0")}</strong><span>Local projects</span></div></div>

@@ -1,0 +1,36 @@
+name: UNITY disposable SQL integration (manual)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  database-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: disposable-not-for-production
+          POSTGRES_DB: unity_contract
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d unity_contract"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      UNITY_EPHEMERAL_DATABASE: "1"
+      PGHOST: 127.0.0.1
+      PGPORT: "5432"
+      PGUSER: postgres
+      PGPASSWORD: disposable-not-for-production
+      PGDATABASE: unity_contract
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PostgreSQL client
+        run: sudo apt-get update -qq && sudo apt-get install -y postgresql-client
+      - name: Verify schema, RLS and durable job invariants
+        run: bash scripts/test-db-contract.sh

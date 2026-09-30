@@ -1,6 +1,7 @@
 "use client";
 
 import {FormEvent,useMemo,useState} from "react";
+import Image from "next/image";
 import {
  ArrowRight,BookOpen,CalendarDays,Folder,MessageCircle,Plus,
  Search,ShieldCheck,Sparkles,Workflow

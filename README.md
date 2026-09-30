@@ -15,6 +15,7 @@ Personal alpha: a provider-independent AI workspace, built in public during the 
 - Deterministic runtime foundation: project-scoped permission and $0 cost preflight, inert connector manifests, evidence-aware task context, revisioned tasks, bounded offline worker leases/retries and provider-neutral model planning. These are tested contracts, **not live integrations**.
 - Optional Supabase SSR Auth, owner-scoped project/draft-memory routes, unactivated transactional memory approval and a separate cloud workspace UI; **not activated or live-verified**. See `docs/AUTH_INTEGRATION.md`.
 - Offline versioned memory approval, conflict detection and revocation rules (not yet persisted or authenticated); see `docs/MEMORY_VERSIONING.md`.
+- Authentication-sensitive JSON routes and dormant GitHub webhook intake now enforce actual streamed byte limits, not just client-supplied Content-Length.
 - Architecture and a planned Supabase schema; no real account connections yet.
 
 See `docs/LOCAL_FIRST_CONTRACT.md` for the GitHub-first development and deployment boundary.

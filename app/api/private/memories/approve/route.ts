@@ -3,6 +3,7 @@ import {z} from "zod";
 import {isSupabaseConfigured} from "@/lib/supabase/config";
 import {getVerifiedUser} from "@/lib/supabase/server";
 import {checkWriteOrigin} from "@/lib/security/origin.mjs";
+import {readBoundedJson} from "@/lib/security/bounded-body.mjs";
 
 export const dynamic="force-dynamic";
 const headers={"Cache-Control":"private, no-store"};
@@ -20,8 +21,7 @@ export async function POST(request:Request){
 
  let body:unknown;
  try {
-  if(Number(request.headers.get("content-length")||"0")>4000)throw Error("Oversized request");
-  body=await request.json();
+  body=await readBoundedJson(request,{maxBytes:4000});
  }catch{return NextResponse.json({error:"Invalid request body"},{status:400,headers});}
  const valid=schema.safeParse(body);
  if(!valid.success)

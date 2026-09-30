@@ -85,7 +85,7 @@ export default function Home() {
   window.addEventListener("keydown",handleKey);
   return()=>window.removeEventListener("keydown",handleKey);
  },[]);
- function navigate(next:Tab){setTab(next);setNotice("");setMenuOpen(false);setPaletteOpen(false);setPaletteQuery("");}
+ function navigate(next:Tab){setTab(next);if(advancedNav.some(item=>item.tab===next))setMoreOpen(true);setNotice("");setMenuOpen(false);setPaletteOpen(false);setPaletteQuery("");}
  const currentProject=workspace.projects.find(p=>p.id===projectId);
  const currentNav=allNav.find(item=>item.tab===tab);
  const memories=workspace.memories.filter(m=>m.projectId===projectId).sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt));

@@ -1,12 +1,12 @@
 name: Verify UNITY milestone
 
-# Quiet CI: no push-triggered builds. A draft PR can collect many commits
-# without duplicate emails; the developer marks it ready once for review.
-# Reopen after changes to request a fresh check, or dispatch it manually.
+# Quiet CI: no branch-push builds. Validate non-draft PRs when opened or
+# updated so required status checks always match the latest commit.
+# GitHub concurrency cancels superseded runs on the same PR.
 on:
   workflow_dispatch:
   pull_request:
-    types: [ready_for_review, reopened]
+    types: [opened, synchronize, ready_for_review, reopened]
 
 concurrency:
   group: unity-verify-${{ github.event.pull_request.number || github.ref }}

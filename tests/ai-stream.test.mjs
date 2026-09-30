@@ -43,4 +43,5 @@ test("errors hide arbitrary upstream text to avoid exposing provider secrets",()
  const event=normalizeStreamEvent({event:"error",data:'{"secret":"never echo"}'});
  assert.equal(JSON.stringify(event).includes("never echo"),false);
  assert.equal(event.code,"PROVIDER_STREAM_FAILED");
+ assert.equal(normalizeStreamEvent({event:"error",data:"[DONE]"}).kind,"error");
 });

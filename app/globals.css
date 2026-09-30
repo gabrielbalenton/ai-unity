@@ -21,7 +21,7 @@ h1,h2,h3,h4,strong{font-family:var(--font-heading)}
 p{line-height:1.65}
 small,.muted{color:var(--muted)}
 .shell{min-height:100vh;display:flex;position:relative}
-.sidebar{width:254px;flex:0 0 254px;display:flex;flex-direction:column;background:#0d131a;border-right:1px solid #1d2934;min-height:100vh;position:sticky;top:0;height:100vh;padding:26px 14px 14px;z-index:22}
+.sidebar{width:254px;flex:0 0 254px;display:flex;flex-direction:column;overflow-y:auto;background:#0d131a;border-right:1px solid #1d2934;min-height:100vh;position:sticky;top:0;height:100vh;padding:26px 14px 14px;z-index:22}
 .sidebar-top{display:flex;align-items:center;justify-content:space-between;padding:0 11px}
 .brand-mark{display:flex;align-items:center;gap:10px;color:#f0faf6;padding:0;background:none;border:0;text-align:left}
 .brand-mark:hover{background:none;border:0}

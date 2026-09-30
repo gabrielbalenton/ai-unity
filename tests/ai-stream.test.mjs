@@ -5,7 +5,8 @@ const bytes=s=>new TextEncoder().encode(s);
 test("SSE parser handles UTF-8 text split across arbitrary network chunks",()=>{
  const stream=createSSEDecoder();
  const raw=bytes('event: delta\ndata: {"text":"hello 🌏"}\n\n');
- const halves=[raw.slice(0,raw.length-5),raw.slice(raw.length-5)];
+ const emojiAt=raw.indexOf(0xf0);
+ const halves=[raw.slice(0,emojiAt+2),raw.slice(emojiAt+2)];
  assert.deepEqual(stream.feed(halves[0]),[]);
  const data=stream.feed(halves[1]);
  assert.equal(data.length,1);

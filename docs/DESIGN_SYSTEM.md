@@ -7,7 +7,7 @@ Professional AI operating system. This interface must look and behave like actua
 - **Background:** ink-black / graphite, not solid pitch-black everywhere. Surface depth comes from subtle borders and tonal steps.
 - **Primary accent:** jade and sea-glass green. Green is reserved for active controls, verified local features and restrained spatial accents.
 - **Warning:** muted amber for unverified discovery and developer warnings.
-- **Typography:** Manrope for structure/headlines, DM Sans for long-form UI. Network fonts have robust system fallbacks.
+- **Typography:** Manrope for structure/headlines and DM Sans for long-form UI when locally available, followed by system UI fallbacks. No required remote font downloads, so the UI is usable offline.
 - **Motion:** subtle hover transitions. Honor reduced-motion browser preferences.
 - **Graphics:** CSS-built concentric knowledge/network mark. No stock dashboard screenshots; no heavy image asset downloads.
 - **Density:** roomy mission-control landing page, denser functional workspaces for actual data.

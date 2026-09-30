@@ -24,8 +24,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      # Existing lockfile task remains pending; use npm ci after pinning.
-      - run: npm install --no-audit --no-fund
+      - name: Install reproducibly when lockfile exists
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci --no-audit --no-fund
+          else
+            npm install --no-audit --no-fund
+          fi
+      - name: Preserve generated lock candidate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unity-package-lock
+          path: package-lock.json
+          if-no-files-found: ignore
+          retention-days: 3
       - run: npm test
       - run: npm run typecheck
       - run: npm run check:repo

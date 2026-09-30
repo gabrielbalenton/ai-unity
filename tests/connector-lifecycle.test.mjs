@@ -84,5 +84,5 @@ test("revocation is terminal, clears credential references and is auditable",()=
  assert.deepEqual(revoked.resourceIds,[]);
  assert.deepEqual(revoked.allowedActions,[]);
  assert.equal(revoked.history.at(-1).kind,"revoked");
- assert.throws(()=>prepareConnector(revoked,ctx(6)),/discoverable/);
+ assert.throws(()=>prepareConnector(revoked,ctx(6,"2026-09-30T09:31:00Z"),{resourceIds:["calendar:primary"],allowedActions:["read"]}),/discoverable/);
 });

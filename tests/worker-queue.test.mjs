@@ -35,6 +35,7 @@ test("a worker cannot claim completion; only a distinct verified evidence step c
  const submitted=submitJobEvidence(leased,{projectId:"projectA",workerId:"worker1",revision:1,now:3000,evidenceRefs:["commit:abc"]});
  assert.equal(submitted.state,"awaiting_verification");
  assert.deepEqual(submitted.evidenceRefs,["commit:abc"]);
+ assert.throws(()=>verifyJob(submitted,{projectId:"projectA",verifierId:"worker1",revision:2,now:4000,passed:true,evidenceRefs:["self:asserted"]}),/Independent verifier/);
  const verified=verifyJob(submitted,{projectId:"projectA",verifierId:"verifier1",revision:2,now:4000,passed:true,evidenceRefs:["test:123"]});
  assert.equal(verified.state,"verified");
  assert.equal(verified.verificationResult.verifierId,"verifier1");

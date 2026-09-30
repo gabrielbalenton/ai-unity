@@ -19,7 +19,7 @@ test("repository checks detect common high-impact credential formats",()=>{
 });
 test("dangerous workflow patterns are explicitly rejected",()=>{
  const scan=read("scripts/check-repository.mjs");
- for(const pattern of ["pull_request_target","write-all","secrets: inherit","remote script piping"])
+ for(const pattern of ["pull_request_target","write-all","inherited workflow secrets are prohibited","remote script piping"])
   assert.ok(scan.includes(pattern),pattern);
 });
 test("independent recovery artifacts are excluded from source control",()=>{

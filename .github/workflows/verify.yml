@@ -31,3 +31,19 @@ jobs:
       - run: npm run check:repo
       - run: npm run readiness
       - run: npm run build
+      - name: Install Chromium for designated UI milestone
+        if: github.event_name == 'pull_request' && contains(github.event.pull_request.title, '[UI]')
+        run: npx playwright install --with-deps chromium
+      - name: Browser visual smoke tests
+        if: github.event_name == 'pull_request' && contains(github.event.pull_request.title, '[UI]')
+        run: npm run test:e2e
+      - name: Preserve UI screenshot and failure evidence
+        if: always() && github.event_name == 'pull_request' && contains(github.event.pull_request.title, '[UI]')
+        uses: actions/upload-artifact@v4
+        with:
+          name: unity-ui-review
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: ignore
+          retention-days: 7

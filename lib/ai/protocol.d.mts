@@ -1,0 +1,9 @@
+export type TextPart={kind:"text";text:string};
+export type ArtifactRefPart={kind:"artifact_ref";artifactId:string;mediaType:"image"|"audio"|"video"|"document"|"other";sourceId:string|null;contentRetrieved:false};
+export type ContentPart=TextPart|ArtifactRefPart;
+export type ConversationMessage={id:string;role:"user"|"assistant"|"tool";content:ContentPart[];sourceId:string|null;trust:"user_content"|"external_data"|"unverified_ai_output"};
+export type ConversationEnvelope={version:1;projectId:string;taskId:string;requestedCapability:string;messages:ConversationMessage[];estimatedChars:number;instructionBoundary:string};
+export function normalizeContentPart(part:unknown):ContentPart;
+export function normalizeConversationMessage(value:unknown):ConversationMessage;
+export function normalizeConversationEnvelope(input:{projectId:string;taskId:string;messages:unknown[];requestedCapability:string}):ConversationEnvelope;
+export function normalizeProviderReceipt(value:unknown):{providerId:string;modelId:string;inputTokens:number;outputTokens:number;reportedUsd:number|null;billingVerified:false};

@@ -36,7 +36,8 @@ Primary destinations:
 2. Projects
 3. Conversations
 4. Knowledge
-5. Settings
+5. Automations
+6. Settings
 
 Advanced destinations are progressively disclosed under **More** and remain searchable with ⌘/Ctrl+K:
 - Daily Briefing
@@ -47,7 +48,7 @@ Advanced destinations are progressively disclosed under **More** and remain sear
 - Integrations
 - Release Readiness
 
-Mobile uses four primary destinations plus More. No hover-only action may be required.
+Mobile uses Home, Projects, Knowledge and Automations plus More. Conversations, Settings and technical destinations remain available from the side sheet and command search. No hover-only action may be required.
 
 ## Home contract
 

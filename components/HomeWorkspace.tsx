@@ -6,7 +6,7 @@ import {
  Search,ShieldCheck,Sparkles,Workflow
 } from "lucide-react";
 import type {Workspace} from "@/lib/types";
-import type {Area} from "@/components/CommandCenter";
+import type {Area} from "@/lib/navigation";
 
 type Props={
  workspace:Workspace;

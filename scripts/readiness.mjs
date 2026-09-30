@@ -1,10 +1,11 @@
 import {existsSync} from "node:fs";
 import {inspectConfiguration,assertNoClientSecretExposure} from "../lib/infrastructure/config.mjs";
 import {validateProductManifest} from "../lib/product/manifest.mjs";
+import {validateReleaseGates} from "../lib/product/release-gates.mjs";
 import {readFileSync} from "node:fs";
 const files=[
  "AGENTS.md","docs/ARCHITECTURE.md","docs/ENDGAME_ARCHITECTURE.md",
- "docs/FEATURE_MATRIX.md","docs/DESIGN_SYSTEM.md","config/system-manifest.json",
+ "docs/FEATURE_MATRIX.md","docs/DESIGN_SYSTEM.md","config/system-manifest.json","config/release-gates.json",
  "docs/DECISIONS.md","docs/DEPLOYMENT_CHECKLIST.md",
  "supabase/migrations/0001_core.sql","supabase/schema-proposals/runtime.sql",
  "app/api/health/route.ts","lib/runtime/policy.mjs",
@@ -13,11 +14,13 @@ const files=[
 const missing=files.filter(p=>!existsSync(p));
 const config=inspectConfiguration(process.env);
 const manifest=validateProductManifest(JSON.parse(readFileSync("config/system-manifest.json","utf8")));
+const releaseGates=validateReleaseGates(JSON.parse(readFileSync("config/release-gates.json","utf8")));
 let clientEnvSafe=true;
 try{assertNoClientSecretExposure(process.env)}catch{clientEnvSafe=false}
 const result={
  stage:"repository-development",
  moduleManifest:manifest,
+ releaseGates,
  sourceFilesPresent:missing.length===0,
  missingFiles:missing,
  clientEnvironmentNamingSafe:clientEnvSafe,

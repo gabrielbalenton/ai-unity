@@ -130,3 +130,9 @@ Each installed connector binds one independently authorized service account and 
 **Calls and simple interviews:** a future telephony integration may screen incoming calls, ask scripted intake questions and record authorized answers. It must identify itself as an automated assistant, follow recording/consent requirements, respect do-not-call and privacy settings, hand off uncertain requests to a human, and avoid unapproved commitments. Availability depends on the supported call provider, plan and local law.
 
 The implemented event normalizer and UI are currently offline and display **zero live feeds** until authenticated connectors are integrated and actually verified.
+
+### Model-context credential guard (offline defense-in-depth)
+
+The context assembler now rejects recognizable credential patterns in approved notes and source references **before** they enter the generated task context. It returns generic excluded-memory identifiers rather than the sensitive content. Verified source references containing credential-like query parameters are not accepted as evidence; the associated approved note remains labeled as user-approved and unsourced. Project filtering occurs before sensitive-content screening so unrelated project content is never included.
+
+This is a narrow accidental-leak guard, not comprehensive data-loss prevention, end-to-end encryption or a substitute for server-side authorization. Live deployment must additionally enforce real owner/project sessions, credential-vault separation, independent model egress policies, provider retention settings, encryption, secret scanning and incident response. Never intentionally place credentials in Knowledge.

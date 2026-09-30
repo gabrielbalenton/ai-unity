@@ -1,45 +1,50 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {readFileSync} from "node:fs";
+import {readFileSync,existsSync} from "node:fs";
 const read=path=>readFileSync(new URL("../"+path,import.meta.url),"utf8");
 const page=read("app/page.tsx");
-const dashboard=read("components/CommandCenter.tsx");
-const css=read("app/globals.css");
+const home=read("components/HomeWorkspace.tsx");
+const theme=read("app/appearance.css");
 const manifest=JSON.parse(read("config/system-manifest.json"));
 
-test("new navigation preserves every previously implemented workspace",()=>{
- for(const destination of ["Overview","Projects","Cloud","Tasks","Chat","Memory","Models","Tools","Connections"]){
-  assert.match(page,new RegExp('tab:"'+destination+'"'));
- }
- assert.match(page,/CommandCenter/);
- assert.match(page,/CloudWorkspace/);
- assert.match(page,/OpenApiDesigner/);
+test("primary navigation is calm while every advanced workspace remains reachable",()=>{
+ for(const primary of ["Home","Projects","Conversations","Knowledge","Settings"])
+  assert.match(page,new RegExp('label:"'+primary+'"'));
+ for(const advanced of ["Briefing","Tasks","Cloud","Models","Tools","Connections","Readiness"])
+  assert.match(page,new RegExp('tab:"'+advanced+'"'));
+ assert.match(page,/MoreHorizontal/);
+ assert.match(page,/advancedNav/);
+ assert.match(page,/allNav.filter/);
 });
-test("mission control uses actual workspace statistics instead of fabricated metrics",()=>{
- for(const expression of ["workspace.projects.length","approved.length","workspace.githubLinks.length"]){
-  assert.ok(dashboard.includes(expression));
- }
- assert.match(dashboard,/External execution/);
- assert.match(dashboard,/LOCKED/);
- assert.match(dashboard,/No pending local tasks/);
- assert.doesNotMatch(dashboard,/Math\.random\(/);
+test("Home uses only actual local workspace data and no fabricated telemetry",()=>{
+ for(const expression of ["workspace.projects","workspace.tasks","workspace.memories"])
+  assert.ok(home.includes(expression));
+ assert.match(home,/No live sources|external actions are still locked|External execution|Nothing is assumed connected/i);
+ assert.doesNotMatch(home,/Math\.random\(|uptime|\b99\.\d+%|fake/i);
 });
-test("command navigation and mobile menu can be closed by keyboard",()=>{
+test("approved brand and terrain files are present",()=>{
+ for(const file of [
+  "public/unity-brand/unity-symbol.svg","public/unity-brand/unity-symbol-dark.svg",
+  "public/unity-brand/unity-wordmark.svg","public/unity-brand/unity-wordmark-dark.svg",
+  "public/unity-brand/terrain-light.svg","public/unity-brand/terrain-dark.svg"
+ ])assert.equal(existsSync(new URL("../"+file,import.meta.url)),true,file);
+ assert.match(page,/unity-wordmark\.svg/);
+});
+test("keyboard command and mobile navigation retain all working destinations",()=>{
  assert.match(page,/event\.key==="Escape"/);
- assert.match(page,/setPaletteOpen\(false\)/);
- assert.match(page,/setMenuOpen\(false\)/);
+ assert.match(page,/metaKey\|\|event\.ctrlKey/);
+ assert.match(page,/aria-label="Mobile primary navigation"/);
  assert.match(page,/aria-label="Primary navigation"/);
 });
-test("dashboard labels unconnected services and inert architecture clearly",()=>{
- assert.match(dashboard,/NOT CONNECTED/);
+test("all fourteen planned systems remain in the architecture source of truth",()=>{
  assert.equal(manifest.modules.length,14);
- assert.equal(manifest.modules.find(m=>m.id==="models").description.includes("No provider can execute until authorized"),true);
- assert.match(dashboard,/not activated/);
- assert.match(dashboard,/LOCAL READY/);
+ assert.equal(manifest.deploymentAuthorized,false);
+ assert.equal(manifest.paidApiBudgetDefaultUsd,0);
 });
-test("the CSS includes accessible keyboard focus, reduced motion and narrow-screen layouts",()=>{
- assert.match(css,/:focus-visible/);
- assert.match(css,/@media\(prefers-reduced-motion:reduce\)/);
- assert.match(css,/@media\(max-width:690px\)/);
- assert.match(css,/\.command-overlay/);
+test("semantic theme covers accessibility and mobile behavior",()=>{
+ assert.match(theme,/:focus-visible/);
+ assert.match(theme,/@media\(prefers-reduced-motion:reduce\)/);
+ assert.match(theme,/\.mobile-bottom-nav/);
+ assert.match(theme,/--u-canvas:#F7F6F2/);
+ assert.match(theme,/--u-canvas:#141C24/);
 });

@@ -298,3 +298,17 @@ label{color:var(--u-text)}
  .chat-empty{height:auto!important;min-height:270px;margin:0 auto;padding-top:26px;padding-bottom:26px}
  .chat-prompt-starters{padding-bottom:8px}
 }
+
+/* Conversations on phones use the document scroll, not a nested scroll area.
+   This keeps starter actions and the composer stationary under touch. */
+@media(max-width:690px){
+ .chat-main{min-height:0!important}
+ .chat-conversation-history{
+  flex:none!important;
+  max-height:none!important;
+  overflow:visible!important;
+  scroll-padding-bottom:0;
+  padding-bottom:28px!important;
+ }
+ .chat-empty{min-height:0!important;padding:34px 0 22px}
+}

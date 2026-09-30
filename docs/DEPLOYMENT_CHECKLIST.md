@@ -24,6 +24,8 @@ Owner's development sequence: **GitHub first. No Vercel deployment or external a
 ## 2. Web app and experience — P0/P1
 
 - [x] Next.js app skeleton with project-oriented navigation.
+- [x] Full release readiness UI with a machine-readable, evidence-required ten-gate pre-Vercel contract (actual end-to-end evidence is pending).
+- [x] Desktop/mobile UI tests run on production-mode Next.js in GitHub Actions for designated UI milestones; visual accessibility audits remain pending.
 - [x] Source-built responsive command-center design, quick navigation and fourteen-module roadmap driven by one manifest (actual browser visual QA still pending).
 - [x] Complete endgame dependency and trust-boundary reference in `docs/ENDGAME_ARCHITECTURE.md`.
 - [ ] Complete visual inspection of desktop/mobile breakpoints, keyboard navigation, accessibility and contrast in an actual browser.

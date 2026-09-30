@@ -1,6 +1,7 @@
 import {NextResponse} from "next/server";
 import {prepareAndRecordWebhook} from "@/lib/github/webhook-ingestion.mjs";
 import {recordVerifiedGitHubDelivery} from "@/lib/github/webhook-store";
+import {readBoundedBytes,BodyReadError} from "@/lib/security/bounded-body.mjs";
 export const dynamic="force-dynamic";
 export const runtime="nodejs";
 const headers={"Cache-Control":"no-store"};
@@ -12,13 +13,14 @@ const headers={"Cache-Control":"no-store"};
 export async function POST(request:Request){
  if(process.env.UNITY_ENABLE_GITHUB_WEBHOOK_INGESTION!=="true")
   return NextResponse.json({code:"WEBHOOK_INGESTION_NOT_ACTIVATED"},{status:503,headers});
- const length=Number(request.headers.get("content-length")||"0");
- if(!Number.isFinite(length)||length>1_000_000)
-  return NextResponse.json({code:"INVALID_BODY"},{status:413,headers});
  let rawBody:Buffer;
  try{
-  rawBody=Buffer.from(await request.arrayBuffer());
- }catch{return NextResponse.json({code:"INVALID_BODY"},{status:400,headers})}
+  rawBody=Buffer.from(await readBoundedBytes(request,{maxBytes:1_000_000}));
+ }catch(error){
+  const oversized=error instanceof BodyReadError &&
+   ["BODY_TOO_LARGE","BODY_TOO_LARGE_OR_MALFORMED"].includes(error.code);
+  return NextResponse.json({code:"INVALID_BODY"},{status:oversized?413:400,headers});
+ }
  const outcome=await prepareAndRecordWebhook({
   rawBody,
   eventName:request.headers.get("x-github-event"),

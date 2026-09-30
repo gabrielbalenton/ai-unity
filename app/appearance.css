@@ -215,3 +215,36 @@
  .appearance-control{padding:0 5px}
  .appearance-control select{min-width:66px;max-width:76px}
 }
+
+/* Release-readiness console has its own data-rich surfaces. */
+:root[data-resolved-theme="light"] .readiness-numbers>div,
+:root[data-resolved-theme="light"] .readiness-gates{
+ background:#fff;border-color:#dce8df;
+}
+:root[data-resolved-theme="light"] .readiness-numbers>div>span{color:#53846b}
+:root[data-resolved-theme="light"] .readiness-numbers strong{color:#2b503b}
+:root[data-resolved-theme="light"] .readiness-filters button{
+ background:#fff;border-color:#d4e5da;color:#5c7967;
+}
+:root[data-resolved-theme="light"] .readiness-filters button.active{
+ background:#d9f0e2;border-color:#92c7a4;color:#195b3e;
+}
+:root[data-resolved-theme="light"] .release-gate+.release-gate{border-color:#e0ece4}
+:root[data-resolved-theme="light"] .release-gate-heading{
+ background:transparent;color:#315541;
+}
+:root[data-resolved-theme="light"] .release-gate-heading:hover{background:#f1f8f3}
+:root[data-resolved-theme="light"] .release-gate-number{
+ background:#e7f5eb;border-color:#c4e1cf;color:#287d55;
+}
+:root[data-resolved-theme="light"] .release-gate-main strong{color:#284b38}
+:root[data-resolved-theme="light"] .release-gate-body{color:#5b7867}
+:root[data-resolved-theme="light"] .release-gate-body>span{color:#2d7752}
+:root[data-resolved-theme="light"] .readiness-rule{
+ border-color:#e1ebe3;color:#526f5f;
+}
+:root[data-resolved-theme="light"] .readiness-rail .rail-panel p{color:#607969}
+:root[data-resolved-theme="light"] .readiness-link-panel h3{color:#2a503b}
+/* Keep the distinctive readiness banner dark on both schemes for contrast. */
+:root[data-resolved-theme="light"] .readiness-banner{color:#effaf2}
+:root[data-resolved-theme="light"] .readiness-banner h2{color:#effaf2}

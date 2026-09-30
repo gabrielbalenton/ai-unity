@@ -4,7 +4,7 @@ UNITY remains GitHub-first. No Supabase project has been created or modified for
 
 ## Prepared
 - Separate browser and cookie-backed server clients using a publishable key only.
-- Next.js **15** `middleware.ts` for session refresh on protected routes.
+- Next.js **16** `proxy.ts` for cookie refresh on selected auth/private routes; it is not an authorization substitute.
 - Every private API independently verifies a user through `supabase.auth.getUser()`.
 - Owner-scoped, no-store list/create routes for projects and memory **drafts**.
 - Exact configured-origin check on JSON writes.
@@ -12,7 +12,7 @@ UNITY remains GitHub-first. No Supabase project has been created or modified for
 - No approval endpoint until transactionally enforced versioned audit is tested.
 - No service-role/secret key in client code.
 
-Current Supabase documentation: https://supabase.com/docs/guides/auth/server-side/creating-a-client and https://supabase.com/docs/guides/auth/quickstarts/nextjs . Note that Next.js v16 uses `proxy.ts`, but this repository currently targets Next.js 15, which requires `middleware.ts`.
+Current Supabase documentation: https://supabase.com/docs/guides/auth/server-side/creating-a-client and https://supabase.com/docs/guides/auth/server-side/nextjs . The repository targets Next.js 16, so the `proxy.ts` convention is required. Verify cookie refresh, no-store response handling and independent route authorization in a dedicated test environment before activating cloud Auth.
 
 ## To activate in a separate UNITY test project, after owner authorization
 1. Provision a **dedicated** project, never a client or HAVOC database.

@@ -7,7 +7,7 @@ import ChatPanel from "@/components/ChatPanel";
 import TaskBoard from "@/components/TaskBoard";
 import CloudWorkspace from "@/components/CloudWorkspace";
 import OpenApiDesigner from "@/components/OpenApiDesigner";
-import type {Area} from "@/components/CommandCenter";
+import type {Area} from "@/lib/navigation";
 import HomeWorkspace from "@/components/HomeWorkspace";
 import ReadinessPanel from "@/components/ReadinessPanel";
 import {DailyBriefPanel,IntegrationCatalog} from "@/components/UniversalHub";

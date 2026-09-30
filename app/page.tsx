@@ -7,19 +7,33 @@ import ChatPanel from "@/components/ChatPanel";
 import TaskBoard from "@/components/TaskBoard";
 import CloudWorkspace from "@/components/CloudWorkspace";
 import OpenApiDesigner from "@/components/OpenApiDesigner";
-import CommandCenter,{type Area} from "@/components/CommandCenter";
+import type {Area} from "@/components/CommandCenter";
+import HomeWorkspace from "@/components/HomeWorkspace";
 import ReadinessPanel from "@/components/ReadinessPanel";
 import {DailyBriefPanel,IntegrationCatalog} from "@/components/UniversalHub";
 import AppearanceControl from "@/components/AppearanceControl";
-import {Activity, ArrowRight, AudioLines, BrainCircuit, ChevronDown, Cloud, Command, Cpu, Database, Download, FolderKanban, GitBranch, Layers3, Menu, MessageSquare, Network, Search, ShieldCheck, Sparkles, Workflow, Wrench, X} from "lucide-react";
+import {Activity, ArrowRight, BrainCircuit, ChevronDown, Cloud, Cpu, Database, Download, FolderKanban, House, Menu, MessageSquare, MoreHorizontal, Network, Search, Settings2, ShieldCheck, Workflow, Wrench, X} from "lucide-react";
 type Tab = Area;
-const navGroups:{label:string;items:{tab:Tab;icon:typeof Activity;note?:string}[]}[]=[
- {label:"COMMAND",items:[{tab:"Overview",icon:Layers3},{tab:"Briefing",icon:Activity},{tab:"Chat",icon:MessageSquare},{tab:"Tasks",icon:Workflow},{tab:"Readiness",icon:ShieldCheck}]},
- {label:"WORKSPACE",items:[{tab:"Projects",icon:FolderKanban},{tab:"Memory",icon:BrainCircuit},{tab:"Cloud",icon:Cloud,note:"OFFLINE"}]},
- {label:"NETWORK",items:[{tab:"Models",icon:Cpu},{tab:"Tools",icon:Wrench},{tab:"Connections",icon:Network}]}
+type NavItem={tab:Tab;label:string;icon:typeof Activity;note?:string};
+const primaryNav:NavItem[]=[
+ {tab:"Overview",label:"Home",icon:House},
+ {tab:"Projects",label:"Projects",icon:FolderKanban},
+ {tab:"Chat",label:"Conversations",icon:MessageSquare},
+ {tab:"Memory",label:"Knowledge",icon:BrainCircuit},
+ {tab:"Settings",label:"Settings",icon:Settings2}
 ];
-const tabs:Tab[]=navGroups.flatMap(g=>g.items.map(i=>i.tab));
+const advancedNav:NavItem[]=[
+ {tab:"Briefing",label:"Daily Briefing",icon:Activity,note:"PREVIEW"},
+ {tab:"Tasks",label:"Tasks",icon:Workflow},
+ {tab:"Cloud",label:"Cloud Workspace",icon:Cloud,note:"OFFLINE"},
+ {tab:"Models",label:"AI Models",icon:Cpu,note:"DISCOVERY"},
+ {tab:"Tools",label:"Tool Registry",icon:Wrench,note:"DISCOVERY"},
+ {tab:"Connections",label:"Integrations",icon:Network},
+ {tab:"Readiness",label:"Release Readiness",icon:ShieldCheck}
+];
+const allNav=[...primaryNav,...advancedNav];
 const moduleDetails:Record<Exclude<Tab,"Overview">,{kicker:string;description:string;status:string}>={
+ Settings:{kicker:"PREFERENCES",description:"Appearance, local backup and clear information about what is stored in this browser.",status:"LOCAL SETTINGS"},
  Briefing:{kicker:"DAILY INTELLIGENCE",description:"One source-backed briefing from your authorized projects, communications and applications. No live sources are connected yet.",status:"NOT CONNECTED"},
  Readiness:{kicker:"LAUNCH VERIFICATION",description:"Review every release requirement before enabling external integrations or deployment.",status:"RELEASE LOCKED"},
  Projects:{kicker:"YOUR WORKSPACE",description:"Separate working environments, decisions and approved public repository references.",status:"LOCAL WORKSPACE"},
@@ -35,6 +49,7 @@ const uid = () => crypto.randomUUID();
 export default function Home() {
  const [tab,setTab] = useState<Tab>("Overview");
  const [menuOpen,setMenuOpen] = useState(false);
+ const [moreOpen,setMoreOpen] = useState(false);
  const [paletteOpen,setPaletteOpen] = useState(false);
  const [paletteQuery,setPaletteQuery] = useState("");
  const [workspace,setWorkspace] = useState<Workspace>(initialWorkspace);
@@ -65,7 +80,7 @@ export default function Home() {
   const handleKey=(event:KeyboardEvent)=>{
    if((event.metaKey||event.ctrlKey)&&event.key.toLowerCase()==="k"){
     event.preventDefault();setPaletteOpen(open=>!open);
-   } else if(event.key==="Escape"){setPaletteOpen(false);setMenuOpen(false);}
+   } else if(event.key==="Escape"){setPaletteOpen(false);setMenuOpen(false);setMoreOpen(false);}
   };
   window.addEventListener("keydown",handleKey);
   return()=>window.removeEventListener("keydown",handleKey);

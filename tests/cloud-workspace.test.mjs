@@ -15,10 +15,10 @@ test("cloud memory approval is separate from a user-created draft and uses expec
  assert.match(ui,/window\.confirm/);
  assert.match(ui,/Save cloud draft/);
 });
-test("local browser memory is not automatically uploaded to cloud workspace",()=>{
+test("cloud does not access local browser workspace or storage",()=>{
  const ui=read("components/CloudWorkspace.tsx");
- assert.doesNotMatch(ui,/import\\s+[^;]*(?:loadWorkspace|exportWorkspace)/);
- assert.doesNotMatch(ui,/(?:window\\.)?localStorage\\.(?:getItem|setItem)/);
+ assert.doesNotMatch(ui,/import\s+[^;]*(?:loadWorkspace|exportWorkspace)/);
+ assert.doesNotMatch(ui,/(?:window\.)?localStorage\.(?:getItem|setItem)/);
  assert.match(ui,/separate from your unsynced browser workspace/);
 });
 test("cloud reads request authenticated no-store server responses",()=>{

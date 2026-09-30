@@ -136,7 +136,8 @@ Owner's development sequence: **GitHub first. No Vercel deployment or external a
 - [x] Non-secret health endpoint and intentionally disabled external execution by default.
 - [ ] Comprehensive threat model, dependency lockfile, automated dependency audit and SAST.
 - [ ] Trusted HTTPS origin, secure session cookies, CSRF strategy and security headers.
-- [ ] Server-side request validation, rate limits, SSRF defenses and least privilege.
+- [x] Stream-enforced request size limits for protected JSON writes and signed webhook payloads, independent of Content-Length (offline tests).
+- [ ] Remaining server-side rate limits, SSRF defenses, deployed least privilege and real denial tests.
 - [ ] Immutable/append-only audit sink, trace correlation, incident alerts and scrubbed logs.
 - [ ] Provider-policy, privacy and data-processing review before sending real project context.
 - [ ] Disaster-recovery backups tested with realistic failures.

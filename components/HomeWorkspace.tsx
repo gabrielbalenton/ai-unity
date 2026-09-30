@@ -51,8 +51,8 @@ export default function HomeWorkspace({
    </div>
    <div className="home-hero-content">
     <span className="home-eyebrow">YOUR WORKSPACE</span>
-    <h2>{current?<>Ready when you are, <span>{current.name}</span>.</>:<>Welcome to <span>UNITY.</span></>}</h2>
-    <p>One calm place for your projects, knowledge, conversations, automations and the tools you choose to connect.</p>
+    <h2>Welcome to <span>UNITY.</span></h2>
+    <p>One calm place for your projects, knowledge, conversations, automations and the tools you choose to connect.{current?<> You’re currently working in <strong>{current.name}</strong>.</>:null}</p>
     <form className="intent-composer" onSubmit={routeIntent}>
      <Search size={19} aria-hidden="true"/>
      <label>

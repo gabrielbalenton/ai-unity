@@ -1,21 +1,23 @@
 import {test,expect} from "@playwright/test";
+import {openAppearance} from "./helpers";
 
-test("Light and Dark selections persist across reloads",async({page})=>{
+test("Light and Dark selections persist across reloads",async({page,isMobile})=>{
  await page.goto("/");
- const theme=page.getByRole("combobox",{name:"Appearance"});
+ let theme=await openAppearance(page,isMobile);
  await theme.selectOption("light");
  await expect(page.locator("html")).toHaveAttribute("data-resolved-theme","light");
  await page.reload();
- await expect(page.getByRole("combobox",{name:"Appearance"})).toHaveValue("light");
+ theme=await openAppearance(page,isMobile);
+ await expect(theme).toHaveValue("light");
  await expect(page.locator("html")).toHaveAttribute("data-resolved-theme","light");
- await page.getByRole("combobox",{name:"Appearance"}).selectOption("dark");
+ await theme.selectOption("dark");
  await expect(page.locator("html")).toHaveAttribute("data-resolved-theme","dark");
 });
 
-test("System appearance responds to OS changes",async({page})=>{
+test("System appearance responds to OS changes",async({page,isMobile})=>{
  await page.emulateMedia({colorScheme:"light"});
  await page.goto("/");
- const theme=page.getByRole("combobox",{name:"Appearance"});
+ const theme=await openAppearance(page,isMobile);
  await theme.selectOption("system");
  await expect(page.locator("html")).toHaveAttribute("data-resolved-theme","light");
  await page.emulateMedia({colorScheme:"dark"});

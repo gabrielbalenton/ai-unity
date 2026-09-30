@@ -1,9 +1,10 @@
 import {test,expect} from "@playwright/test";
-test("release readiness renders real gates with no fake verification and captures responsive UI",async({page},testInfo)=>{
+import {openAdvanced} from "./helpers";
+
+test("release readiness renders real gates with no fake verification and captures responsive UI",async({page,isMobile},testInfo)=>{
  await page.goto("/");
- if(testInfo.project.name==="mobile-chromium")await page.getByRole("button",{name:"Open navigation"}).click();
- await page.getByRole("button",{name:"Readiness",exact:true}).click();
- await expect(page.locator("h1")).toHaveText("Readiness");
+ await openAdvanced(page,"Release Readiness",isMobile);
+ await expect(page.locator("h1")).toHaveText("Release Readiness");
  await expect(page.getByText("RELEASE LOCKED",{exact:true}).first()).toBeVisible();
  await expect(page.getByText("Evidence before launch.")).toBeVisible();
  await expect(page.getByText("0 / 10")).toBeVisible();

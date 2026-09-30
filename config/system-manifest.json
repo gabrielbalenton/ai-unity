@@ -140,7 +140,7 @@
       "subtitle": "AUTOMATION",
       "description": "Scheduled missions, triggers, approvals, retries and controlled execution.",
       "status": "planned",
-      "area": "Tasks",
+      "area": "Automations",
       "phase": "personal-alpha",
       "dependencies": [
         "agents",

@@ -23,7 +23,7 @@ See `docs/LOCAL_FIRST_CONTRACT.md` for the GitHub-first development and deployme
 **Not production-ready.** Browser local storage is not encrypted. Do not enter API keys, passwords, or confidential client information. Public source code is intentional; never commit secrets.
 
 ## Start
-Node.js 20.9+ required.
+Node.js 22.x is the release-candidate runtime.
 
 ```sh
 npm install
@@ -41,16 +41,19 @@ The local alpha offers validated JSON import/export. Imports deliberately reset 
 
 GitHub is only one integration. The product is designed to consolidate authorized project management, Google/Microsoft workspaces, email, calendars, meetings, marketing, CRM, finance, ecommerce, development and permission-scoped local desktop data. The current integration category explorer and project-scoped daily briefing normalizer are **offline foundations**; no live cross-app feed has been connected. See `docs/UNIVERSAL_HUB.md` and `config/integration-categories.json`.
 
-## UNITY Command Center and full system blueprint
+## Approved interface and full system blueprint
 
-The interface now uses a premium, responsive command-center shell with a bespoke geometric U mark and Light/Dark/System appearance (System defaults to your OS theme) and a dedicated two-panel project conversation studio and a shared fourteen-system feature manifest. Its interactive overview opens the existing local tools and gives honest roadmap details for systems that are not operational. The dark graphite/jade visual system uses no external image assets or required third-party font downloads.
+The owner-approved **Quiet Convergence** interface uses the original UNITY convergence mark, semantic Light/Dark/System appearance (System default), a calm project-centered Home and progressive disclosure. Primary navigation is Home, Projects, Conversations, Knowledge and Settings. Briefing, Tasks, Cloud, Models, Tools, Integrations and Readiness remain fully reachable under More and ⌘K rather than dominating the landing page.
 
+- [Approved handoff integration](docs/APPROVED_UI_HANDOFF.md)
 - [Visual language and UI acceptance](docs/DESIGN_SYSTEM.md)
+- [Room model and embedded brain](docs/ROOM_MODEL.md)
 - [Fourteen-system endgame architecture](docs/ENDGAME_ARCHITECTURE.md)
 - [Machine-readable capability/status registry](config/system-manifest.json)
+- [Vercel preview runbook](docs/VERCEL_PREVIEW_RUNBOOK.md)
 - [GitHub-first deployment acceptance checklist](docs/DEPLOYMENT_CHECKLIST.md)
 
-No mock operational health or fabricated API consumption is displayed. All existing project tools remain navigable.
+No mock operational health, connected-account claims or fabricated API consumption is displayed. Existing advanced tools remain reachable.
 
 ## Evidence-based release console
 The **Readiness** navigation tab shows ten independently verifiable pre-Vercel critical gates alongside personal-trial and future commercialization requirements. Its public status is deliberately locked until separate authenticated, reviewed evidence exists. Source changes cannot self-certify deployment.

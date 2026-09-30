@@ -29,9 +29,11 @@ test("unknown dependencies and dependency cycles are rejected",()=>{
  cyclic.modules.find(m=>m.id==="workspace").dependencies=["knowledge"];
  assert.throws(()=>validateProductManifest(cyclic),/Cyclic/);
 });
-test("the visible product dashboard uses the shared feature manifest",()=>{
- const source=read("components/CommandCenter.tsx");
- assert.match(source,/import systemManifest/);
- assert.match(source,/systemManifest.modules.map/);
- assert.match(source,/selectedFuture/);
+test("the architecture manifest remains complete without becoming a Home-screen feature wall",()=>{
+ const home=read("components/HomeWorkspace.tsx");
+ const page=read("app/page.tsx");
+ assert.equal(valid.modules.length,14);
+ assert.doesNotMatch(home,/systemManifest|View all modules|System overview/);
+ assert.match(page,/Release Readiness/);
+ assert.match(page,/advancedNav/);
 });

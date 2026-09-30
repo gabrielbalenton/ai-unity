@@ -15,10 +15,11 @@ export default defineConfig({
  },
  projects:[
   {name:"desktop-chromium",use:{...devices["Desktop Chrome"],viewport:{width:1440,height:900}}},
-  {name:"mobile-chromium",use:{...devices["iPhone 13"],browserName:"chromium"}}
+  {name:"tablet-chromium",use:{...devices["Desktop Chrome"],viewport:{width:768,height:1024}}},
+  {name:"mobile-chromium",use:{...devices["Desktop Chrome"],viewport:{width:375,height:812},isMobile:true,hasTouch:true}}
  ],
  webServer:{
-  command:process.env.CI?"npm run start -- --hostname 127.0.0.1":"npm run dev -- --hostname 127.0.0.1",
+  command:"npm run start -- -H 127.0.0.1 -p 3000",
   url:"http://127.0.0.1:3000",
   reuseExistingServer:!process.env.CI,
   timeout:120000

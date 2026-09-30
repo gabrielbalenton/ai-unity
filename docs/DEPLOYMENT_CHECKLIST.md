@@ -82,7 +82,8 @@ Owner's development sequence: **GitHub first. No Vercel deployment or external a
 - [ ] Secure OAuth and API-key vault, rotation, revocation and least-privilege grants.
 - [ ] Generic REST/GraphQL import with safe endpoint allowlists and SSRF protection.
 - [ ] Independently authorized MCP servers, tool permissions and injection-resistant output handling.
-- [ ] Signed inbound webhooks, idempotency, replay protection and audit receipts.
+- [x] Dormant GitHub webhook HMAC verification, bounded input and durable deduplication code/proposed RLS table (offline only).
+- [ ] Live signed webhook integration, tested replay handling, installation ownership checks and audit receipts.
 - [ ] Connector health, rate-limit detection, retries and version/compatibility checks.
 
 ## 6. Agents, workflows, approvals and verification — P0/P1

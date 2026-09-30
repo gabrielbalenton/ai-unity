@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {normalizeActivity,buildDailyBrief} from "../lib/activity/daily-brief.mjs";
+import {normalizeActivity,validateSyncReceipt,buildDailyBrief} from "../lib/activity/daily-brief.mjs";
 const event=(overrides={})=>({
  id:"event-1",connectorId:"notion-1",projectId:"project-1",type:"task",
  title:"Project decision required",observedAt:"2026-09-29T13:00:00+08:00",
@@ -31,8 +31,10 @@ test("timezone identifies yesterday using real calendar dates",()=>{
 test("briefing never pretends that silent connectors synchronized",()=>{
  const result=buildDailyBrief({...args,events:[event()]});
  assert.equal(result.connectorCoverage.observedCount,1);
- assert.deepEqual(result.connectorCoverage.unobservedConnectorIds,["gmail-2"]);
- assert.match(result.connectorCoverage.notice,/not proof/);
+ assert.equal(result.connectorCoverage.verifiedCount,0);
+ assert.equal(result.connectorCoverage.complete,false);
+ assert.deepEqual(result.connectorCoverage.unobservedConnectorIds,["notion-1","gmail-2"]);
+ assert.match(result.connectorCoverage.notice,/never proves sync/);
 });
 test("never invents actions or AI interpretations",()=>{
  const result=buildDailyBrief({...args,events:[event()]});
@@ -56,4 +58,57 @@ test("does not accidentally include today or events older than yesterday",()=>{
   event({id:"old",observedAt:"2026-09-28T12:00:00+08:00"}),
   event({id:"today",observedAt:"2026-09-30T00:01:00+08:00"})]});
  assert.equal(res.totalEvents,0);
+});
+
+const receipt=(overrides={})=>({
+ projectId:"project-1",connectorId:"notion-1",coveredLocalDate:"2026-09-29",
+ status:"success",completedAt:"2026-09-30T00:30:00+08:00",method:"full_poll",...overrides
+});
+test("events without independently completed sync receipts never count as full coverage",()=>{
+ const res=buildDailyBrief({...args,events:[event()],syncReceipts:[]});
+ assert.equal(res.totalEvents,1);
+ assert.equal(res.connectorCoverage.verifiedCount,0);
+ assert.equal(res.connectorCoverage.complete,false);
+});
+test("a genuine scoped successful source receipt confirms only its matching source",()=>{
+ const res=buildDailyBrief({...args,events:[],syncReceipts:[receipt()]});
+ assert.equal(res.totalEvents,0);
+ assert.equal(res.connectorCoverage.verifiedCount,1);
+ assert.deepEqual(res.connectorCoverage.missingSources,[{projectId:"project-1",connectorId:"gmail-2"}]);
+ assert.equal(res.connectorCoverage.complete,false);
+});
+test("all expected sources with successful receipts support complete coverage",()=>{
+ const res=buildDailyBrief({...args,events:[],syncReceipts:[
+  receipt(),receipt({connectorId:"gmail-2",method:"verified_backfill"})]});
+ assert.equal(res.connectorCoverage.verifiedCount,2);
+ assert.equal(res.connectorCoverage.complete,true);
+});
+test("latest failed sync receipt overrides earlier success",()=>{
+ const res=buildDailyBrief({...args,events:[event()],syncReceipts:[
+  receipt(),receipt({status:"failed",completedAt:"2026-09-30T01:00:00+08:00"})]});
+ assert.equal(res.connectorCoverage.verifiedCount,0);
+ assert.equal(res.connectorCoverage.complete,false);
+});
+test("a source's completed sync in another project cannot prove this project's coverage",()=>{
+ const res=buildDailyBrief({...args,events:[],
+  syncReceipts:[receipt({projectId:"different"})]});
+ assert.equal(res.connectorCoverage.verifiedCount,0);
+});
+test("out-of-scope malformed records never crash an unrelated project's briefing",()=>{
+ const res=buildDailyBrief({...args,events:[
+  event(),event({projectId:"other",type:"invalid"})]});
+ assert.equal(res.totalEvents,1);
+});
+test("sync receipt validation refuses fake status, method or timestamps",()=>{
+ assert.throws(()=>validateSyncReceipt(receipt({status:"pending"})),/Invalid/);
+ assert.throws(()=>validateSyncReceipt(receipt({method:"webhook"})),/Invalid/);
+ assert.throws(()=>validateSyncReceipt(receipt({coveredLocalDate:"tomorrow"})),/Invalid/);
+});
+test("coverage remains project-specific when one connector serves multiple projects",()=>{
+ const res=buildDailyBrief({...args,events:[],projectIds:["project-1","project-2"],
+  expectedSources:[{projectId:"project-1",connectorId:"notion-1"},
+    {projectId:"project-2",connectorId:"notion-1"}],syncReceipts:[receipt()]});
+ assert.equal(res.connectorCoverage.expectedCount,2);
+ assert.equal(res.connectorCoverage.verifiedCount,1);
+ assert.deepEqual(res.connectorCoverage.missingSources,[{projectId:"project-2",connectorId:"notion-1"}]);
 });

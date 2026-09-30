@@ -80,10 +80,10 @@
 :root[data-resolved-theme="light"] .notice{
  background:#eaf8ef;border-color:#9cccaf;color:#255d42;
 }
-:root[data-resolved-theme="light"] button:not(.hero-primary):not(.hero-secondary):not(.brand-mark):not(.nav-item):not(.module-tile):not(.quick-link):not(.command-result):not(.rail-heading-button):not(.link-action):not(.command-input button):not(.roadmap-dialog-head button):not(.appearance-control select){
+:root[data-resolved-theme="light"] :where(button:not(.hero-primary):not(.hero-secondary):not(.brand-mark):not(.nav-item):not(.module-tile):not(.quick-link):not(.command-result):not(.rail-heading-button):not(.link-action):not(.command-input button):not(.roadmap-dialog-head button):not(.appearance-control select)){
  background:#f1f7f3;color:#345749;border-color:#d0e2d7;
 }
-:root[data-resolved-theme="light"] button:hover:not(.hero-primary):not(.hero-secondary):not(.brand-mark):not(.nav-item):not(.module-tile):not(.quick-link):not(.command-result):not(.rail-heading-button):not(.link-action):not(.roadmap-dialog-head button):not(.appearance-control select){
+:root[data-resolved-theme="light"] :where(button:hover:not(.hero-primary):not(.hero-secondary):not(.brand-mark):not(.nav-item):not(.module-tile):not(.quick-link):not(.command-result):not(.rail-heading-button):not(.link-action):not(.roadmap-dialog-head button):not(.appearance-control select)){
  background:#e5f2e9;border-color:#a8d0b8;
 }
 :root[data-resolved-theme="light"] button.primary,

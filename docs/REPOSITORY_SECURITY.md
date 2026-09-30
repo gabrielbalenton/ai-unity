@@ -71,3 +71,7 @@ A production recovery exercise must prove a clean clone can be created from the 
 ## Never rely on one control
 
 Branch rules do not protect a stolen owner account by themselves. Encryption does not protect a live decrypted session by itself. A private repo does not replace backups. UNITY uses defense in depth: identity security, least privilege, guarded changes, secret prevention and independent recovery.
+
+## Automated recovery regression
+
+The repository test suite includes a fully disposable Git restoration exercise. It initializes a fresh local repository, commits representative data, runs the actual recovery script, independently recomputes the bundle's SHA-256 checksum, clones the bundle without accessing GitHub, and checks that the restored commit and file content match. This proves the **script's restoration mechanics**, not the existence, encryption, age or accessibility of an independent external backup. A separately encrypted off-GitHub copy and a regular owner-tested restore remain required before production.

@@ -19,7 +19,7 @@ Status definitions: **Implemented** = code exists; **Verified offline** = automa
 | Security | Local schema planning, pure fail-closed policy, optional disconnected SSR Auth and private route code | Real identity, RLS isolation, vault, encrypted tokens, defense against injection, incident recovery |
 | Integration SDK | Offline manifest validator | Documented stable plugin/adapter SDK and staged compatibility testing |
 | Creative and specialized AI | Not implemented | Supported image/video/audio/scientific adapters gated by real access and content permissions |
-| Automation | Offline task contract | Event triggers, durable scheduling, manual approvals and emergency stop |
+| Automation | Dedicated local Automations room with inert project-scoped drafts; no execution | Event triggers, durable scheduling, manual approvals and emergency stop |
 
 ## Acceptance gates before any real client data
 1. Dedicated non-production infrastructure exists; nothing is written into an unrelated project's database.

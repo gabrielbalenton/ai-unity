@@ -1,23 +1,10 @@
-import {test,expect,Page} from "@playwright/test";
-
-async function primary(page:Page,isMobile:boolean,label:"Home"|"Projects"|"Conversations"|"Knowledge"){
- const nav=isMobile?page.getByRole("navigation",{name:"Mobile primary navigation"}):
-  page.getByRole("navigation",{name:"Primary navigation"});
- await nav.getByRole("button",{name:label,exact:true}).click();
-}
-async function advanced(page:Page,isMobile:boolean,label:string){
- if(isMobile){
-  await page.getByRole("navigation",{name:"Mobile primary navigation"}).getByRole("button",{name:"More",exact:true}).click();
- }else{
-  await page.getByRole("navigation",{name:"Primary navigation"}).getByRole("button",{name:"More",exact:true}).click();
- }
- await page.getByRole("navigation",{name:"Primary navigation"}).getByRole("button",{name:new RegExp("^"+label)}).click();
-}
+import {test,expect} from "@playwright/test";
+import {openAdvanced,openAppearance,openPrimary} from "./helpers";
 
 test("approved Home is calm, honest and screenshot-ready",async({page},testInfo)=>{
  await page.goto("/");
  await expect(page.locator("h1")).toHaveText("Home");
- await expect(page.getByText(/Welcome to|Ready when you are/).first()).toBeVisible();
+ await expect(page.getByText("Welcome to UNITY.")).toBeVisible();
  await expect(page.getByPlaceholder("What would you like to work on?")).toBeVisible();
  await expect(page.getByText(/External execution and paid APIs remain disabled/)).toBeVisible();
  await expect(page.getByText("System overview")).toHaveCount(0);
@@ -26,24 +13,17 @@ test("approved Home is calm, honest and screenshot-ready",async({page},testInfo)
 
 test("primary and advanced navigation both preserve working pages",async({page,isMobile})=>{
  await page.goto("/");
- await primary(page,isMobile,"Knowledge");
+ await openPrimary(page,"Knowledge",isMobile);
  await expect(page.locator("h1")).toHaveText("Knowledge");
  await expect(page.getByText("Brain dump",{exact:true})).toBeVisible();
- await advanced(page,isMobile,"Integrations");
+ await openAdvanced(page,"Integrations",isMobile);
  await expect(page.locator("h1")).toHaveText("Integrations");
  await expect(page.getByText("Universal connections")).toBeVisible();
 });
 
 test("System Light Dark control is available and manual modes apply",async({page,isMobile})=>{
  await page.goto("/");
- let appearance;
- if(isMobile){
-  await page.getByRole("navigation",{name:"Mobile primary navigation"}).getByRole("button",{name:"More",exact:true}).click();
-  await page.getByRole("navigation",{name:"Primary navigation"}).getByRole("button",{name:"Settings",exact:true}).click();
-  appearance=page.locator(".settings-grid").getByRole("combobox",{name:"Appearance"});
- }else{
-  appearance=page.locator(".header-tools").getByRole("combobox",{name:"Appearance"});
- }
+ const appearance=await openAppearance(page,isMobile);
  await expect(appearance).toHaveValue("system");
  await appearance.selectOption("dark");
  await expect(page.locator("html")).toHaveAttribute("data-resolved-theme","dark");
@@ -53,21 +33,33 @@ test("System Light Dark control is available and manual modes apply",async({page
 
 test("project creation appears on the real Home without fake totals",async({page,isMobile})=>{
  await page.goto("/");
- await primary(page,isMobile,"Projects");
+ await openPrimary(page,"Projects",isMobile);
  await page.getByRole("textbox",{name:"Name",exact:true}).fill("Design smoke test");
  await page.getByRole("textbox",{name:"Description"}).fill("Local test project");
  await page.getByRole("button",{name:"Create project"}).click();
- await expect(page.locator(".entry").filter({hasText:"Design smoke test"})).toBeVisible();
- await primary(page,isMobile,"Home");
- await expect(page.locator(".project-card").filter({hasText:"Design smoke test"})).toBeVisible();
+ await expect(page.getByRole("button",{name:"Open project memory"})).toBeVisible();
+ await openPrimary(page,"Home",isMobile);
+ await expect(page.getByRole("button",{name:/Design smoke test/})).toBeVisible();
+});
+
+test("Automations is a dedicated room and remains inert",async({page,isMobile})=>{
+ await page.goto("/");
+ await openPrimary(page,"Projects",isMobile);
+ await page.getByRole("textbox",{name:"Name",exact:true}).fill("Automation smoke test");
+ await page.getByRole("textbox",{name:"Description"}).fill("Room separation");
+ await page.getByRole("button",{name:"Create project"}).click();
+ await openPrimary(page,"Automations",isMobile);
+ await expect(page.locator("h1")).toHaveText("Automations");
+ await page.getByRole("textbox",{name:"Name",exact:true}).fill("Morning briefing");
+ await page.getByRole("textbox",{name:"What should happen"}).fill("Prepare yesterday's approved updates");
+ await page.getByRole("button",{name:"Save draft"}).click();
+ await expect(page.getByText("Morning briefing")).toBeVisible();
+ await expect(page.getByRole("button",{name:"Run"})).toBeDisabled();
 });
 
 test("Settings owns backup and theme controls",async({page,isMobile})=>{
  await page.goto("/");
- if(isMobile){
-  await page.getByRole("navigation",{name:"Mobile primary navigation"}).getByRole("button",{name:"More",exact:true}).click();
- }
- await page.getByRole("navigation",{name:"Primary navigation"}).getByRole("button",{name:"Settings",exact:true}).click();
+ await openPrimary(page,"Settings",isMobile);
  await expect(page.getByText("Backup and recovery")).toBeVisible();
- await expect(page.locator(".settings-grid").getByLabel("Appearance")).toBeVisible();
+ await expect(page.getByLabel("Appearance").last()).toBeVisible();
 });

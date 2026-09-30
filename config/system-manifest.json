@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 1,
+  "product": "UNITY",
+  "releaseStatus": "github-alpha",
+  "deploymentAuthorized": false,
+  "paidApiBudgetDefaultUsd": 0,
+  "meaning": {
+    "local": "Code usable in the unsynced browser prototype; not live cloud integration.",
+    "offline": "Read-only discovery or tested offline contract; not authorized execution.",
+    "planned": "Not operational and subject to implementation and verification."
+  },
+  "modules": [
+    {
+      "id": "workspace",
+      "title": "Project workspace",
+      "subtitle": "WORKSPACE",
+      "description": "Project-level organization, separate local histories and repository references.",
+      "status": "local",
+      "area": "Projects",
+      "phase": "foundation",
+      "dependencies": [],
+      "acceptance": "Authenticated cross-device project isolation and verified source relationships."
+    },
+    {
+      "id": "knowledge",
+      "title": "Knowledge core",
+      "subtitle": "MEMORY",
+      "description": "Brain dumps, deliberate approval and project-scoped memory previews.",
+      "status": "local",
+      "area": "Memory",
+      "phase": "foundation",
+      "dependencies": [
+        "workspace"
+      ],
+      "acceptance": "Dedicated backend, versioned sources, signed approvals, revocation and two-user isolation."
+    },
+    {
+      "id": "models",
+      "title": "Model network",
+      "subtitle": "AI MODELS",
+      "description": "Browse multiple model catalogs. No provider can execute until authorized.",
+      "status": "offline",
+      "area": "Models",
+      "phase": "infrastructure",
+      "dependencies": [
+        "workspace",
+        "knowledge",
+        "governance"
+      ],
+      "acceptance": "Two actually authorized providers with verified quotas, hard zero-dollar guard and tested handoff."
+    },
+    {
+      "id": "connectors",
+      "title": "Integration hub",
+      "subtitle": "CONNECTORS",
+      "description": "Public GitHub metadata, OpenAPI design and future authorized adapters.",
+      "status": "offline",
+      "area": "Connections",
+      "phase": "infrastructure",
+      "dependencies": [
+        "workspace",
+        "governance"
+      ],
+      "acceptance": "GitHub App and at least one independently authorized non-GitHub API, revocation and audit."
+    },
+    {
+      "id": "tasks",
+      "title": "Task orchestration",
+      "subtitle": "WORKFLOWS",
+      "description": "Plan tasks using explicit evidence, checkpoints and project ownership.",
+      "status": "local",
+      "area": "Tasks",
+      "phase": "foundation",
+      "dependencies": [
+        "workspace"
+      ],
+      "acceptance": "Durable jobs, revision locking, exact action approvals and independently verified completion."
+    },
+    {
+      "id": "cloud",
+      "title": "Cloud foundation",
+      "subtitle": "PERSISTENCE",
+      "description": "Authenticated routes and database contracts, not yet connected to infrastructure.",
+      "status": "planned",
+      "area": "Cloud",
+      "phase": "infrastructure",
+      "dependencies": [
+        "workspace",
+        "governance"
+      ],
+      "acceptance": "Dedicated backend with applied migrations, authenticated UI and cross-device verified access.",
+      "future": "Connect the existing owner-scoped API and cloud UI to a dedicated database after security tests."
+    },
+    {
+      "id": "tools",
+      "title": "Tool registry",
+      "subtitle": "TOOLS",
+      "description": "Inspect public MCP server listings without installing or executing them.",
+      "status": "offline",
+      "area": "Tools",
+      "phase": "infrastructure",
+      "dependencies": [
+        "connectors"
+      ],
+      "acceptance": "Permission-scoped MCP servers with independent capability and injection resistance tests."
+    },
+    {
+      "id": "voice",
+      "title": "Voice interface",
+      "subtitle": "INTERACTION",
+      "description": "Opt-in browser voice dictation for local brain dumps.",
+      "status": "local",
+      "area": "Memory",
+      "phase": "personal-alpha",
+      "dependencies": [
+        "knowledge"
+      ],
+      "acceptance": "Consented interruptible two-way voice and optional desktop wake word with privacy review."
+    },
+    {
+      "id": "agents",
+      "title": "Agent runtime",
+      "subtitle": "AGENTS",
+      "description": "Delegation, isolation, versioned actions and verifiable completion.",
+      "status": "planned",
+      "area": "Tasks",
+      "phase": "personal-alpha",
+      "dependencies": [
+        "models",
+        "tasks",
+        "connectors",
+        "governance"
+      ],
+      "acceptance": "Bounded sandboxed execution, replayable checkpoints and independent verification.",
+      "future": "Durable task workers, sandboxed agents, checkpoints and independent result verification."
+    },
+    {
+      "id": "automation",
+      "title": "Automation engine",
+      "subtitle": "AUTOMATION",
+      "description": "Scheduled missions, triggers, approvals, retries and controlled execution.",
+      "status": "planned",
+      "area": "Tasks",
+      "phase": "personal-alpha",
+      "dependencies": [
+        "agents",
+        "tasks",
+        "governance"
+      ],
+      "acceptance": "Signed triggers, idempotent retries, emergency stop and tested failure recovery.",
+      "future": "A durable workflow service with signed triggers, idempotency, human approvals and emergency stop."
+    },
+    {
+      "id": "studio",
+      "title": "Creative studio",
+      "subtitle": "GENERATION",
+      "description": "A unified home for compatible image, video, audio and specialized tools.",
+      "status": "planned",
+      "area": "Models",
+      "phase": "expansion",
+      "dependencies": [
+        "models",
+        "knowledge"
+      ],
+      "acceptance": "At least one authorized and tested adapter per claimed output modality and safe artifact storage.",
+      "future": "Independent multimodal adapters, private artifact storage and provider permission controls."
+    },
+    {
+      "id": "analytics",
+      "title": "Operations analytics",
+      "subtitle": "OBSERVABILITY",
+      "description": "Measured model usage, cost, task quality and integration reliability.",
+      "status": "planned",
+      "area": "Overview",
+      "phase": "personal-alpha",
+      "dependencies": [
+        "models",
+        "agents"
+      ],
+      "acceptance": "Provider billing receipts, scrubbed audit metrics and measured task outcomes.",
+      "future": "Actual verified telemetry and provider receipts; no fabricated uptime, spending or success rates."
+    },
+    {
+      "id": "governance",
+      "title": "Governance",
+      "subtitle": "SECURITY",
+      "description": "Exact action grants, sealed credentials, audit trails and fail-closed budgets.",
+      "status": "planned",
+      "area": "Overview",
+      "phase": "infrastructure",
+      "dependencies": [
+        "workspace"
+      ],
+      "acceptance": "Server-enforced authorization, encrypted credential custody and practiced emergency shutdown.",
+      "future": "Server-enforced identity, secrets vault, active policy enforcement, data lifecycle and incident recovery."
+    },
+    {
+      "id": "developer",
+      "title": "Developer platform",
+      "subtitle": "EXPANSION",
+      "description": "Build portable skills, agents and reviewed third-party integrations.",
+      "status": "planned",
+      "area": "Connections",
+      "phase": "expansion",
+      "dependencies": [
+        "agents",
+        "connectors",
+        "governance"
+      ],
+      "acceptance": "Stable versioned SDK, signed manifests, sandboxed connector tests and permission review.",
+      "future": "Versioned API/SDK, permission-scoped connector sandbox, capability tests and controlled publication."
+    }
+  ]
+}

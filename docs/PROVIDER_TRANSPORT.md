@@ -47,3 +47,9 @@ The present `dispatchVerifiedChat` code implements steps 5–8 as a reusable int
 ## Explicit non-goals for this milestone
 
 No automatic model execution, no model streaming, no multimedia generation, no public inference endpoint, no service provisioning and no Vercel deployment. These are separate implementation and live-validation milestones tracked by the full deployment checklist.
+
+## Durable inference reservation ledger
+
+`supabase/schema-proposals/model-dispatch-ledger.sql` adds a backend-only, project/account/model-scoped ledger and one-time model request reservation. A committed reservation may only transition once to an unverified returned result or an ambiguous failure; neither is automatically retried. The result is represented by a SHA-256 hash and optional token counts, never the raw output or credential. **Actual provider spending remains NULL until independent billing receipt reconciliation**. The database RPC itself does not verify provider free access: a separately audited backend signer and real account entitlement checks are still mandatory before activation.
+
+The disposable PostgreSQL fixture in `tests/db/model-ledger.sql` exercises duplicate denial, owner/model mismatch, immutable result states and anonymous denial without calling a real AI provider.

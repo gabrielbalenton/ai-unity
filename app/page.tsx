@@ -9,6 +9,7 @@ import CloudWorkspace from "@/components/CloudWorkspace";
 import OpenApiDesigner from "@/components/OpenApiDesigner";
 import CommandCenter,{type Area} from "@/components/CommandCenter";
 import ReadinessPanel from "@/components/ReadinessPanel";
+import AppearanceControl from "@/components/AppearanceControl";
 import {Activity, ArrowRight, AudioLines, BrainCircuit, ChevronDown, Cloud, Command, Cpu, Database, Download, FolderKanban, GitBranch, Layers3, Menu, MessageSquare, Network, Search, ShieldCheck, Sparkles, Workflow, Wrench, X} from "lucide-react";
 type Tab = Area;
 const navGroups:{label:string;items:{tab:Tab;icon:typeof Activity;note?:string}[]}[]=[
@@ -143,7 +144,7 @@ export default function Home() {
   {menuOpen&&<button className="mobile-scrim" type="button" aria-label="Close navigation" onClick={()=>setMenuOpen(false)}/>}
   <aside className={`sidebar ${menuOpen?"sidebar-visible":""}`}>
    <div className="sidebar-top">
-    <button type="button" className="brand-mark" aria-label="UNITY home" onClick={()=>navigate("Overview")}><span className="brand-glyph"><Sparkles size={24} strokeWidth={1.6}/></span><span className="brand-name">UNITY<span className="brand-period">.</span><small>UNIFIED INTELLIGENCE</small></span></button>
+    <button type="button" className="brand-mark" aria-label="UNITY home" onClick={()=>navigate("Overview")}><span className="brand-glyph"><svg className="unity-monogram" width="29" height="29" viewBox="0 0 40 40" role="img" aria-label="UNITY geometric U mark" fill="none"><path d="M9.5 9v13.2c0 6.2 4.3 10.4 10.5 10.4s10.5-4.2 10.5-10.4V9" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round"/><path d="M20 12v9.4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity=".58"/><circle cx="30.5" cy="7.5" r="2.5" fill="currentColor"/></svg></span><span className="brand-name">UNITY<span className="brand-period">.</span><small>UNIFIED INTELLIGENCE</small></span></button>
     <button className="sidebar-close" type="button" aria-label="Close navigation" onClick={()=>setMenuOpen(false)}><X size={20}/></button>
    </div>
    <div className="side-workspace-label"><span className="side-tenant-avatar">U</span><span><strong>Personal workspace</strong><small>Development environment</small></span><ChevronDown size={14}/></div>
@@ -165,6 +166,7 @@ export default function Home() {
     </div>
     <div className="header-tools">
      <span className="header-environment"><span className="header-pulse"/> DEVELOPMENT</span>
+     <AppearanceControl/>
      <button className="command-search" type="button" onClick={()=>setPaletteOpen(true)} aria-label="Open command menu"><Search size={17}/><span>Quick navigation</span><kbd>⌘ K</kbd></button>
      <button type="button" className="header-export" title="Export local workspace" onClick={()=>exportWorkspace(workspace)} disabled={storageError||!hydrated}><Download size={17}/></button>
     </div>

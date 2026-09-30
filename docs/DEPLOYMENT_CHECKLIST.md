@@ -16,7 +16,8 @@ Owner's development sequence: **GitHub first. No Vercel deployment or external a
 - [x] Architecture, feature status and recorded technical decisions.
 - [x] Pull-request CI for unit tests, TypeScript and production build.
 - [x] Public repository explicitly acknowledged in documentation.
-- [ ] Review dependency versions and commit a reliable lockfile; then use `npm ci` in CI.
+- [x] Direct dependencies pinned to exact versions and Node 22.x declared.
+- [ ] Commit generated package-lock from final CI, then rerun the release candidate with `npm ci`.
 - [ ] Required PR checks and protected default branch configured and checked.
 - [ ] Full security audit of public Git history, packages, permissions and dependencies.
 - [ ] Intellectual property, licensing and commercialization terms decided before public product launch.
@@ -26,10 +27,10 @@ Owner's development sequence: **GitHub first. No Vercel deployment or external a
 - [x] Next.js app skeleton with project-oriented navigation.
 - [x] Full release readiness UI with a machine-readable, evidence-required ten-gate pre-Vercel contract (actual end-to-end evidence is pending).
 - [x] Desktop/mobile UI tests run on production-mode Next.js in GitHub Actions for designated UI milestones; visual accessibility audits remain pending.
-- [x] Source-built responsive command-center design, quick navigation and fourteen-module roadmap driven by one manifest (actual browser visual QA still pending).
-- [x] Light/Dark/System appearance controls, persistent browser preference, OS-change listener, daylight component skins and geometric UNITY monogram (browser visual QA pending).
+- [x] Owner-approved Quiet Convergence responsive Home, original brand assets and progressive navigation; fourteen-system architecture remains available through advanced views/manifests.
+- [x] Light/Dark/System semantic theme, System default, pre-hydration resolver, live OS listener and approved light/dark brand/terrain assets (final browser QA pending).
 - [x] Complete endgame dependency and trust-boundary reference in `docs/ENDGAME_ARCHITECTURE.md`.
-- [ ] Complete visual inspection of desktop/mobile breakpoints, keyboard navigation, accessibility and contrast in an actual browser.
+- [ ] Final Playwright/browser inspection of 1440/768/375, keyboard navigation, Light/Dark/System and screenshot artifacts on the exact release commit.
 - [x] Local project creation and project selection.
 - [x] Project-scoped local conversation records (**not yet actual AI chat**).
 - [x] Local manual task board with evidence-gated completion previews.

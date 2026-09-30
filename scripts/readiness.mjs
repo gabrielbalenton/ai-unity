@@ -4,7 +4,7 @@ import {validateProductManifest} from "../lib/product/manifest.mjs";
 import {validateReleaseGates} from "../lib/product/release-gates.mjs";
 import {readFileSync} from "node:fs";
 const files=[
- "AGENTS.md","docs/ARCHITECTURE.md","docs/ROOM_MODEL.md","docs/ENDGAME_ARCHITECTURE.md",
+ "AGENTS.md","SECURITY.md","docs/REPOSITORY_SECURITY.md","docs/ARCHITECTURE.md","docs/ROOM_MODEL.md","docs/ENDGAME_ARCHITECTURE.md",
  "docs/FEATURE_MATRIX.md","docs/DESIGN_SYSTEM.md","docs/APPROVED_UI_HANDOFF.md","config/system-manifest.json","config/release-gates.json",
  "docs/DECISIONS.md","docs/DEPLOYMENT_CHECKLIST.md",
  "supabase/migrations/0001_core.sql","supabase/schema-proposals/runtime.sql",
@@ -13,7 +13,7 @@ const files=[
  "lib/security/bounded-body.mjs",
  "lib/runtime/worker-queue.mjs","lib/runtime/dispatch-preflight.mjs",
  "lib/ai/protocol.mjs","lib/ai/packet.mjs","lib/ai/stream.mjs","lib/ai/fallback.mjs",
- "docs/DURABLE_EXECUTION.md","next.config.mjs","vercel.json","public/unity-brand/unity-symbol.svg","public/unity-brand/terrain-light.svg",
+ "docs/DURABLE_EXECUTION.md",".github/CODEOWNERS","scripts/create-recovery-bundle.sh","next.config.mjs","vercel.json","public/unity-brand/unity-symbol.svg","public/unity-brand/terrain-light.svg",
  "supabase/schema-proposals/execution-queue.sql"
 ];
 const missing=files.filter(p=>!existsSync(p));

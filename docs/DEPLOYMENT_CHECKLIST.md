@@ -72,6 +72,7 @@ Owner's development sequence: **GitHub first. No Vercel deployment or external a
 - [x] Multiple public GitHub repository metadata links stored per local project.
 - [x] Read-only official MCP discovery and offline inert connector validation.
 - [x] Adapter interface defining project/resource grants; no live executor installed.
+- [x] Offline GitHub App transport: JWT signing, raw webhook verification, scoped token request, allowlisted repo metadata retrieval and mocked tests (not connected).
 - [ ] Private multi-account/organization GitHub App and installation authorization.
 - [ ] Explicit repo selection, revoke/renew, read-only file inspection and safe pagination.
 - [ ] Branch-isolated changes, independently verified tests and scoped PR operations.

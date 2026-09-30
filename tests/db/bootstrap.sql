@@ -3,7 +3,9 @@
 create schema if not exists auth;
 create role anon nologin;
 create role authenticated nologin;
-create role service_role nologin;
+-- Supabase's actual service_role bypasses RLS. The disposable stub must
+-- mirror that behavior or service-only tables falsely appear empty.
+create role service_role nologin bypassrls;
 create table auth.users (
  id uuid primary key,
  email text not null unique

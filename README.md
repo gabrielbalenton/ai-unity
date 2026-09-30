@@ -46,6 +46,9 @@ The interface now uses a premium, responsive command-center shell and a dedicate
 
 No mock operational health or fabricated API consumption is displayed. All existing project tools remain navigable.
 
+## Evidence-based release console
+The **Readiness** navigation tab shows ten independently verifiable pre-Vercel critical gates alongside personal-trial and future commercialization requirements. Its public status is deliberately locked until separate authenticated, reviewed evidence exists. Source changes cannot self-certify deployment.
+
 ## GitHub-first completion checklist
 See [Deployment and infrastructure checklist](docs/DEPLOYMENT_CHECKLIST.md) for verified offline code versus integration work still required. `npm run readiness` reports the current repository infrastructure gates without exposing environment variable values. No connection to Vercel or a new database will be made until explicitly authorized.
 

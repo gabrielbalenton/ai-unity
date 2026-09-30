@@ -13,7 +13,7 @@ Status definitions: **Implemented** = code exists; **Verified offline** = automa
 | Agent tasks | Offline revisioned task contract and project-scoped manual task board | Durable resumable tasks, audit records, project-specific tool execution and evidence-backed completion |
 | Verification | Offline unit tests and CI | Independent output validation, integration tests and rollback drills |
 | Voice | Opt-in browser dictation | User-approved real-time two-way conversation, wake-word desktop client and privacy controls |
-| Analytics | Minimal local overview | Actual usage, quotas, costs, task reliability and test baselines |
+| Analytics | Local workspace overview plus evidence-based release verification console (no actual provider usage telemetry) | Actual usage, quotas, costs, task reliability and test baselines |
 | Security | Local schema planning, pure fail-closed policy, optional disconnected SSR Auth and private route code | Real identity, RLS isolation, vault, encrypted tokens, defense against injection, incident recovery |
 | Integration SDK | Offline manifest validator | Documented stable plugin/adapter SDK and staged compatibility testing |
 | Creative and specialized AI | Not implemented | Supported image/video/audio/scientific adapters gated by real access and content permissions |

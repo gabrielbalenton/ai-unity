@@ -28,6 +28,9 @@ Professional AI operating system. This interface must look and behave like actua
 - Avoid synthetic running task percentages, mocked uptime and false API cost telemetry.
 - The illustrated architecture is clearly marked as a design preview.
 
+## Release readiness screen
+The Release Readiness tab follows the same graphite/jade vocabulary as Mission Control. It must display 0/10 externally verified critical gates in the public development build, with explicit evidence descriptions and working P0/P1/P2 filters. Its totals cannot be inferred from staged code, a build pass or a JSON status edited in GitHub. Verified evidence comes later from a separately authorized operational review.
+
 ## Before a release
 1. Test at 1440px desktop, 1024px small desktop/tablet and 375px mobile.
 2. Verify keyboard navigation, visible focus, reduced motion, and screen-reader labels.

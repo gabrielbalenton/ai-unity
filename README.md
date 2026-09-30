@@ -37,7 +37,7 @@ The local alpha offers validated JSON import/export. Imports deliberately reset 
 
 ## UNITY Command Center and full system blueprint
 
-The interface now uses a premium, responsive command-center shell and a shared fourteen-system feature manifest. Its interactive overview opens the existing local tools and gives honest roadmap details for systems that are not operational. The dark graphite/jade visual system uses no external image assets or required third-party font downloads.
+The interface now uses a premium, responsive command-center shell and a dedicated two-panel project conversation studio and a shared fourteen-system feature manifest. Its interactive overview opens the existing local tools and gives honest roadmap details for systems that are not operational. The dark graphite/jade visual system uses no external image assets or required third-party font downloads.
 
 - [Visual language and UI acceptance](docs/DESIGN_SYSTEM.md)
 - [Fourteen-system endgame architecture](docs/ENDGAME_ARCHITECTURE.md)

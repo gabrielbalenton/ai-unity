@@ -10,7 +10,8 @@ const files=[
  "supabase/migrations/0001_core.sql","supabase/schema-proposals/runtime.sql",
  "app/api/health/route.ts","lib/runtime/policy.mjs",
  "lib/infrastructure/config.mjs","lib/infrastructure/audit.mjs",
- "lib/runtime/worker-queue.mjs","docs/DURABLE_EXECUTION.md",
+ "lib/runtime/worker-queue.mjs","lib/runtime/dispatch-preflight.mjs",
+ "docs/DURABLE_EXECUTION.md",
  "supabase/schema-proposals/execution-queue.sql"
 ];
 const missing=files.filter(p=>!existsSync(p));

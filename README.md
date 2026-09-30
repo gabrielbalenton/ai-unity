@@ -35,6 +35,17 @@ Open http://localhost:3000.
 ## Backup and restore
 The local alpha offers validated JSON import/export. Imports deliberately reset every memory approval to draft: importing a file must not let untrusted JSON become authoritative instructions. Back up your browser data before importing.
 
+## UNITY Command Center and full system blueprint
+
+The interface now uses a premium, responsive command-center shell and a shared fourteen-system feature manifest. Its interactive overview opens the existing local tools and gives honest roadmap details for systems that are not operational. The dark graphite/jade visual system uses no external image assets or required third-party font downloads.
+
+- [Visual language and UI acceptance](docs/DESIGN_SYSTEM.md)
+- [Fourteen-system endgame architecture](docs/ENDGAME_ARCHITECTURE.md)
+- [Machine-readable capability/status registry](config/system-manifest.json)
+- [GitHub-first deployment acceptance checklist](docs/DEPLOYMENT_CHECKLIST.md)
+
+No mock operational health or fabricated API consumption is displayed. All existing project tools remain navigable.
+
 ## GitHub-first completion checklist
 See [Deployment and infrastructure checklist](docs/DEPLOYMENT_CHECKLIST.md) for verified offline code versus integration work still required. `npm run readiness` reports the current repository infrastructure gates without exposing environment variable values. No connection to Vercel or a new database will be made until explicitly authorized.
 

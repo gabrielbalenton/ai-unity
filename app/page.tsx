@@ -9,16 +9,18 @@ import CloudWorkspace from "@/components/CloudWorkspace";
 import OpenApiDesigner from "@/components/OpenApiDesigner";
 import CommandCenter,{type Area} from "@/components/CommandCenter";
 import ReadinessPanel from "@/components/ReadinessPanel";
+import {DailyBriefPanel,IntegrationCatalog} from "@/components/UniversalHub";
 import AppearanceControl from "@/components/AppearanceControl";
 import {Activity, ArrowRight, AudioLines, BrainCircuit, ChevronDown, Cloud, Command, Cpu, Database, Download, FolderKanban, GitBranch, Layers3, Menu, MessageSquare, Network, Search, ShieldCheck, Sparkles, Workflow, Wrench, X} from "lucide-react";
 type Tab = Area;
 const navGroups:{label:string;items:{tab:Tab;icon:typeof Activity;note?:string}[]}[]=[
- {label:"COMMAND",items:[{tab:"Overview",icon:Layers3},{tab:"Chat",icon:MessageSquare},{tab:"Tasks",icon:Workflow},{tab:"Readiness",icon:ShieldCheck}]},
+ {label:"COMMAND",items:[{tab:"Overview",icon:Layers3},{tab:"Briefing",icon:Activity},{tab:"Chat",icon:MessageSquare},{tab:"Tasks",icon:Workflow},{tab:"Readiness",icon:ShieldCheck}]},
  {label:"WORKSPACE",items:[{tab:"Projects",icon:FolderKanban},{tab:"Memory",icon:BrainCircuit},{tab:"Cloud",icon:Cloud,note:"OFFLINE"}]},
  {label:"NETWORK",items:[{tab:"Models",icon:Cpu},{tab:"Tools",icon:Wrench},{tab:"Connections",icon:Network}]}
 ];
 const tabs:Tab[]=navGroups.flatMap(g=>g.items.map(i=>i.tab));
 const moduleDetails:Record<Exclude<Tab,"Overview">,{kicker:string;description:string;status:string}>={
+ Briefing:{kicker:"DAILY INTELLIGENCE",description:"One source-backed briefing from your authorized projects, communications and applications. No live sources are connected yet.",status:"NOT CONNECTED"},
  Readiness:{kicker:"LAUNCH VERIFICATION",description:"Review every release requirement before enabling external integrations or deployment.",status:"RELEASE LOCKED"},
  Projects:{kicker:"YOUR WORKSPACE",description:"Separate working environments, decisions and approved public repository references.",status:"LOCAL WORKSPACE"},
  Cloud:{kicker:"PERSISTENCE",description:"An optional, explicitly separate server-backed workspace. Requires your future dedicated UNITY database.",status:"NOT VERIFIED"},
@@ -151,7 +153,7 @@ export default function Home() {
    <nav aria-label="Primary navigation" className="nav-groups">
     {navGroups.map(group=><div className="nav-group" key={group.label}>
      <div className="nav-group-label">{group.label}</div>
-     {group.items.map(({tab:target,icon:Icon,note})=><button key={target} type="button" className={`nav-item ${tab===target?"nav-current":""}`} aria-current={tab===target?"page":undefined} onClick={()=>navigate(target)}><Icon size={18} strokeWidth={1.65}/><span>{target==="Overview"?"Mission Control":target==="Chat"?"Conversations":target==="Memory"?"Knowledge":target==="Models"?"AI Models":target==="Tools"?"Tool Registry":target==="Connections"?"Integrations":target==="Cloud"?"Cloud Workspace":target}</span>{note&&<span className="nav-note">{note}</span>}</button>)}
+     {group.items.map(({tab:target,icon:Icon,note})=><button key={target} type="button" className={`nav-item ${tab===target?"nav-current":""}`} aria-current={tab===target?"page":undefined} onClick={()=>navigate(target)}><Icon size={18} strokeWidth={1.65}/><span>{target==="Overview"?"Mission Control":target==="Briefing"?"Daily Briefing":target==="Chat"?"Conversations":target==="Memory"?"Knowledge":target==="Models"?"AI Models":target==="Tools"?"Tool Registry":target==="Connections"?"Integrations":target==="Cloud"?"Cloud Workspace":target}</span>{note&&<span className="nav-note">{note}</span>}</button>)}
     </div>)}
    </nav>
    <div className="sidebar-spacer"/>
@@ -162,7 +164,7 @@ export default function Home() {
    <header className="header">
     <div className="header-identity">
      <button className="mobile-menu" type="button" aria-label="Open navigation" onClick={()=>setMenuOpen(true)}><Menu size={22}/></button>
-     <div><div className="breadcrumbs"><span>Workspace</span><span className="bread-separator">/</span><strong>{tab==="Overview"?"Mission Control":tab}</strong></div><h1>{tab==="Overview"?"Mission Control":tab==="Memory"?"Knowledge Core":tab==="Models"?"Model Network":tab==="Tools"?"Tool Registry":tab==="Connections"?"Integration Hub":tab}</h1></div>
+     <div><div className="breadcrumbs"><span>Workspace</span><span className="bread-separator">/</span><strong>{tab==="Overview"?"Mission Control":tab==="Briefing"?"Daily Briefing":tab}</strong></div><h1>{tab==="Overview"?"Mission Control":tab==="Briefing"?"Daily Briefing":tab==="Memory"?"Knowledge Core":tab==="Models"?"Model Network":tab==="Tools"?"Tool Registry":tab==="Connections"?"Integration Hub":tab}</h1></div>
     </div>
     <div className="header-tools">
      <span className="header-environment"><span className="header-pulse"/> DEVELOPMENT</span>
@@ -201,6 +203,8 @@ export default function Home() {
    {tab==="Tools"&&<section className="panel"><h2>Public MCP server directory</h2><p className="muted">Browse a small sample of the official public registry. Listings have not been verified for safety or availability. NOTHING HERE IS INSTALLED OR CONNECTED.</p><form onSubmit={discoverMcp}><label>Search MCP servers<input maxLength={80} value={mcpSearch} onChange={e=>setMcpSearch(e.target.value)} placeholder="e.g. filesystem" /></label><button className="primary">Search directory</button></form><p role="status">{mcpNotice}</p><div className="model-list">{mcpResults.map(m=><article className="entry" key={m.name}><div className="entry-head"><strong>{m.name}</strong><span className="pill">Discovery only</span></div><p>{m.description||"No description provided"}</p><small>Version: {m.version} · Status: {m.status}</small></article>)}</div></section>}
    {tab==="Cloud"&&<CloudWorkspace/>}
    {tab==="Readiness"&&<ReadinessPanel/>}
+   {tab==="Briefing"&&<DailyBriefPanel workspace={workspace} onNavigate={navigate}/>}
+   {tab==="Connections"&&<><IntegrationCatalog/></>}
    {tab==="Connections"&&<><section className="panel"><h2>Public GitHub repository explorer</h2><p className="muted">Preview: link multiple PUBLIC repository metadata records to isolated local projects. No login, code access, cloning or write operations. GitHub API rate limits apply. Private repositories require a future authorized GitHub App.</p><label>Project<select value={projectId} onChange={e=>setProjectId(e.target.value)}><option value="">Choose a project</option>{workspace.projects.map(p=><option value={p.id} key={p.id}>{p.name}</option>)}</select></label><form onSubmit={linkPublicGithub}><label>Public repository (owner/name)<input value={githubRepo} onChange={e=>setGithubRepo(e.target.value)} placeholder="owner/repository" required/></label><button className="primary" disabled={!projectId||githubBusy}>{githubBusy?"Checking GitHub...":"Link public repository"}</button></form></section><section className="panel"><h2>Linked repositories for {currentProject?.name||"selected project"}</h2>{workspace.githubLinks.filter(l=>l.projectId===projectId).length===0?<p className="muted">No public repositories linked yet.</p>:workspace.githubLinks.filter(l=>l.projectId===projectId).map(l=><article className="entry" key={l.id}><div className="entry-head"><strong>{l.fullName}</strong><span className="pill">Read-only metadata</span></div><p><a href={l.url} target="_blank" rel="noopener noreferrer">{l.url}</a></p><small>Default branch: {l.defaultBranch||"unknown"} · Checked: {new Date(l.checkedAt).toLocaleString()}</small><br/><button onClick={()=>setWorkspace(old=>({...old,githubLinks:old.githubLinks.filter(x=>x.id!==l.id)}))}>Remove local link</button></article>)}</section><OpenApiDesigner/><section className="panel"><h2>Additional integrations</h2><p className="muted">Authenticated private GitHub installations, model gateways, MCP and API credentials remain disabled until server-side authorization and encrypted credential storage are implemented.</p></section></>}
   </main>
  </div>;

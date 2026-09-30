@@ -116,3 +116,17 @@ Vercel connection requires an explicit future user decision. It is not a substit
 - **Commercial readiness:** separately evaluated market demand, multi-tenant governance, support, accessibility, service level, data-processing requirements, business model and legal branding review.
 
 The detailed per-module and Vercel-day checklist remains in `docs/DEPLOYMENT_CHECKLIST.md`. A successful offline build does **not** authorize deployment or imply that all fourteen systems exist in production.
+
+## Universal operational scope and your morning briefing
+
+**GitHub is only one connector.** UNITY projects are independent records that may aggregate authorized activity across project management (Notion, Asana, monday.com), document systems, Google Workspace and Microsoft 365, calendars and booking, meetings, messaging, email marketing, CRM, ecommerce, finance and development tools. Planned connector families are listed in `config/integration-categories.json`. Provider names express proposed compatibility, not permission or live API support.
+
+Each installed connector binds one independently authorized service account and optionally narrower resources to one or more explicit projects. A provider event is normalized to a common source event: ID, connector, project, activity type, title, original observation time, source reference and a source-reported action flag. Raw messages, confidential meeting audio, CRM records and credential-bearing payloads are not copied into this lightweight event feed.
+
+**Daily briefing:** a scheduled collection and normalization job will assemble events from every authorized connector, deduplicate webhook deliveries, respect each project's data boundaries and timezone, then report source-backed changes, overdue and pending decisions, communications and upcoming meetings. Connector synchronization receipts are essential: a quiet feed is not proof that a source was successfully checked. AI may *explain* and *suggest*, but material assertions retain citations to original items and any resulting actions require the relevant scopes and approvals.
+
+**Local computer:** a separate signed macOS/Windows companion will index only explicitly approved folders, initially read-only. It should use OS permission controls, avoid uploading full file content without authorization, support revocation and preview every rename, move or deletion. A hosted Vercel app cannot directly scan arbitrary local disks.
+
+**Calls and simple interviews:** a future telephony integration may screen incoming calls, ask scripted intake questions and record authorized answers. It must identify itself as an automated assistant, follow recording/consent requirements, respect do-not-call and privacy settings, hand off uncertain requests to a human, and avoid unapproved commitments. Availability depends on the supported call provider, plan and local law.
+
+The implemented event normalizer and UI are currently offline and display **zero live feeds** until authenticated connectors are integrated and actually verified.

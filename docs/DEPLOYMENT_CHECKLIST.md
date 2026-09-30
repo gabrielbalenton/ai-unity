@@ -79,6 +79,15 @@ Owner's development sequence: **GitHub first. No Vercel deployment or external a
 
 ## 5. GitHub and universal integrations — P0/P1
 
+- [x] Universal connector category roadmap spanning PM, Google/Microsoft workspaces, calendars, meetings, marketing, CRM, finance, telephony, local computer and developer platforms; these are designs, NOT live integrations.
+- [x] Offline source-agnostic daily-activity normalizer with time-zone filtering, project/account scopes, deduplication and missing-coverage warnings.
+- [x] Daily Briefing and searchable integrations-roadmap interface with explicit zero-live-connection empty state.
+- [ ] Connect authorized external applications with source-specific API tests and synchronization receipts.
+- [ ] Add a permission-scoped native desktop companion and verified local file index.
+- [ ] Build consent-aware automated call screening, basic scripted interviews and human handoff on supported telephony platforms.
+- [ ] Verify end-to-end daily briefs from real PM, mail, calendar, meeting and CRM events.
+
+
 - [x] Multiple public GitHub repository metadata links stored per local project.
 - [x] Read-only official MCP discovery and offline inert connector validation.
 - [x] Adapter interface defining project/resource grants; no live executor installed.

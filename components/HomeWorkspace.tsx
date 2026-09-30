@@ -43,10 +43,10 @@ export default function HomeWorkspace({
 
  return <section className="unity-home" aria-label="UNITY home">
   <section className="home-hero">
-   <picture className="home-terrain" aria-hidden="true">
-    <source media="(prefers-color-scheme: dark)" srcSet="/unity-brand/terrain-dark.svg"/>
-    <img src="/unity-brand/terrain-light.svg" alt=""/>
-   </picture>
+   <div className="home-terrain" aria-hidden="true">
+    <img className="home-terrain-light" src="/unity-brand/terrain-light.svg" alt=""/>
+    <img className="home-terrain-dark" src="/unity-brand/terrain-dark.svg" alt=""/>
+   </div>
    <div className="home-hero-content">
     <span className="home-eyebrow">YOUR WORKSPACE</span>
     <h2>{current?<>Ready when you are, <span>{current.name}</span>.</>:<>Welcome to <span>UNITY.</span></>}</h2>

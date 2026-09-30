@@ -28,7 +28,8 @@ The dates start when practical implementation begins; dates are goals, not guara
 - [ ] Individually authorized MCP connections, permission review, and tool execution
 - [x] OpenAPI 3.0/3.1 local operation preview, with no remote fetch or execution
 - [ ] Secure connector secrets and multiple account mapping
-- [ ] Durable task state and explicit approvals
+- [x] Offline project-scoped worker lifecycle and fail-closed leased dispatch preflight (tested, unconnected)
+- [ ] Live durable task state, atomic leases and server-enforced approvals
 
 **Exit:** verified results from two providers for isolated projects, with no unauthorized external writes.
 

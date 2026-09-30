@@ -19,3 +19,11 @@ The offline aggregator now accepts separate, project-scoped completion receipts 
 **Security boundary:** receipt validation here is not authentication. A future live ingestion service must authenticate the worker, verify the connector's authorized account/resource scope, bind the receipt to the correct tenant/project and record signed or otherwise tamper-resistant audit evidence. Never take a browser-supplied receipt as proof. The current Daily Briefing screen truthfully displays zero authorized live sources.
 
 Before the UI claims a complete daily report, require integration tests proving successful backfills, paging, cursor persistence, source timezones, missed-webhook reconciliation, revocation, retry and expired-authorization behavior. No live connector or scheduling is activated by this offline contract.
+
+## Server-only receipt authentication foundation
+
+The offline `lib/activity/signed-receipt.mjs` contract adds HMAC-SHA-256 authentication to the previously defined per-project synchronization receipts. It signs a canonical, domain-separated record containing the connector, project, covered calendar day, sync result, completion timestamp, method, key ID, single-use nonce and signing timestamp. Verification checks the exact project/connector scope, signature in constant time, bounded freshness and caller-supplied nonce reservation.
+
+**Non-negotiable activation distinction:** the verification function takes a synchronous nonce reservation callback for deterministic tests. A real multi-worker service must perform **atomic nonce reservation and receipt persistence inside a trusted transaction**. In-memory sets and unverified browser receipts are not replay protection. Connector signing keys remain server-only, independently managed, rotated/revoked and never supplied to models or browser bundles. This module does not connect services, operate a scheduler, store private customer data, or claim a live synchronization has taken place.
+
+No event should enter a trusted complete Daily Briefing unless it is supported by independently authenticated and durably persisted source receipts. Failed/revoked sources must be surfaced as missing coverage rather than reported as zero activity.

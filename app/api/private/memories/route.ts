@@ -3,6 +3,7 @@ import {z} from "zod";
 import {isSupabaseConfigured} from "@/lib/supabase/config";
 import {getVerifiedUser} from "@/lib/supabase/server";
 import {checkWriteOrigin} from "@/lib/security/origin.mjs";
+import {readBoundedJson} from "@/lib/security/bounded-body.mjs";
 export const dynamic="force-dynamic";
 const newMemory=z.object({
  projectId:z.string().uuid(),title:z.string().trim().min(2).max(140),
@@ -34,7 +35,7 @@ export async function POST(request:Request){
  const originCheck=checkWriteOrigin(request.headers.get("origin"),process.env.UNITY_APP_ORIGIN);
  if(!originCheck.allowed)return NextResponse.json({error:"Untrusted request origin"},{status:403,headers});
  let payload:unknown;
- try{if(Number(request.headers.get("content-length")||"0")>25000)throw Error("Large body");payload=await request.json()}
+ try{payload=await readBoundedJson(request,{maxBytes:25000})}
  catch{return NextResponse.json({error:"Invalid request body"},{status:400,headers})}
  const parsed=newMemory.safeParse(payload);
  if(!parsed.success)return NextResponse.json({error:"Invalid memory fields"},{status:400,headers});

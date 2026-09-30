@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "product": "UNITY",
+  "deploymentAuthorized": false,
+  "verificationPolicy": "External evidence must be independently reviewed. This source file alone is never a go/no-go decision.",
+  "gates": [
+    {
+      "id": "locked-deps",
+      "name": "Reproducible dependencies",
+      "level": "P0",
+      "category": "Engineering",
+      "description": "Reviewed lockfile, pinned tooling and a reproducible npm ci build at the exact release commit.",
+      "verification": "CI evidence for exact commit",
+      "status": "needs_evidence",
+      "evidence": []
+    },
+    {
+      "id": "security-review",
+      "name": "Security and secret review",
+      "level": "P0",
+      "category": "Security",
+      "description": "Complete source/history review, external threat model, dependency audit and secure cookie/origin verification.",
+      "verification": "Documented security review",
+      "status": "needs_evidence",
+      "evidence": []
+    },
+    {
+      "id": "dedicated-auth",
+      "name": "Dedicated backend and authentication",
+      "level": "P0",
+      "category": "Identity",
+      "description": "Dedicated UNITY database and live signed-session tests. No unrelated client infrastructure.",
+      "verification": "Two authenticated test accounts",
+      "status": "needs_evidence",
+      "evidence": []
+    },
+    {
+      "id": "rls-memory",
+      "name": "Persistent isolated knowledge",
+      "level": "P0",
+      "category": "Knowledge",
+      "description": "Applied migrations, tested RLS, signed memory approval/revocation and verified independent sources.",
+      "verification": "Cross-user and cross-project DB tests",
+      "status": "needs_evidence",
+      "evidence": []
+    },
+    {
+      "id": "credentials",
+      "name": "Credential vault and account permissions",
+      "level": "P0",
+      "category": "Integrations",
+      "description": "Encrypted provider credentials, exact installation scopes, revocation and audit records.",
+      "verification": "Live grant/deny and rotation tests",
+      "status": "needs_evidence",
+      "evidence": []
+    },
+    {
+      "id": "provider-free",
+      "name": "Two live providers with hard spending controls",
+      "level": "P0",
+      "category": "Models",
+      "description": "Actual request and billing evidence from two authorized providers with $0 paid API allowance.",
+      "verification": "Provider billing receipts and denied-spend drills",
+      "status": "needs_evidence",
+      "evidence": []
+    },
+    {
+      "id": "durable-execution",
+      "name": "Worker recovery and emergency stop",
+      "level": "P0",
+      "category": "Automation",
+      "description": "Real durable workers, idempotent retries, exact action approvals and emergency shutdown.",
+      "verification": "Interrupt/recovery, deny and replay tests",
+      "status": "needs_evidence",
+      "evidence": []
+    },
+    {
+      "id": "backup",
+      "name": "Recovery and portable data",
+      "level": "P0",
+      "category": "Operations",
+      "description": "Encrypted backup, export, deletion policy and demonstrated restore of isolated data.",
+      "verification": "Restoration drill and retention review",
+      "status": "needs_evidence",
+      "evidence": []
+    },
+    {
+      "id": "release-qa",
+      "name": "Browser, accessibility and integration QA",
+      "level": "P0",
+      "category": "Quality",
+      "description": "Desktop/mobile UX and keyboard review, two-user E2E tests, failure handling and real integration checks.",
+      "verification": "Exact release build screenshots and test report",
+      "status": "needs_evidence",
+      "evidence": []
+    },
+    {
+      "id": "owner-approval",
+      "name": "Owner deployment authorization",
+      "level": "P0",
+      "category": "Launch",
+      "description": "Explicit owner decision to provision Vercel only after all preceding P0 gates are independently supported.",
+      "verification": "Dated owner go/no-go",
+      "status": "needs_evidence",
+      "evidence": []
+    },
+    {
+      "id": "daily-baseline",
+      "name": "Personal usage baseline",
+      "level": "P1",
+      "category": "Trial",
+      "description": "Baseline real tasks, operational cost and quality metrics for the ninety-day experiment.",
+      "verification": "Signed dated baseline",
+      "status": "needs_evidence",
+      "evidence": []
+    },
+    {
+      "id": "multimodal",
+      "name": "Voice and multimodal capabilities",
+      "level": "P1",
+      "category": "Experience",
+      "description": "Consented two-way voice and authorized creative adapters verified independently.",
+      "verification": "User acceptance tests",
+      "status": "needs_evidence",
+      "evidence": []
+    },
+    {
+      "id": "commercial",
+      "name": "Commercial multi-user readiness",
+      "level": "P2",
+      "category": "Business",
+      "description": "Independent product demand, tenant billing, support, legal/IP and external security review.",
+      "verification": "Separate market and governance assessment",
+      "status": "needs_evidence",
+      "evidence": []
+    }
+  ]
+}

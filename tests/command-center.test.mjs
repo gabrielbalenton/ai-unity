@@ -5,6 +5,7 @@ const read=path=>readFileSync(new URL("../"+path,import.meta.url),"utf8");
 const page=read("app/page.tsx");
 const dashboard=read("components/CommandCenter.tsx");
 const css=read("app/globals.css");
+const manifest=JSON.parse(read("config/system-manifest.json"));
 
 test("new navigation preserves every previously implemented workspace",()=>{
  for(const destination of ["Overview","Projects","Cloud","Tasks","Chat","Memory","Models","Tools","Connections"]){
@@ -31,7 +32,8 @@ test("command navigation and mobile menu can be closed by keyboard",()=>{
 });
 test("dashboard labels unconnected services and inert architecture clearly",()=>{
  assert.match(dashboard,/NOT CONNECTED/);
- assert.match(dashboard,/No provider can execute until authorized/);
+ assert.equal(manifest.modules.length,14);
+ assert.equal(manifest.modules.find(m=>m.id==="models").description.includes("No provider can execute until authorized"),true);
  assert.match(dashboard,/not activated/);
  assert.match(dashboard,/LOCAL READY/);
 });

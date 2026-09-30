@@ -28,3 +28,9 @@ This file records the user's established constraints and the technical implement
 - Final commercial brand, intellectual property strategy and public product differentiation.
 - Provider account selection, exact quotas, credential ownership and paid infrastructure budget.
 - Mobile operating-system permissions, supported smart speakers and audio providers.
+
+## ADR-008: Approved Quiet Convergence interface
+**Decision:** Use the owner-supplied September 30, 2026 UI/UX handoff as the visual authority. Home stays calm and project-centered; technical systems remain reachable through progressive disclosure. System is the default appearance with Light/Dark overrides. Original convergence assets replace the earlier geometric U / sci-fi dashboard direction.
+
+## ADR-009: Vercel preview is not production activation
+**Decision:** A zero-secret Vercel preview may be used for owner visual/functional review after repository verification. Connecting Auth, private accounts, model execution, webhooks, durable workers or client data remains a separate staged activation process. Production readiness cannot be inferred from successful hosting.

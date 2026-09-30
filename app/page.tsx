@@ -7,11 +7,21 @@ import ChatPanel from "@/components/ChatPanel";
 import TaskBoard from "@/components/TaskBoard";
 import CloudWorkspace from "@/components/CloudWorkspace";
 import OpenApiDesigner from "@/components/OpenApiDesigner";
-type Tab = "Overview" | "Projects" | "Cloud" | "Tasks" | "Chat" | "Memory" | "Models" | "Tools" | "Connections";
-const tabs: Tab[] = ["Overview","Projects","Cloud","Tasks","Chat","Memory","Models","Tools","Connections"];
+import CommandCenter,{type Area} from "@/components/CommandCenter";
+import {Activity, ArrowRight, AudioLines, BrainCircuit, ChevronDown, Cloud, Command, Cpu, Database, Download, FolderKanban, GitBranch, Layers3, Menu, MessageSquare, Network, Search, ShieldCheck, Sparkles, Workflow, Wrench, X} from "lucide-react";
+type Tab = Area;
+const navGroups:{label:string;items:{tab:Tab;icon:typeof Activity;note?:string}[]}[]=[
+ {label:"COMMAND",items:[{tab:"Overview",icon:Layers3},{tab:"Chat",icon:MessageSquare},{tab:"Tasks",icon:Workflow}]},
+ {label:"WORKSPACE",items:[{tab:"Projects",icon:FolderKanban},{tab:"Memory",icon:BrainCircuit},{tab:"Cloud",icon:Cloud,note:"OFFLINE"}]},
+ {label:"NETWORK",items:[{tab:"Models",icon:Cpu},{tab:"Tools",icon:Wrench},{tab:"Connections",icon:Network}]}
+];
+const tabs:Tab[]=navGroups.flatMap(g=>g.items.map(i=>i.tab));
 const uid = () => crypto.randomUUID();
 export default function Home() {
  const [tab,setTab] = useState<Tab>("Overview");
+ const [menuOpen,setMenuOpen] = useState(false);
+ const [paletteOpen,setPaletteOpen] = useState(false);
+ const [paletteQuery,setPaletteQuery] = useState("");
  const [workspace,setWorkspace] = useState<Workspace>(initialWorkspace);
  const [hydrated,setHydrated] = useState(false);
  const [importFile,setImportFile] = useState<File|null>(null);
@@ -36,6 +46,16 @@ export default function Home() {
  const [mcpResults,setMcpResults] = useState<{name:string;description:string;version:string;status:string;connectable:false}[]>([]);
  useEffect(()=>{try {const state=loadWorkspace();setWorkspace(state);setProjectId(state.projects[0]?.id||"");setHydrated(true)} catch(e) {setStorageError(true);setNotice(e instanceof Error?e.message:"Unable to load stored data.");}},[]);
  useEffect(()=>{if(hydrated){try{saveWorkspace(workspace)}catch(e){setNotice(e instanceof Error?e.message:"Browser storage failed.");}}},[workspace,hydrated]);
+ useEffect(()=>{
+  const handleKey=(event:KeyboardEvent)=>{
+   if((event.metaKey||event.ctrlKey)&&event.key.toLowerCase()==="k"){
+    event.preventDefault();setPaletteOpen(open=>!open);
+   } else if(event.key==="Escape"){setPaletteOpen(false);setMenuOpen(false);}
+  };
+  window.addEventListener("keydown",handleKey);
+  return()=>window.removeEventListener("keydown",handleKey);
+ },[]);
+ function navigate(next:Tab){setTab(next);setNotice("");setMenuOpen(false);setPaletteOpen(false);setPaletteQuery("");}
  const currentProject=workspace.projects.find(p=>p.id===projectId);
  const memories=workspace.memories.filter(m=>m.projectId===projectId).sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt));
  const visibleModels=useMemo(()=>catalog.filter(m=>(sourceFilter==="All"||m.source===sourceFilter)&&(!zeroPriceOnly||m.zeroTextPrice)&&(`${m.name} ${m.id}`.toLowerCase().includes(search.toLowerCase()))).slice(0,100),[catalog,zeroPriceOnly,search,sourceFilter]);
@@ -108,17 +128,53 @@ export default function Home() {
   }catch{setCatalogNotice("Catalog unavailable. No other data was affected.")}
  }
  return <div className="shell">
-  <aside className="sidebar">
-   <div className="brand">UNITY<span>.</span></div><p className="tagline">PERSONAL ALPHA · PUBLIC SOURCE</p>
-   <nav aria-label="Main navigation">{tabs.map(t=><button key={t} className={tab===t?"selected":""} onClick={()=>{setTab(t);setNotice("")}}>{t}</button>)}</nav>
-   <p className="side-note">Browser-only prototype. No account connections or AI execution are enabled.</p>
+  {menuOpen&&<button className="mobile-scrim" type="button" aria-label="Close navigation" onClick={()=>setMenuOpen(false)}/>}
+  <aside className={`sidebar ${menuOpen?"sidebar-visible":""}`}>
+   <div className="sidebar-top">
+    <button type="button" className="brand-mark" aria-label="UNITY home" onClick={()=>navigate("Overview")}><span className="brand-glyph"><Sparkles size={24} strokeWidth={1.6}/></span><span className="brand-name">UNITY<span className="brand-period">.</span><small>UNIFIED INTELLIGENCE</small></span></button>
+    <button className="sidebar-close" type="button" aria-label="Close navigation" onClick={()=>setMenuOpen(false)}><X size={20}/></button>
+   </div>
+   <div className="side-workspace-label"><span className="side-tenant-avatar">U</span><span><strong>Personal workspace</strong><small>Development environment</small></span><ChevronDown size={14}/></div>
+   <nav aria-label="Primary navigation" className="nav-groups">
+    {navGroups.map(group=><div className="nav-group" key={group.label}>
+     <div className="nav-group-label">{group.label}</div>
+     {group.items.map(({tab:target,icon:Icon,note})=><button key={target} type="button" className={`nav-item ${tab===target?"nav-current":""}`} aria-current={tab===target?"page":undefined} onClick={()=>navigate(target)}><Icon size={18} strokeWidth={1.65}/><span>{target==="Overview"?"Mission Control":target==="Chat"?"Conversations":target==="Memory"?"Knowledge":target==="Models"?"AI Models":target==="Tools"?"Tool Registry":target==="Connections"?"Integrations":target==="Cloud"?"Cloud Workspace":target}</span>{note&&<span className="nav-note">{note}</span>}</button>)}
+    </div>)}
+   </nav>
+   <div className="sidebar-spacer"/>
+   <div className="side-policy"><div className="side-policy-icon"><ShieldCheck size={19}/></div><div><strong>Safety first</strong><small>External execution locked<br/>Zero paid API allowance</small></div><span className="safe-indicator"/></div>
+   <div className="side-account"><span className="side-avatar">U</span><span><strong>Personal alpha</strong><small>Public source · Local mode</small></span><span className="side-version">v0.x</span></div>
   </aside>
   <main className="main">
-   <header className="header"><div><p className="eyebrow">Personal development environment</p><h1>{tab}</h1></div><button className="muted-button" onClick={()=>exportWorkspace(workspace)}>Export workspace JSON</button></header>
+   <header className="header">
+    <div className="header-identity">
+     <button className="mobile-menu" type="button" aria-label="Open navigation" onClick={()=>setMenuOpen(true)}><Menu size={22}/></button>
+     <div><div className="breadcrumbs"><span>Workspace</span><span className="bread-separator">/</span><strong>{tab==="Overview"?"Mission Control":tab}</strong></div><h1>{tab==="Overview"?"Mission Control":tab==="Memory"?"Knowledge Core":tab==="Models"?"Model Network":tab==="Tools"?"Tool Registry":tab==="Connections"?"Integration Hub":tab}</h1></div>
+    </div>
+    <div className="header-tools">
+     <span className="header-environment"><span className="header-pulse"/> DEVELOPMENT</span>
+     <button className="command-search" type="button" onClick={()=>setPaletteOpen(true)} aria-label="Open command menu"><Search size={17}/><span>Quick navigation</span><kbd>⌘ K</kbd></button>
+     <button type="button" className="header-export" title="Export local workspace" onClick={()=>exportWorkspace(workspace)} disabled={storageError||!hydrated}><Download size={17}/></button>
+    </div>
+   </header>
+   {paletteOpen&&<div className="command-overlay" role="presentation" onMouseDown={event=>{if(event.target===event.currentTarget)setPaletteOpen(false)}}>
+    <div className="command-dialog" role="dialog" aria-label="Quick navigation" aria-modal="true">
+     <div className="command-input"><Search size={20}/><input autoFocus aria-label="Search workspace destinations" placeholder="Where would you like to go?" value={paletteQuery} onChange={event=>setPaletteQuery(event.target.value)}/><button onClick={()=>setPaletteOpen(false)} aria-label="Close command menu"><X size={18}/></button></div>
+     <span className="command-results-label">WORKSPACE</span>
+     {navGroups.flatMap(group=>group.items).filter(item=>(item.tab+" "+(item.tab==="Overview"?"Mission Control":"")).toLowerCase().includes(paletteQuery.toLowerCase())).map(item=><button key={item.tab} className="command-result" onClick={()=>navigate(item.tab)}><item.icon size={18}/><span>{item.tab==="Overview"?"Mission Control":item.tab}</span><ArrowRight size={16}/></button>)}
+    </div>
+   </div>}
    {storageError&&<div role="alert" className="warning"><strong>Storage recovery required:</strong> UNITY detected invalid existing browser data and has disabled changes to avoid overwriting it. Preserve your browser profile before continuing.</div>}
    <div role="note" className="warning"><strong>Prototype:</strong> Local browser storage is not encrypted or synced. Do not add secrets or confidential information. Free catalog discovery does not mean free inference.</div>
    {notice&&<div className="notice" role="status">{notice}</div>}
-   {tab==="Overview"&&<><section className="panel"><h2>Backup and restore</h2><p className="muted">Workspace data currently lives only in this browser. Export it before clearing browser data. Imported entries are always drafts until you approve them again.</p><div className="controls"><button onClick={()=>exportWorkspace(workspace)} disabled={!hydrated||storageError}>Export backup</button><label>Validate a UNITY JSON backup<input type="file" accept=".json,application/json" onChange={e=>void previewImport(e.target.files?.[0]||null)} disabled={!hydrated||storageError}/></label></div>{importPreview&&<div className="entry"><strong>Import preview</strong><p>{importPreview.projects.length} projects · {importPreview.memories.length} draft memories · {importPreview.githubLinks.length} public repository links · {importPreview.messages.length} local messages · {importPreview.tasks.length} draft tasks</p><button className="primary" onClick={confirmImport}>Replace local workspace with validated import</button> <button onClick={()=>{setImportFile(null);setImportPreview(null)}}>Cancel</button></div>}</section><div className="stats"><article><small>Projects</small><strong>{workspace.projects.length}</strong></article><article><small>Approved memories</small><strong>{workspace.memories.filter(m=>m.status==="approved").length}</strong></article><article><small>Paid API calls</small><strong>0</strong><small>Execution not implemented</small></article></div><section className="panel"><h2>What works today</h2><p>Create isolated local project workspaces, record brain dumps, approve memory deliberately and discover publicly listed models. Export your data at any time.</p><h2>What comes next</h2><p>Authenticated database, audit-backed memory, secured GitHub connection and actual provider routing. There are no live connectors in this release.</p><button className="primary" onClick={()=>setTab("Projects")}>Create a project</button></section></>}
+   {tab==="Overview"&&<>
+    <CommandCenter workspace={workspace} selectedProjectId={projectId} onNavigate={navigate} onExport={()=>exportWorkspace(workspace)}/>
+    <details className="backup-panel"><summary><span><Database size={17}/> Local backup and recovery</span><ChevronDown size={16}/></summary>
+     <p className="muted">Your personal workspace is currently stored only in this browser. Back up before clearing browser data. All imported memories return to draft and require your approval.</p>
+     <div className="controls"><button onClick={()=>exportWorkspace(workspace)} disabled={!hydrated||storageError}>Export JSON backup</button><label className="backup-upload">Validate existing backup<input type="file" accept=".json,application/json" onChange={event=>void previewImport(event.target.files?.[0]||null)} disabled={!hydrated||storageError}/></label></div>
+     {importPreview&&<div className="entry"><strong>Import preview</strong><p>{importPreview.projects.length} projects · {importPreview.memories.length} draft notes · {importPreview.githubLinks.length} public repo links · {importPreview.messages.length} local messages · {importPreview.tasks.length} draft tasks</p><button className="primary" onClick={confirmImport}>Replace local workspace</button> <button onClick={()=>{setImportFile(null);setImportPreview(null)}}>Cancel</button></div>}
+    </details>
+   </>}
    {tab==="Projects"&&<div className="columns"><section className="panel"><h2>New project</h2><form onSubmit={createProject}><label>Name<input required minLength={2} maxLength={100} value={projectName} onChange={e=>setProjectName(e.target.value)} placeholder="Project name"/></label><label>Description<textarea maxLength={500} value={projectDescription} onChange={e=>setProjectDescription(e.target.value)} placeholder="What is this project for?"/></label><button className="primary" disabled={storageError}>Create project</button></form></section><section className="panel"><h2>Your local projects</h2>{workspace.projects.length===0?<p className="muted">No projects yet.</p>:workspace.projects.map(p=><article className="entry" key={p.id}><div className="entry-head"><strong>{p.name}</strong><span className="pill">{workspace.memories.filter(m=>m.projectId===p.id).length} memories</span></div><p>{p.description||"No description"}</p><button onClick={()=>{setProjectId(p.id);setTab("Memory")}}>Open project memory</button></article>)}</section></div>}
    {tab==="Tasks"&&<><section className="panel"><label>Active project<select value={projectId} onChange={e=>setProjectId(e.target.value)}><option value="">Choose a project</option>{workspace.projects.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label></section><TaskBoard projectId={projectId} workspace={workspace} onChange={setWorkspace} disabled={storageError}/></>}
    {tab==="Chat"&&<><section className="panel"><label>Active project<select value={projectId} onChange={e=>setProjectId(e.target.value)}><option value="">Choose a project</option>{workspace.projects.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label></section><ChatPanel projectId={projectId} workspace={workspace} onChange={setWorkspace} disabled={storageError}/></>}

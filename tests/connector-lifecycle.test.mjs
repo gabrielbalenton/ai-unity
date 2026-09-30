@@ -60,7 +60,7 @@ test("independent verification and explicit owner approval required",()=>{
  assert.throws(()=>recordVerification(authorized(),ctx(3),{
   verifierId:"owner1",evidenceReference:"audit:test43",passed:true}),/Independent/);
  const v=verified();
- assert.throws(()=>activateConnector(v,ctx(4),{ownerApproved:false}),/owner-approved/);
+ assert.throws(()=>activateConnector(v,ctx(4,"2026-09-30T09:20:00Z"),{ownerApproved:false}),/owner-approved/);
 });
 test("stale revisions and out-of-order transitions fail closed",()=>{
  assert.throws(()=>requestAuthorization(prepared(),ctx(0)),/Stale/);

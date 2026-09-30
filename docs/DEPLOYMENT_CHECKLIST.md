@@ -49,6 +49,7 @@ Owner's development sequence: **GitHub first. No Vercel deployment or external a
 - [ ] Execute SQL migrations on a dedicated local/test database and run security advisors.
 - [ ] Two-user and two-project tests for all table reads, writes, searches and imported data.
 - [x] Offline versioned memory core with explicit approval, conflict checks and revocation tests (not authenticated or persistent).
+- [x] Transactional owner-checked server memory approval function and API proposal, with audit/version writes (not installed or live-tested).
 - [ ] Human-approved versioned memory with original source provenance, conflict review and revocation, tested in a dedicated backend.
 - [ ] Credential-safe object storage and searchable retrieval, respecting source-specific access.
 - [ ] Secure encrypted exports, backup retention and a demonstrated restoration drill.

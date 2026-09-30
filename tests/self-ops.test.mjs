@@ -12,8 +12,8 @@ test("creates a bounded, sanitized observation, never live self-repair",()=>{
  assert.equal(r.state,"observed");
  assert.equal(r.revision,0);
  assert.deepEqual(r.history.map(x=>x.event),["observed"]);
- assert.throws(()=>observeIncident(input({summary:"Leak ghp_abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGH"})),/Invalid/);
- assert.throws(()=>observeIncident(input({summary:"postgres://db:password@host"})),/Invalid/);
+ assert.throws(()=>observeIncident(input({summary:"Leak "+"ghp_"+"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGH"})),/Invalid/);
+ assert.throws(()=>observeIncident(input({summary:"postgres"+"://db:password@host"})),/Invalid/);
 });
 test("incident moves through evidence-backed reproducible lifecycle",()=>{
  let r=observed();

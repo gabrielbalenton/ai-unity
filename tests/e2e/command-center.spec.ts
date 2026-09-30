@@ -5,7 +5,7 @@ test("command center renders real local statistics, tiles and responsive shell",
  await expect(page.locator("h1")).toHaveText("Mission Control");
  await expect(page.getByText("Every possibility.")).toBeVisible();
  await expect(page.getByText("External execution")).toBeVisible();
- await expect(page.getByText("Not connected",{exact:true}).first()).toBeVisible();
+ await expect(page.getByText(/NOT CONNECTED/).first()).toBeVisible();
  await page.screenshot({path:testInfo.outputPath("unity-command-center.png"),fullPage:true});
 });
 test("workspace quick navigation works without connecting external services",async({page,isMobile})=>{
@@ -39,6 +39,9 @@ test("existing project creation changes actual local totals",async({page})=>{
  await page.getByRole("textbox",{name:"Description"}).fill("Local test project");
  await page.getByRole("button",{name:"Create project"}).click();
  await expect(page.getByText("Design smoke test")).toBeVisible();
+ if(page.viewportSize()!.width<690){
+  await page.getByRole("button",{name:"Open navigation"}).click();
+ }
  await page.getByRole("button",{name:"Mission Control"}).first().click();
  await expect(page.getByLabel("Current verified local workspace statistics").getByText("01")).toBeVisible();
 });

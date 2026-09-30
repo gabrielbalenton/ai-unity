@@ -6,6 +6,7 @@ Personal alpha: a provider-independent AI workspace, built in public during the 
 - Project-separated browser workspace, local project chat, manual task planning board, and draft/approved brain dumps. Local chat stores your own messages only; it does not produce AI responses.
 - Link multiple public GitHub repository metadata records per project (read-only, no GitHub login).
 - Tested, **unactivated** server-side GitHub read adapter for project-scoped repository metadata and file content; credentials and authorization must be configured later.
+- Offline GitHub App signing, HMAC verification and limited installation transport; see `docs/GITHUB_APP_INTEGRATION.md`.
 - Read-only OpenRouter and sampled Hugging Face model discovery, with **no inference requests or paid APIs**.
 - Read-only official MCP registry search. Discovering a tool does NOT install, authorize, or execute it.
 - Offline OpenAPI 3.0/3.1 JSON connector designer: inspect API operations without networking, authentication or execution.

@@ -25,6 +25,7 @@ type Module = {
  description:string;
  status:"offline"|"local"|"planned";
  area:Area;
+ future?:string;
  icon:typeof Cpu;
 };
 
@@ -39,6 +40,15 @@ const modules:Module[] = [
  {title:"Voice interface",subtitle:"INTERACTION",description:"Opt-in browser voice dictation for local brain dumps.",status:"local",area:"Memory",icon:AudioLines}
 ];
 
+const futureModules:Module[]=[
+ {title:"Agent runtime",subtitle:"AGENTS",description:"Delegation, isolation, versioned actions and verifiable completion.",status:"planned",area:"Tasks",icon:Zap,future:"Durable task workers, sandboxed agents, checkpoints and independent result verification."},
+ {title:"Automation engine",subtitle:"AUTOMATION",description:"Scheduled missions, triggers, approvals, retries and controlled execution.",status:"planned",area:"Tasks",icon:Workflow,future:"A durable workflow service with signed triggers, idempotency, human approvals and emergency stop."},
+ {title:"Creative studio",subtitle:"GENERATION",description:"A unified home for compatible image, video, audio and specialized tools.",status:"planned",area:"Models",icon:Sparkles,future:"Independent multimodal adapters, private artifact storage and provider permission controls."},
+ {title:"Operations analytics",subtitle:"OBSERVABILITY",description:"Measured model usage, cost, task quality and integration reliability.",status:"planned",area:"Overview",icon:Radio,future:"Actual verified telemetry and provider receipts; no fabricated uptime, spending or success rates."},
+ {title:"Governance",subtitle:"SECURITY",description:"Exact action grants, sealed credentials, audit trails and fail-closed budgets.",status:"planned",area:"Overview",icon:LockKeyhole,future:"Server-enforced identity, secrets vault, active policy enforcement, data lifecycle and incident recovery."},
+ {title:"Developer platform",subtitle:"EXPANSION",description:"Build portable skills, agents and reviewed third-party integrations.",status:"planned",area:"Connections",icon:Code2,future:"Versioned API/SDK, permission-scoped connector sandbox, capability tests and controlled publication."}
+];
+const allModules=[...modules,...futureModules];
 const statusLabel = {
  local:"LOCAL READY",
  offline:"DISCOVERY",
@@ -47,12 +57,13 @@ const statusLabel = {
 
 export default function CommandCenter({workspace,selectedProjectId,onNavigate,onExport}:Props){
  const [showAll,setShowAll]=useState(false);
+ const [selectedFuture,setSelectedFuture]=useState<Module|null>(null);
  const [activityOpen,setActivityOpen]=useState(true);
  const approved=workspace.memories.filter(note=>note.status==="approved");
  const upcoming=useMemo(()=>workspace.tasks
   .filter(task=>!["completed","cancelled"].includes(task.state))
   .slice(-5).reverse(),[workspace.tasks]);
- const activeModules=showAll?modules:modules.slice(0,6);
+ const activeModules=showAll?allModules:modules.slice(0,6);
  return <div className="command-center">
   <section className="command-hero" aria-labelledby="unity-hero-title">
    <div className="hero-grid-overlay" aria-hidden="true"/>
@@ -90,7 +101,7 @@ export default function CommandCenter({workspace,selectedProjectId,onNavigate,on
     <div className="module-grid">
      {activeModules.map(module=>{
       const Icon=module.icon;
-      return <button key={module.title} type="button" className="module-tile" onClick={()=>onNavigate(module.area)}>
+      return <button key={module.title} type="button" className="module-tile" onClick={()=>module.future?setSelectedFuture(module):onNavigate(module.area)}>
        <div className="module-tile-top"><span className="module-icon"><Icon size={21} strokeWidth={1.65}/></span><ArrowUpRight className="module-arrow" size={17}/></div>
        <span className="module-caption">{module.subtitle}</span>
        <strong>{module.title}</strong>
@@ -145,6 +156,17 @@ export default function CommandCenter({workspace,selectedProjectId,onNavigate,on
     </section>
    </aside>
   </div>
+  {selectedFuture&&<div className="roadmap-overlay" role="presentation" onMouseDown={event=>{if(event.target===event.currentTarget)setSelectedFuture(null)}}>
+   <section className="roadmap-dialog" role="dialog" aria-modal="true" aria-labelledby="roadmap-title">
+    <div className="roadmap-dialog-head"><span>UNITY / SYSTEM ROADMAP</span><button type="button" onClick={()=>setSelectedFuture(null)} aria-label="Close roadmap details">×</button></div>
+    <span className="section-overline">{selectedFuture.subtitle} / PLANNED</span>
+    <h3 id="roadmap-title">{selectedFuture.title}</h3>
+    <p>{selectedFuture.description}</p>
+    <div className="roadmap-detail"><strong>What remains to be built</strong><p>{selectedFuture.future}</p></div>
+    <p className="muted">This capability is included in UNITY's end-state architecture. It is not currently operational.</p>
+    <button type="button" className="primary" onClick={()=>{const target=selectedFuture.area;setSelectedFuture(null);onNavigate(target)}}>Explore related workspace <ArrowRight size={15}/></button>
+   </section>
+  </div>}
   <footer className="center-footer"><span>UNITY / PRIVATE DEVELOPMENT</span><span>LOCAL FIRST · PERMISSION CONTROLLED · NO PAID API CALLS</span></footer>
  </div>;
 }

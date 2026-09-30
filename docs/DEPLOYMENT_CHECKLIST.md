@@ -98,7 +98,8 @@ Owner's development sequence: **GitHub first. No Vercel deployment or external a
 - [x] Offline mission specification with ordered dependencies and inert execution.
 - [x] Policy requiring a specific project, connector, resource and action approval.
 - [ ] Authenticated actor identities and reliable per-task ownership in the backend.
-- [ ] Durable worker queue and recoverable workflow engine tested after interruptions.
+- [x] Deterministic offline project-scoped worker queue lifecycle with claims, leases, retry limits, independent verification and mocked recovery tests (NOT live).
+- [ ] Durable worker queue and recoverable workflow engine tested against a dedicated database and real interruption scenarios.
 - [ ] Independent verifier checks original sources, commits, test logs and claims.
 - [ ] Concurrent agents use isolated branches and transactional task revisions.
 - [ ] Approvals are authenticated, single-use, time-limited and logged at dispatch time.

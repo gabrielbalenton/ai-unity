@@ -11,7 +11,7 @@ Personal alpha: a provider-independent AI workspace, built in public during the 
 - Read-only official MCP registry search. Discovering a tool does NOT install, authorize, or execute it.
 - Offline OpenAPI 3.0/3.1 JSON connector designer: inspect API operations without networking, authentication or execution.
 - Optional **push-to-talk brain dump** in supported browsers. Browser speech providers may process audio.
-- Deterministic runtime foundation: project-scoped permission and $0 cost preflight, inert connector manifests, evidence-aware task context, revisioned tasks and provider-neutral model planning. These are tested contracts, **not live integrations**.
+- Deterministic runtime foundation: project-scoped permission and $0 cost preflight, inert connector manifests, evidence-aware task context, revisioned tasks, bounded offline worker leases/retries and provider-neutral model planning. These are tested contracts, **not live integrations**.
 - Optional Supabase SSR Auth, owner-scoped project/draft-memory routes, unactivated transactional memory approval and a separate cloud workspace UI; **not activated or live-verified**. See `docs/AUTH_INTEGRATION.md`.
 - Offline versioned memory approval, conflict detection and revocation rules (not yet persisted or authenticated); see `docs/MEMORY_VERSIONING.md`.
 - Architecture and a planned Supabase schema; no real account connections yet.

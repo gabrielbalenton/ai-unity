@@ -9,7 +9,7 @@ Status definitions: **Implemented** = code exists; **Verified offline** = automa
 | AI discovery | OpenRouter and capped Hugging Face public catalogs | Continuously updated, deduplicated compatible catalogs with separate actual availability |
 | Model routing | Verified offline policy and planning functions | At least two real authorized providers with hard budget guard and provider-side billing verification |
 | Universal tools | Public MCP registry discovery and offline OpenAPI designer | Authorized and sandboxed MCP/REST/GraphQL connectors, permissions, revocation, audit trail |
-| GitHub | Public metadata links and an offline-tested, unactivated server read adapter | GitHub App installs, multi-account private repositories, file reads, isolated PR workflows |
+| GitHub | Public metadata links, offline-tested unactivated server read adapter and GitHub App crypto/token transport | GitHub App installs, multi-account private repositories, file reads, isolated PR workflows |
 | Agent tasks | Offline revisioned task contract and project-scoped manual task board | Durable resumable tasks, audit records, project-specific tool execution and evidence-backed completion |
 | Verification | Offline unit tests and CI | Independent output validation, integration tests and rollback drills |
 | Voice | Opt-in browser dictation | User-approved real-time two-way conversation, wake-word desktop client and privacy controls |

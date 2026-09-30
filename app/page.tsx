@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { exportWorkspace, initialWorkspace, loadWorkspace, saveWorkspace, previewWorkspaceImport } from "@/lib/workspace";
 import type { CatalogModel, Workspace } from "@/lib/types";
 import VoiceDictation from "@/components/VoiceDictation";

@@ -23,3 +23,18 @@ References: https://docs.github.com/en/apps/creating-github-apps/authenticating-
 8. Deploy read-only API routes and independently test failure cases: missing grants, revoked installs, 403/429 responses and secret rotation.
 
 No installation events mutate storage until all these conditions are satisfied. Requests to third-party systems are prohibited by default. Public repository lookup remains a separate, unauthenticated preview.
+
+## Verified-delivery ingestion (implemented, not activated)
+The GitHub webhook route at `/api/webhooks/github` is off unless explicitly configured and enabled.
+It checks the SHA-256 signature of the raw request body, enforces a 1 MB payload
+limit, handles only supported installation events, and stores allowlisted metadata
+through a server-only durable store. The proposed SQL table gives browser sessions
+no permission to read deliveries. Duplicate IDs are acknowledged only when their
+stored payload hashes match. Unexpected storage failures return HTTP 503 so GitHub
+can retry delivery.
+
+**No webhook creates or changes a project connector grant or authorizes an agent.**
+Production use additionally requires reviewing the SQL proposal, provisioning a
+separate database, configuring the server-only backend secret, binding installations
+to explicit user/project approvals, verifying replay behavior and conducting a live
+GitHub webhook integration test.

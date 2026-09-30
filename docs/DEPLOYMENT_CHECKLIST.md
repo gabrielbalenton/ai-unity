@@ -33,6 +33,7 @@ Owner's development sequence: **GitHub first. No Vercel deployment or external a
 - [x] Optional browser speech-to-text brain dump with manual microphone activation.
 - [x] Minimal non-secret health endpoint.
 - [ ] Unified production-grade chat with streaming, tools, attachments and history.
+- [x] Optional cloud projects/memory UI for independently configured backend (code only, no service provisioned).
 - [ ] Authenticated multi-device workspace and responsive accessibility testing.
 - [ ] Error/loading/empty-state QA, keyboard usability and mobile browser testing.
 - [ ] Dedicated native desktop and mobile experiences, only if justified by private use.

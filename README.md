@@ -49,6 +49,9 @@ No mock operational health or fabricated API consumption is displayed. All exist
 ## Evidence-based release console
 The **Readiness** navigation tab shows ten independently verifiable pre-Vercel critical gates alongside personal-trial and future commercialization requirements. Its public status is deliberately locked until separate authenticated, reviewed evidence exists. Source changes cannot self-certify deployment.
 
+## Disposable database contract verification
+Dedicated manual and milestone-only PostgreSQL 17 tests now execute the core and proposed database SQL against two **synthetic** identities. They exercise owner-scoped access, approval, revision/audit writes and worker safety without touching a real Supabase database. See [database testing instructions](docs/DATABASE_CONTRACT_TESTING.md). This does not verify live Supabase Auth, secrets, billing or deployed integration.
+
 ## GitHub-first completion checklist
 See [Deployment and infrastructure checklist](docs/DEPLOYMENT_CHECKLIST.md) for verified offline code versus integration work still required. `npm run readiness` reports the current repository infrastructure gates without exposing environment variable values. No connection to Vercel or a new database will be made until explicitly authorized.
 

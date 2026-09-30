@@ -137,7 +137,8 @@ Owner's development sequence: **GitHub first. No Vercel deployment or external a
 - [x] Documentation of planned vs operational capabilities.
 - [ ] CI secret-scan step and project readiness script verified passing on final candidate branch.
 - [ ] Dependency pin/lockfile plus `npm ci` and tested upgrade process.
-- [ ] Database migration dry run and RLS test suite in isolated local/test environment.
+- [x] Core and proposal schemas executed successfully in a disposable PostgreSQL 17 container, with synthetic two-user ownership/RLS, atomic memory approval and durable queue regression checks.
+- [ ] Repeat migration, security advisor and two-user RLS testing using actual Supabase Auth/PostgREST in a dedicated test project.
 - [ ] Route-handler integration tests, two-user isolation tests and mocked provider failure tests.
 - [ ] Browser E2E smoke tests on desktop and mobile layouts.
 - [ ] UI accessibility, performance, error-boundary and multi-browser acceptance.

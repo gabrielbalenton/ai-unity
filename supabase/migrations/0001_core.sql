@@ -62,3 +62,12 @@ create policy connections_owner_read on public.project_connections for select to
 create policy audit_owner_read on public.audit_events for select to authenticated
  using(exists(select 1 from public.projects p where p.id=project_id and p.owner_id=(select auth.uid())));
 -- Trusted backend writes connections and audit events after authorization.
+
+-- Explicit client role privileges must accompany RLS policies.
+-- Without GRANT, PostgreSQL denies even correctly scoped owner requests.
+-- Only owner-scoped SELECT/INSERT are exposed; all approvals and operational
+-- mutations remain in reviewed server transactions and backend-only functions.
+revoke all on public.projects,public.memory_entries,
+ public.project_connections,public.audit_events from anon,authenticated;
+grant select,insert on public.projects,public.memory_entries to authenticated;
+grant select on public.project_connections,public.audit_events to authenticated;

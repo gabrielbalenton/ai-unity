@@ -47,6 +47,7 @@ The owner-approved **Quiet Convergence** interface uses the original UNITY conve
 
 - [Approved handoff integration](docs/APPROVED_UI_HANDOFF.md)
 - [Visual language and UI acceptance](docs/DESIGN_SYSTEM.md)
+- [Room model and embedded brain](docs/ROOM_MODEL.md)
 - [Fourteen-system endgame architecture](docs/ENDGAME_ARCHITECTURE.md)
 - [Machine-readable capability/status registry](config/system-manifest.json)
 - [Vercel preview runbook](docs/VERCEL_PREVIEW_RUNBOOK.md)

@@ -4,11 +4,14 @@
 Professional AI operating system. This interface must look and behave like actual workspace software rather than a science-fiction prop. The deliberately restrained visual identity supports the owner's request for a distinctive, premium interface without theatrical module names.
 
 ## Foundation
-- **Background:** ink-black / graphite, not solid pitch-black everywhere. Surface depth comes from subtle borders and tonal steps.
+- **Appearance:** three fully implemented modes: Light, Dark and System. System is the default, follows operating-system changes and can be overridden per browser. No theme preference is transmitted or synchronized externally.
+- **Dark background:** ink-black / graphite, not solid pitch-black everywhere. Surface depth comes from subtle borders and tonal steps.
+- **Light background:** soft mineral white, subdued ivory-green surfaces, ink-colored text and restrained deep-jade accents. Major dashboard, navigation, task, model and readiness areas receive explicit light-skin styling.
 - **Primary accent:** jade and sea-glass green. Green is reserved for active controls, verified local features and restrained spatial accents.
 - **Warning:** muted amber for unverified discovery and developer warnings.
 - **Typography:** Manrope for structure/headlines and DM Sans for long-form UI when locally available, followed by system UI fallbacks. No required remote font downloads, so the UI is usable offline.
 - **Motion:** subtle hover transitions. Honor reduced-motion browser preferences.
+- **Identity:** bespoke geometric U monogram, not a reused third-party AI logo. The concentric knowledge motif is an original CSS-built dashboard illustration.
 - **Graphics:** CSS-built concentric knowledge/network mark. No stock dashboard screenshots; no heavy image asset downloads.
 - **Density:** roomy mission-control landing page, denser functional workspaces for actual data.
 

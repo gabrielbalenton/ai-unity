@@ -42,3 +42,9 @@ Professional AI operating system. This interface must look and behave like actua
 - Knowledge browser with source citations and conflict review.
 - Cost/usage dashboards populated only by authoritative provider receipts.
 - Multimodal studio and full voice interaction after adapters actually exist.
+
+## Conversation studio
+
+The Chat destination is a two-panel working environment, not a simulated conversation with an imaginary AI. Its left panel displays actual project-specific approved notes and scope warnings. The main panel displays only user-authored locally recorded messages, useful writing starters, a bounded composer, keyboard submit and a visible disabled-AI indicator.
+
+The same visual language extends the Command Center: charcoal surfaces, restrained sea-glass highlights, source/status chips and strong typography with system fallbacks. On smaller screens the context rail stacks above the composer. Do not connect a live model just by changing the UI status; actual server authorization, context isolation and a verified spending policy must be added first.

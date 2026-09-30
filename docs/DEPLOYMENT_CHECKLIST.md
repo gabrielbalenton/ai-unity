@@ -66,6 +66,7 @@ Owner's development sequence: **GitHub first. No Vercel deployment or external a
 
 - [x] Read-only OpenRouter metadata discovery and capped Hugging Face catalog sample.
 - [x] Offline capability-aware model-selection contract.
+- [x] Bounded provider-neutral multimodal message schema, approved-context packet, SSE parser and cross-provider fallback plan with mock tests (no provider connection).
 - [x] Fail-closed policy for missing costs, unverified free eligibility and wrong project scope.
 - [ ] Authorized live inference with one provider and clear model capability tests.
 - [ ] Authorized second independent provider and verified compatible fallback.

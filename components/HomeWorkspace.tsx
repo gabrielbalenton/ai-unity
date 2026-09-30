@@ -3,8 +3,8 @@
 import {FormEvent,useMemo,useState} from "react";
 import Image from "next/image";
 import {
- ArrowRight,BookOpen,CalendarDays,Folder,MessageCircle,Plus,
- Search,ShieldCheck,Sparkles,Workflow
+ ArrowRight,BookOpen,Folder,MessageCircle,Plus,
+ Search,ShieldCheck,Sparkles,Workflow,Zap
 } from "lucide-react";
 import type {Workspace} from "@/lib/types";
 import type {Area} from "@/lib/navigation";
@@ -35,6 +35,7 @@ export default function HomeWorkspace({
   if(!value)return;
   if(/project|workspace|client/.test(value))onNavigate("Projects");
   else if(/remember|knowledge|note|brain|document/.test(value))onNavigate("Memory");
+  else if(/automation|automate|repeat|schedule|trigger|recurring/.test(value))onNavigate("Automations");
   else if(/task|plan|todo|mission|work/.test(value))onNavigate("Tasks");
   else if(/yesterday|brief|update|morning/.test(value))onNavigate("Briefing");
   else if(/connect|integration|notion|asana|calendar|gmail|email|crm/.test(value))onNavigate("Connections");
@@ -51,7 +52,7 @@ export default function HomeWorkspace({
    <div className="home-hero-content">
     <span className="home-eyebrow">YOUR WORKSPACE</span>
     <h2>{current?<>Ready when you are, <span>{current.name}</span>.</>:<>Welcome to <span>UNITY.</span></>}</h2>
-    <p>One calm place for your projects, knowledge, conversations and the tools you choose to connect.</p>
+    <p>One calm place for your projects, knowledge, conversations, automations and the tools you choose to connect.</p>
     <form className="intent-composer" onSubmit={routeIntent}>
      <Search size={19} aria-hidden="true"/>
      <label>
@@ -69,7 +70,7 @@ export default function HomeWorkspace({
      <button className="primary" onClick={onNewProject}><Plus size={18}/> New project</button>
      <button onClick={()=>onNavigate("Chat")}><MessageCircle size={18}/> Conversations</button>
      <button onClick={()=>onNavigate("Memory")}><BookOpen size={18}/> Knowledge</button>
-     <button onClick={()=>onNavigate("Briefing")}><CalendarDays size={18}/> Daily briefing</button>
+     <button onClick={()=>onNavigate("Automations")}><Zap size={18}/> Automations</button>
     </div>
    </div>
   </section>

@@ -9,7 +9,7 @@ test("conversation composer records a scoped local note with an accessible respo
  await page.getByRole("button",{name:"Create project"}).click();
  await openPrimary(page,"Conversations",isMobile);
  await expect(page.getByText("Start with a thought.")).toBeVisible();
- await page.getByRole("button",{name:"Capture an idea"}).click();
+ const starter=page.getByRole("button",{name:"Capture an idea"});\n if(isMobile)await starter.tap(); else await starter.click();
  const composer=page.getByRole("textbox",{name:"Local conversation note"});
  await expect(composer).toHaveValue("Idea: ");
  await composer.fill("Idea: Create a durable universal workspace");

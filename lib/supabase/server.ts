@@ -12,7 +12,7 @@ export async function createServerSupabase() {
    setAll(changes:CookieUpdate[]){
     try {changes.forEach(({name,value,options})=>cookieStore.set(name,value,options))}
     catch{
-     // Server Components cannot set cookies. Middleware refreshes supported auth paths.
+     // Server Components cannot set cookies. Proxy refreshes supported auth paths.
      // This catch must not be interpreted as proof of a valid session.
     }
    }

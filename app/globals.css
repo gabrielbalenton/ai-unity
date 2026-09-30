@@ -282,3 +282,15 @@ select{appearance:auto}
 @media(prefers-reduced-motion:reduce){
  *,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
 }
+
+/* Functional roadmap detail panels: future capabilities are not fake links. */
+.roadmap-overlay{position:fixed;inset:0;z-index:102;background:rgba(2,6,9,.8);backdrop-filter:blur(7px);display:flex;justify-content:center;align-items:center;padding:18px}
+.roadmap-dialog{width:min(490px,100%);border:1px solid #467761;border-radius:16px;background:linear-gradient(147deg,#1b302d,#101923 78%);padding:27px;box-shadow:0 30px 110px rgba(0,0,0,.55)}
+.roadmap-dialog-head{display:flex;align-items:center;justify-content:space-between;color:#86b9a6;font:800 10px var(--font-heading);letter-spacing:1.1px;margin-bottom:24px}
+.roadmap-dialog-head button{border:0;background:transparent;color:#b6c6be;font-size:25px;padding:0 4px;line-height:1}
+.roadmap-dialog h3{font:800 28px var(--font-heading);letter-spacing:-1px;margin:12px 0}
+.roadmap-dialog p{color:#a8c0b9;font-size:13px;line-height:1.7}
+.roadmap-detail{padding:16px;border-radius:10px;background:rgba(46,112,84,.17);border:1px solid #375e4c;margin:21px 0}
+.roadmap-detail strong{font:750 12px var(--font-heading);color:#b8e8cd}
+.roadmap-detail p{margin:8px 0 0}
+.roadmap-dialog>.primary{display:inline-flex;align-items:center;gap:10px}

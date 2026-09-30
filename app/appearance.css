@@ -312,3 +312,18 @@ label{color:var(--u-text)}
  }
  .chat-empty{min-height:0!important;padding:34px 0 22px}
 }
+
+/* Mobile touch correctness: empty-state content is informational; only its
+   starter controls accept pointer input. Scroll margins prevent fixed bottom
+   navigation from becoming the hit target after automatic browser scrolling. */
+@media(max-width:690px){
+ .chat-empty{pointer-events:none}
+ .chat-prompt-starters,.chat-prompt-starters button{pointer-events:auto}
+ .chat-prompt-starters button{
+  position:relative;
+  z-index:2;
+  touch-action:manipulation;
+  scroll-margin-block:120px;
+ }
+ .chat-composer-wrap{scroll-margin-bottom:96px}
+}

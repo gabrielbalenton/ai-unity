@@ -288,3 +288,13 @@ label{color:var(--u-text)}
  .graph-node{grid-template-columns:0 34px minmax(0,1fr)}
  .graph-line{display:none}
 }
+
+/* Mobile interaction stability: hidden sheet must stop intercepting immediately,
+   and conversation starters stay above the fixed bottom navigation. */
+@media(max-width:690px){
+ .sidebar:not(.sidebar-visible){pointer-events:none}
+ .sidebar.sidebar-visible{pointer-events:auto}
+ .chat-conversation-history{scroll-padding-bottom:96px;padding-bottom:96px!important}
+ .chat-empty{height:auto!important;min-height:270px;margin:0 auto;padding-top:26px;padding-bottom:26px}
+ .chat-prompt-starters{padding-bottom:8px}
+}

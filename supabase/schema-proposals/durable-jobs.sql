@@ -61,7 +61,7 @@ declare
  v_job public.unity_jobs%rowtype;
  v_claim public.unity_jobs%rowtype;
 begin
- if session_user not in ('postgres','supabase_admin','service_role') or
+ if coalesce(current_setting('request.jwt.claim.role',true),'') <> 'service_role' or
    length(p_worker) < 3 or p_capabilities is null or cardinality(p_capabilities)=0 or
    p_lease_seconds not between 15 and 300 then
   raise exception 'Worker claim unavailable' using errcode='P0001';
@@ -105,7 +105,7 @@ set search_path = ''
 as $$
 declare v_completed public.unity_jobs%rowtype;
 begin
- if session_user not in ('postgres','supabase_admin','service_role') or
+ if coalesce(current_setting('request.jwt.claim.role',true),'') <> 'service_role' or
     p_evidence_refs is null or jsonb_typeof(p_evidence_refs)<>'array' or
     jsonb_array_length(p_evidence_refs)<1 then
   raise exception 'Completion rejected' using errcode='P0001';

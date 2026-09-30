@@ -13,6 +13,7 @@ Personal alpha: a provider-independent AI workspace, built in public during the 
 - Optional **push-to-talk brain dump** in supported browsers. Browser speech providers may process audio.
 - Deterministic runtime foundation: project-scoped permission and $0 cost preflight, inert connector manifests, evidence-aware task context, revisioned tasks and provider-neutral model planning. These are tested contracts, **not live integrations**.
 - Optional Supabase SSR Auth, owner-scoped project and draft-memory route scaffolds; **not activated or live-verified**. See `docs/AUTH_INTEGRATION.md`.
+- Offline versioned memory approval, conflict detection and revocation rules (not yet persisted or authenticated); see `docs/MEMORY_VERSIONING.md`.
 - Architecture and a planned Supabase schema; no real account connections yet.
 
 See `docs/LOCAL_FIRST_CONTRACT.md` for the GitHub-first development and deployment boundary.

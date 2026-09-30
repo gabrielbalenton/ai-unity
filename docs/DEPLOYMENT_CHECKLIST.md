@@ -48,7 +48,8 @@ Owner's development sequence: **GitHub first. No Vercel deployment or external a
 - [ ] Implement real per-project persistent tables, transactional writes and signed audit history.
 - [ ] Execute SQL migrations on a dedicated local/test database and run security advisors.
 - [ ] Two-user and two-project tests for all table reads, writes, searches and imported data.
-- [ ] Human-approved versioned memory with original source provenance, conflict review and revocation.
+- [x] Offline versioned memory core with explicit approval, conflict checks and revocation tests (not authenticated or persistent).
+- [ ] Human-approved versioned memory with original source provenance, conflict review and revocation, tested in a dedicated backend.
 - [ ] Credential-safe object storage and searchable retrieval, respecting source-specific access.
 - [ ] Secure encrypted exports, backup retention and a demonstrated restoration drill.
 - [ ] Real data deletion, account deletion, data portability and retention options.

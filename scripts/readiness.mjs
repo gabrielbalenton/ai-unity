@@ -11,6 +11,7 @@ const files=[
  "app/api/health/route.ts","lib/runtime/policy.mjs",
  "lib/infrastructure/config.mjs","lib/infrastructure/audit.mjs",
  "lib/runtime/worker-queue.mjs","lib/runtime/dispatch-preflight.mjs",
+ "lib/ai/protocol.mjs","lib/ai/packet.mjs","lib/ai/stream.mjs","lib/ai/fallback.mjs",
  "docs/DURABLE_EXECUTION.md",
  "supabase/schema-proposals/execution-queue.sql"
 ];

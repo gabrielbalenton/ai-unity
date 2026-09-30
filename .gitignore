@@ -9,3 +9,7 @@ node_modules/
 # Local browser tests and temporary visual screenshots
 playwright-report/
 test-results/
+
+# Independent local disaster-recovery bundles must never be committed.
+recovery/
+*.bundle

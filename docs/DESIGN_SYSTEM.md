@@ -1,56 +1,101 @@
-# UNITY interface design system — Command Center v1
+# UNITY design system — Quiet Convergence v1
 
-## Positioning
-Professional AI operating system. This interface must look and behave like actual workspace software rather than a science-fiction prop. The deliberately restrained visual identity supports the owner's request for a distinctive, premium interface without theatrical module names.
+The September 30, 2026 owner handoff is the visual authority for the personal alpha. The experience should feel composed, warm, precise and quietly capable: premium workspace software, not a chatbot clone or science-fiction control room.
 
-## Foundation
-- **Appearance:** three fully implemented modes: Light, Dark and System. System is the default, follows operating-system changes and can be overridden per browser. No theme preference is transmitted or synchronized externally.
-- **Dark background:** ink-black / graphite, not solid pitch-black everywhere. Surface depth comes from subtle borders and tonal steps.
-- **Light background:** soft mineral white, subdued ivory-green surfaces, ink-colored text and restrained deep-jade accents. Major dashboard, navigation, task, model and readiness areas receive explicit light-skin styling.
-- **Primary accent:** jade and sea-glass green. Green is reserved for active controls, verified local features and restrained spatial accents.
-- **Warning:** muted amber for unverified discovery and developer warnings.
-- **Typography:** Manrope for structure/headlines and DM Sans for long-form UI when locally available, followed by system UI fallbacks. No required remote font downloads, so the UI is usable offline.
-- **Motion:** subtle hover transitions. Honor reduced-motion browser preferences.
-- **Identity:** bespoke geometric U monogram, not a reused third-party AI logo. The concentric knowledge motif is an original CSS-built dashboard illustration.
-- **Graphics:** CSS-built concentric knowledge/network mark. No stock dashboard screenshots; no heavy image asset downloads.
-- **Density:** roomy mission-control landing page, denser functional workspaces for actual data.
+## Brand
+
+- Original three-facet UNITY convergence symbol and wordmark live in `public/unity-brand/`.
+- Light and dark variants are supplied explicitly. Do not recreate a third-party AI knot, glowing brain or generic orb.
+- Terrain artwork is a subtle editorial background for Home, not an operational visualization.
+- The public repository does not include bundled font files.
+
+## Appearance
+
+System is the default. Light and Dark are explicit per-browser overrides.
+
+| Semantic token | Light | Dark |
+|---|---|---|
+| Canvas | #F7F6F2 | #141C24 |
+| Navigation | #F0F2F1 | #18232C |
+| Surface | #FFFFFF | #202B35 |
+| Raised surface | #FBFCFB | #283743 |
+| Text | #273742 | #EEF2F0 |
+| Muted | #566771 | #AFBFC5 |
+| Border | #DAE1E1 | #394B55 |
+| Accent | #467A82 | #A8CFD1 |
+| Accent tint | #E5EFF0 | #314850 |
+| Focus | #386E80 | #BDDFE4 |
+| Warm accent | #E6C6B1 | #E2BEA9 |
+
+Typography uses Manrope / DM Sans when already available locally, then Apple/system fallbacks. No external font request is required.
 
 ## Navigation
-- Desktop: persistent grouped sidebar with Command / Workspace / Network sections, environment policy and account footer.
-- Mobile: explicit accessible navigation toggle and dismissible scrim.
-- Keyboard: Command/Ctrl+K opens actual workspace navigation. Escape closes the command overlay and mobile navigation.
-- Dashboard tiles open corresponding **implemented** destinations rather than inert decorative controls.
-- Existing Projects, Chat, Memory, Tasks, Models, Tools, Integrations and optional Cloud screens remain available.
 
-## Dashboard contract
-- Local project, approved note and linked public repository totals must derive from validated browser workspace data.
-- External execution is shown as locked, not as a successful connection.
-- Public model discovery and MCP directory listings are labeled as discovery, never authenticated integrations.
-- Cloud backend explicitly remains unverified until a dedicated backend exists.
-- Quick actions use actual existing UI functions: navigation and JSON backup export.
-- Avoid synthetic running task percentages, mocked uptime and false API cost telemetry.
-- The illustrated architecture is clearly marked as a design preview.
+Primary destinations:
+1. Home
+2. Projects
+3. Conversations
+4. Knowledge
+5. Settings
 
-## Release readiness screen
-The Release Readiness tab follows the same graphite/jade vocabulary as Mission Control. It must display 0/10 externally verified critical gates in the public development build, with explicit evidence descriptions and working P0/P1/P2 filters. Its totals cannot be inferred from staged code, a build pass or a JSON status edited in GitHub. Verified evidence comes later from a separately authorized operational review.
+Advanced destinations are progressively disclosed under **More** and remain searchable with ⌘/Ctrl+K:
+- Daily Briefing
+- Tasks
+- Cloud Workspace
+- AI Models
+- Tool Registry
+- Integrations
+- Release Readiness
 
-## Before a release
-1. Test at 1440px desktop, 1024px small desktop/tablet and 375px mobile.
-2. Verify keyboard navigation, visible focus, reduced motion, and screen-reader labels.
-3. Run empty and populated local workspace states; verify responsive line wrapping and long text overflow.
-4. Confirm workspace data, backup/restore behavior, optional cloud operations, discovery and project isolation remain unchanged.
-5. Perform an actual browser visual inspection after the GitHub-only build is green. CI compilation alone does not prove visual polish.
+Mobile uses four primary destinations plus More. No hover-only action may be required.
 
-## Intended future UI
-- Unified streaming conversation surface with per-message provider/evidence chips and human approval events.
-- Live agent-workflow topology with verified task stages.
-- Real integrations marketplace with authorization previews.
-- Knowledge browser with source citations and conflict review.
-- Cost/usage dashboards populated only by authoritative provider receipts.
-- Multimodal studio and full voice interaction after adapters actually exist.
+## Home contract
 
-## Conversation studio
+Home answers: Where am I? What can I do? What needs my attention?
 
-The Chat destination is a two-panel working environment, not a simulated conversation with an imaginary AI. Its left panel displays actual project-specific approved notes and scope warnings. The main panel displays only user-authored locally recorded messages, useful writing starters, a bounded composer, keyboard submit and a visible disabled-AI indicator.
+- Editorial welcome and subtle terrain image.
+- Intent field routes to existing workspaces only; it does not simulate AI replies.
+- Up to four actual local projects.
+- Actual pending local tasks only.
+- Clear connection ownership note.
+- One quiet local-alpha status line.
+- No fourteen-system architecture wall, fake uptime, invented costs, fake teammates or connected-provider claims.
 
-The same visual language extends the Command Center: charcoal surfaces, restrained sea-glass highlights, source/status chips and strong typography with system fallbacks. On smaller screens the context rail stacks above the composer. Do not connect a live model just by changing the UI status; actual server authorization, context isolation and a verified spending policy must be added first.
+## Working surfaces
+
+Existing Projects, Conversations, Knowledge, Tasks, discovery pages, Integrations, Cloud and Readiness behavior must survive the design migration. Advanced technical detail may be visually calmer but cannot be silently removed.
+
+## Interaction
+
+- Controls and touch targets are at least 44 CSS px where practical.
+- Visible 3px semantic focus ring.
+- Escape closes mobile/command overlays.
+- ⌘/Ctrl+K opens navigation.
+- Motion remains 130–220ms and respects `prefers-reduced-motion`.
+- System theme follows OS changes live; manual Light/Dark persists locally.
+- Significant future writes/sends/deployments require explicit review, target and consequence before approval.
+
+## Truth and status
+
+Use precise status language:
+- Local
+- Discovery only
+- Requires connection
+- Waiting for authorization
+- Planned
+- Unavailable
+
+A green build does not mean an external service is connected. Empty state is preferred to fake operational data.
+
+## Browser acceptance
+
+Before the first Vercel preview is accepted:
+- 1440px desktop, 768px tablet and 375px mobile.
+- Light, Dark and System.
+- Keyboard-only navigation and Escape behavior.
+- Browser zoom up to 200% without inaccessible controls.
+- Project creation, local persistence, Knowledge, backup/restore and More destinations.
+- No console errors or hydration errors.
+- Screenshots captured from the exact reviewed commit.
+
+See `docs/APPROVED_UI_HANDOFF.md` and `docs/VERCEL_PREVIEW_RUNBOOK.md`.

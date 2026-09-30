@@ -4,7 +4,7 @@ Status definitions: **Implemented** = code exists; **Verified offline** = automa
 
 | Area | Personal alpha now | Complete-product acceptance gate |
 |---|---|---|
-| Interface | Responsive Command Center, original U identity, Light/Dark/System appearance, fourteen-system roadmap, local projects/chat and disconnected cloud interface (visual QA still required) | Authenticated unified conversation on web, desktop and mobile |
+| Interface | Approved Quiet Convergence Home, original convergence identity, Light/Dark/System, simple primary navigation with advanced More/⌘K, local projects/chat and disconnected cloud interface (final browser QA pending) | Authenticated unified conversation on web, desktop and mobile |
 | Knowledge | Local notes/import/export, offline memory contracts and unactivated transactional server approval proposal | Persistent signed user approvals, original source links, revisions, revocation, project isolation |
 | AI discovery | OpenRouter and capped Hugging Face public catalogs | Continuously updated, deduplicated compatible catalogs with separate actual availability |
 | Model routing | Offline scoped model planning, provider-neutral message envelope, bounded SSE framing and planned cross-provider handoffs (no inference) | At least two real authorized providers with hard budget guard and provider-side billing verification |

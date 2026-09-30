@@ -4,7 +4,7 @@ test("command center renders real local statistics, tiles and responsive shell",
  await page.goto("/");
  await expect(page.locator("h1")).toHaveText("Mission Control");
  await expect(page.getByText("Every possibility.")).toBeVisible();
- await expect(page.getByText("External execution")).toBeVisible();
+ await expect(page.getByLabel("Current verified local workspace statistics").getByText("External execution")).toBeVisible();
  await expect(page.getByText(/NOT CONNECTED/).first()).toBeVisible();
  await page.screenshot({path:testInfo.outputPath("unity-command-center.png"),fullPage:true});
 });

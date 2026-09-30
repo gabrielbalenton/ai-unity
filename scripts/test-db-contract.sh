@@ -21,8 +21,10 @@ for file in \
  supabase/schema-proposals/memory-approval.sql \
  supabase/schema-proposals/github-webhook-deliveries.sql \
  supabase/schema-proposals/durable-jobs.sql \
+ supabase/schema-proposals/model-dispatch-ledger.sql \
  tests/db/isolation.sql \
- tests/db/worker.sql; do
+ tests/db/worker.sql \
+ tests/db/model-ledger.sql; do
  echo "Validating ${file}"
  psql --no-psqlrc --set ON_ERROR_STOP=on --file "${file}"
 done

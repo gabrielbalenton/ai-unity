@@ -130,8 +130,10 @@ label{color:var(--u-text)}
 .unity-home{max-width:1180px;margin:0 auto 30px}
 .home-hero{position:relative;overflow:hidden;min-height:366px;border:1px solid var(--u-border);border-radius:var(--u-radius-hero);background:var(--u-surface);box-shadow:var(--u-shadow)}
 .home-terrain{position:absolute;inset:0}
-.home-terrain img{width:100%;height:100%;object-fit:cover;display:block}
-:root[data-resolved-theme="dark"] .home-terrain img{content:url("/unity-brand/terrain-dark.svg")}
+.home-terrain img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.home-terrain-dark{display:none!important}
+:root[data-resolved-theme="dark"] .home-terrain-light{display:none!important}
+:root[data-resolved-theme="dark"] .home-terrain-dark{display:block!important}
 .home-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--u-surface) 0%,color-mix(in srgb,var(--u-surface) 92%,transparent) 44%,transparent 82%);pointer-events:none}
 .home-hero-content{position:relative;z-index:1;padding:clamp(30px,6vw,64px);max-width:720px}
 .home-eyebrow{display:block;color:var(--u-accent);font:700 11px/1.2 var(--u-font-heading);letter-spacing:1.15px;margin-bottom:10px}

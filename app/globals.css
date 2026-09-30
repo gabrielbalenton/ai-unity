@@ -293,3 +293,13 @@ select{appearance:auto}
 .roadmap-detail strong{font:750 12px var(--font-heading);color:#b8e8cd}
 .roadmap-detail p{margin:8px 0 0}
 .roadmap-dialog>.primary{display:inline-flex;align-items:center;gap:10px}
+
+/* A consistent destination header across the rest of the working application. */
+.workspace-intro{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:135px;border:1px solid #2c4542;border-radius:13px;margin-bottom:21px;padding:24px 27px;background:radial-gradient(ellipse at 90% 0%,rgba(70,154,117,.13),transparent 45%),linear-gradient(112deg,#14272b,#111921);position:relative;overflow:hidden}
+.workspace-intro::after{content:"";position:absolute;right:0;top:0;bottom:0;width:170px;opacity:.15;pointer-events:none;background:repeating-linear-gradient(135deg,transparent,transparent 19px,#58a88a 20px,transparent 21px)}
+.workspace-intro>div{position:relative;z-index:1;max-width:670px}
+.workspace-intro h2{font:800 clamp(19px,2.2vw,25px) var(--font-heading);letter-spacing:-.7px;margin:0 0 9px;color:#eff8f1}
+.workspace-intro p{margin:0;font-size:12px;color:#a2b8b7}
+.workspace-status{position:relative;z-index:1;flex:none;display:flex;align-items:center;gap:8px;border:1px solid #3b6756;background:rgba(22,56,46,.52);border-radius:6px;padding:9px 11px;color:#9edfc0;font:750 9px var(--font-heading);letter-spacing:.8px}
+.workspace-status span{width:6px;height:6px;background:#89dba8;border-radius:50%}
+@media(max-width:690px){.workspace-intro{padding:20px;align-items:flex-start;flex-direction:column;gap:15px}}

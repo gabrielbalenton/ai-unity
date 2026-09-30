@@ -4,7 +4,7 @@ Status definitions: **Implemented** = code exists; **Verified offline** = automa
 
 | Area | Personal alpha now | Complete-product acceptance gate |
 |---|---|---|
-| Interface | Local projects/chat plus a disconnected cloud projects and memory approval interface | Authenticated unified conversation on web, desktop and mobile |
+| Interface | Responsive premium Command Center, fourteen-system roadmap, local projects/chat and disconnected cloud interface (live visual QA still pending) | Authenticated unified conversation on web, desktop and mobile |
 | Knowledge | Local notes/import/export, offline memory contracts and unactivated transactional server approval proposal | Persistent signed user approvals, original source links, revisions, revocation, project isolation |
 | AI discovery | OpenRouter and capped Hugging Face public catalogs | Continuously updated, deduplicated compatible catalogs with separate actual availability |
 | Model routing | Verified offline policy and planning functions | At least two real authorized providers with hard budget guard and provider-side billing verification |

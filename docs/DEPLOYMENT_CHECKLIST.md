@@ -24,6 +24,9 @@ Owner's development sequence: **GitHub first. No Vercel deployment or external a
 ## 2. Web app and experience — P0/P1
 
 - [x] Next.js app skeleton with project-oriented navigation.
+- [x] Source-built responsive command-center design, quick navigation and fourteen-module roadmap driven by one manifest (actual browser visual QA still pending).
+- [x] Complete endgame dependency and trust-boundary reference in `docs/ENDGAME_ARCHITECTURE.md`.
+- [ ] Complete visual inspection of desktop/mobile breakpoints, keyboard navigation, accessibility and contrast in an actual browser.
 - [x] Local project creation and project selection.
 - [x] Project-scoped local conversation records (**not yet actual AI chat**).
 - [x] Local manual task board with evidence-gated completion previews.

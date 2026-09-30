@@ -4,7 +4,7 @@ import {validateProductManifest} from "../lib/product/manifest.mjs";
 import {validateReleaseGates} from "../lib/product/release-gates.mjs";
 import {readFileSync} from "node:fs";
 const files=[
- "AGENTS.md","docs/ARCHITECTURE.md","docs/ENDGAME_ARCHITECTURE.md",
+ "AGENTS.md","docs/ARCHITECTURE.md","docs/ROOM_MODEL.md","docs/ENDGAME_ARCHITECTURE.md",
  "docs/FEATURE_MATRIX.md","docs/DESIGN_SYSTEM.md","docs/APPROVED_UI_HANDOFF.md","config/system-manifest.json","config/release-gates.json",
  "docs/DECISIONS.md","docs/DEPLOYMENT_CHECKLIST.md",
  "supabase/migrations/0001_core.sql","supabase/schema-proposals/runtime.sql",

@@ -16,6 +16,16 @@ const navGroups:{label:string;items:{tab:Tab;icon:typeof Activity;note?:string}[
  {label:"NETWORK",items:[{tab:"Models",icon:Cpu},{tab:"Tools",icon:Wrench},{tab:"Connections",icon:Network}]}
 ];
 const tabs:Tab[]=navGroups.flatMap(g=>g.items.map(i=>i.tab));
+const moduleDetails:Record<Exclude<Tab,"Overview">,{kicker:string;description:string;status:string}>={
+ Projects:{kicker:"YOUR WORKSPACE",description:"Separate working environments, decisions and approved public repository references.",status:"LOCAL WORKSPACE"},
+ Cloud:{kicker:"PERSISTENCE",description:"An optional, explicitly separate server-backed workspace. Requires your future dedicated UNITY database.",status:"NOT VERIFIED"},
+ Tasks:{kicker:"TASK ORCHESTRATION",description:"Plan missions and track evidence in this browser. No agents run tasks automatically.",status:"LOCAL PREVIEW"},
+ Chat:{kicker:"CONVERSATION",description:"Capture project-specific discussion now. AI inference activates only after authorization and budget checks.",status:"LOCAL RECORDS"},
+ Memory:{kicker:"KNOWLEDGE",description:"Capture brain dumps, review project notes and deliberately promote approved knowledge.",status:"LOCAL STORAGE"},
+ Models:{kicker:"AI CAPABILITY",description:"Discover public AI models across catalogs. Discovery is not an active provider connection.",status:"DISCOVERY ONLY"},
+ Tools:{kicker:"EXTENSIONS",description:"Browse supported MCP registry listings without installing or executing third-party software.",status:"DISCOVERY ONLY"},
+ Connections:{kicker:"INTEGRATION HUB",description:"Link public repository metadata and design API connectors. Private access requires separately authorized installations.",status:"PREVIEW"}
+};
 const uid = () => crypto.randomUUID();
 export default function Home() {
  const [tab,setTab] = useState<Tab>("Overview");
@@ -167,6 +177,10 @@ export default function Home() {
    {storageError&&<div role="alert" className="warning"><strong>Storage recovery required:</strong> UNITY detected invalid existing browser data and has disabled changes to avoid overwriting it. Preserve your browser profile before continuing.</div>}
    <div role="note" className="warning"><strong>Prototype:</strong> Local browser storage is not encrypted or synced. Do not add secrets or confidential information. Free catalog discovery does not mean free inference.</div>
    {notice&&<div className="notice" role="status">{notice}</div>}
+   {tab!=="Overview"&&<section className="workspace-intro">
+    <div><span className="section-overline">{moduleDetails[tab].kicker}</span><h2>{tab==="Memory"?"Your knowledge, organized.":tab==="Models"?"Explore the network.":tab==="Connections"?"Connect the right tools.":tab==="Chat"?"Every conversation, in context.":tab==="Tasks"?"From intention to action.":tab==="Cloud"?"Your permanent workspace.":tab==="Tools"?"Discover what is possible.":"Build without boundaries."}</h2><p>{moduleDetails[tab].description}</p></div>
+    <span className="workspace-status"><span/>{moduleDetails[tab].status}</span>
+   </section>}
    {tab==="Overview"&&<>
     <CommandCenter workspace={workspace} selectedProjectId={projectId} onNavigate={navigate} onExport={()=>exportWorkspace(workspace)}/>
     <details className="backup-panel"><summary><span><Database size={17}/> Local backup and recovery</span><ChevronDown size={16}/></summary>

@@ -35,6 +35,10 @@ Open http://localhost:3000.
 ## Backup and restore
 The local alpha offers validated JSON import/export. Imports deliberately reset every memory approval to draft: importing a file must not let untrusted JSON become authoritative instructions. Back up your browser data before importing.
 
+## Universal activity and daily briefings
+
+GitHub is only one integration. The product is designed to consolidate authorized project management, Google/Microsoft workspaces, email, calendars, meetings, marketing, CRM, finance, ecommerce, development and permission-scoped local desktop data. The current integration category explorer and project-scoped daily briefing normalizer are **offline foundations**; no live cross-app feed has been connected. See `docs/UNIVERSAL_HUB.md` and `config/integration-categories.json`.
+
 ## UNITY Command Center and full system blueprint
 
 The interface now uses a premium, responsive command-center shell with a bespoke geometric U mark and Light/Dark/System appearance (System defaults to your OS theme) and a dedicated two-panel project conversation studio and a shared fourteen-system feature manifest. Its interactive overview opens the existing local tools and gives honest roadmap details for systems that are not operational. The dark graphite/jade visual system uses no external image assets or required third-party font downloads.

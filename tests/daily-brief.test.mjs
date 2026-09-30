@@ -112,3 +112,12 @@ test("coverage remains project-specific when one connector serves multiple proje
  assert.equal(res.connectorCoverage.verifiedCount,1);
  assert.deepEqual(res.connectorCoverage.missingSources,[{projectId:"project-2",connectorId:"notion-1"}]);
 });
+
+test("future receipts and receipts completed before the covered day ends are ignored",()=>{
+ const res=buildDailyBrief({...args,events:[],expectedSources:[{projectId:"project-1",connectorId:"notion-1"}],syncReceipts:[
+  receipt({completedAt:"2026-09-29T15:00:00+08:00"}),
+  receipt({completedAt:"2026-10-02T05:00:00+08:00"})
+ ]});
+ assert.equal(res.connectorCoverage.verifiedCount,0);
+ assert.equal(res.connectorCoverage.complete,false);
+});

@@ -1,0 +1,16 @@
+# Security-sensitive ownership. Enforcement requires the main-branch ruleset
+# described in docs/REPOSITORY_SECURITY.md.
+* @gabrielbalenton
+
+/.github/ @gabrielbalenton
+/scripts/ @gabrielbalenton
+/supabase/ @gabrielbalenton
+/lib/security/ @gabrielbalenton
+/lib/supabase/ @gabrielbalenton
+/lib/github/ @gabrielbalenton
+/config/ @gabrielbalenton
+/vercel.json @gabrielbalenton
+/next.config.mjs @gabrielbalenton
+/package.json @gabrielbalenton
+/package-lock.json @gabrielbalenton
+/.env.example @gabrielbalenton

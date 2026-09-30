@@ -8,6 +8,7 @@ import {
  Sparkles, Workflow, Zap
 } from "lucide-react";
 import type { Workspace } from "@/lib/types";
+import systemManifest from "@/config/system-manifest.json";
 
 export type Area =
  "Overview" | "Projects" | "Cloud" | "Tasks" | "Chat" | "Memory" | "Models" | "Tools" | "Connections";
@@ -29,26 +30,20 @@ type Module = {
  icon:typeof Cpu;
 };
 
-const modules:Module[] = [
- {title:"Project workspace",subtitle:"WORKSPACE",description:"Project-level organization, separate local histories and repository references.",status:"local",area:"Projects",icon:Layers3},
- {title:"Knowledge core",subtitle:"MEMORY",description:"Brain dumps, deliberate approval and project-scoped memory previews.",status:"local",area:"Memory",icon:BrainCircuit},
- {title:"Model network",subtitle:"AI MODELS",description:"Browse multiple model catalogs. No provider can execute until authorized.",status:"offline",area:"Models",icon:Cpu},
- {title:"Integration hub",subtitle:"CONNECTORS",description:"Public GitHub metadata, OpenAPI design and future authorized adapters.",status:"offline",area:"Connections",icon:Network},
- {title:"Task orchestration",subtitle:"WORKFLOWS",description:"Plan tasks using explicit evidence, checkpoints and project ownership.",status:"local",area:"Tasks",icon:Workflow},
- {title:"Cloud foundation",subtitle:"PERSISTENCE",description:"Authenticated routes and database contracts, not yet connected to infrastructure.",status:"planned",area:"Cloud",icon:Cloud},
- {title:"Tool registry",subtitle:"TOOLS",description:"Inspect public MCP server listings without installing or executing them.",status:"offline",area:"Tools",icon:Code2},
- {title:"Voice interface",subtitle:"INTERACTION",description:"Opt-in browser voice dictation for local brain dumps.",status:"local",area:"Memory",icon:AudioLines}
-];
-
-const futureModules:Module[]=[
- {title:"Agent runtime",subtitle:"AGENTS",description:"Delegation, isolation, versioned actions and verifiable completion.",status:"planned",area:"Tasks",icon:Zap,future:"Durable task workers, sandboxed agents, checkpoints and independent result verification."},
- {title:"Automation engine",subtitle:"AUTOMATION",description:"Scheduled missions, triggers, approvals, retries and controlled execution.",status:"planned",area:"Tasks",icon:Workflow,future:"A durable workflow service with signed triggers, idempotency, human approvals and emergency stop."},
- {title:"Creative studio",subtitle:"GENERATION",description:"A unified home for compatible image, video, audio and specialized tools.",status:"planned",area:"Models",icon:Sparkles,future:"Independent multimodal adapters, private artifact storage and provider permission controls."},
- {title:"Operations analytics",subtitle:"OBSERVABILITY",description:"Measured model usage, cost, task quality and integration reliability.",status:"planned",area:"Overview",icon:Radio,future:"Actual verified telemetry and provider receipts; no fabricated uptime, spending or success rates."},
- {title:"Governance",subtitle:"SECURITY",description:"Exact action grants, sealed credentials, audit trails and fail-closed budgets.",status:"planned",area:"Overview",icon:LockKeyhole,future:"Server-enforced identity, secrets vault, active policy enforcement, data lifecycle and incident recovery."},
- {title:"Developer platform",subtitle:"EXPANSION",description:"Build portable skills, agents and reviewed third-party integrations.",status:"planned",area:"Connections",icon:Code2,future:"Versioned API/SDK, permission-scoped connector sandbox, capability tests and controlled publication."}
-];
-const allModules=[...modules,...futureModules];
+const moduleIcons:Record<string,typeof Cpu>={
+ workspace:Layers3,knowledge:BrainCircuit,models:Cpu,connectors:Network,
+ tasks:Workflow,cloud:Cloud,tools:Code2,voice:AudioLines,agents:Zap,
+ automation:Workflow,studio:Sparkles,analytics:Radio,governance:LockKeyhole,developer:Code2
+};
+// Product feature status and roadmap details have a single reviewed source.
+// Unknown manifest entries are never displayed as active capabilities.
+const allModules:Module[]=systemManifest.modules.map(entry=>({
+ title:entry.title,subtitle:entry.subtitle,description:entry.description,
+ status:entry.status as Module["status"],area:entry.area as Area,
+ future:"future" in entry && typeof entry.future==="string"?entry.future:undefined,
+ icon:moduleIcons[entry.id]||Cpu
+}));
+const modules=allModules.slice(0,8);
 const statusLabel = {
  local:"LOCAL READY",
  offline:"DISCOVERY",
@@ -61,8 +56,8 @@ export default function CommandCenter({workspace,selectedProjectId,onNavigate,on
  const [activityOpen,setActivityOpen]=useState(true);
  const approved=workspace.memories.filter(note=>note.status==="approved");
  const upcoming=useMemo(()=>workspace.tasks
-  .filter(task=>!["completed","cancelled"].includes(task.state))
-  .slice(-5).reverse(),[workspace.tasks]);
+  .filter(task=>(!selectedProjectId||task.projectId===selectedProjectId)&&!["completed","cancelled"].includes(task.state))
+  .slice(-5).reverse(),[workspace.tasks,selectedProjectId]);
  const activeModules=showAll?allModules:modules.slice(0,6);
  return <div className="command-center">
   <section className="command-hero" aria-labelledby="unity-hero-title">

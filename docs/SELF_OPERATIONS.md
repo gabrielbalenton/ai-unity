@@ -42,3 +42,15 @@ The `lib/self-ops/health.mjs` module accepts bounded, minimal observations from 
 - Suggestions are review-required classifications, not commands. The offline contract cannot repair, send email, write code, access secrets or deploy.
 
 Future verified collectors should publish structured signed or otherwise tamper-resistant receipts. Their absence must never be transformed into optimistic summaries such as “all services healthy.” This pure module establishes truthful semantics and tests only; it is **not a deployed monitoring system**.
+
+## Health-to-incident handoff (offline contract)
+
+The pure `planHealthTriage` helper translates the **already scoped and authenticated** health assessment into review-only plans:
+
+- A missing or stale monitor produces **verify monitoring**, not a fabricated outage.
+- A current evidenced down/degraded signal proposes incident triage; it does not claim a cause or attempt repair.
+- If an active incident already exists for the same project/component, the plan references it rather than creating another incident.
+- An unrelated project's incident can never suppress this project's investigation.
+- A previous **closed** incident is not standing permission to repeat a fix. A fresh symptom needs fresh reproduction and verification.
+
+A future authenticated incident-creation service must separately enforce collector/project identity, deduplication with atomic DB constraints, approved incident writes, durable audit and provenance. The offline planner has no network, repository or deployment permissions.

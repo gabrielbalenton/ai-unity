@@ -30,3 +30,15 @@ UNITY itself can be a project, but it must not turn error-log text, external web
 - Real rollbacks, recovery drills and independent integration tests.
 
 Do not describe this as an autonomous self-healing system until those gates are independently verified.
+
+## Offline project health assessment
+
+The `lib/self-ops/health.mjs` module accepts bounded, minimal observations from an **already trusted** collector and an explicit list of components expected within one project. It never performs network checks itself.
+
+- A present, recent and valid success receipt can support a healthy claim for **that exact component only**.
+- A missing, stale or future-dated receipt is **unknown**, not healthy. A project with unknown components is incomplete unless an observed component is down, in which case its overall state is down.
+- Same-timestamp contradictory readings fail closed. The latest earlier reading wins.
+- Only project-authorized components appear in the result. A live implementation must authenticate worker identity, project mapping, evidence references and collector authorization independently.
+- Suggestions are review-required classifications, not commands. The offline contract cannot repair, send email, write code, access secrets or deploy.
+
+Future verified collectors should publish structured signed or otherwise tamper-resistant receipts. Their absence must never be transformed into optimistic summaries such as “all services healthy.” This pure module establishes truthful semantics and tests only; it is **not a deployed monitoring system**.

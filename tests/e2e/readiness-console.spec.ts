@@ -1,17 +1,9 @@
-import {test,expect,Page} from "@playwright/test";
-
-async function openReadiness(page:Page,isMobile:boolean){
- if(isMobile){
-  await page.getByRole("navigation",{name:"Mobile primary navigation"}).getByRole("button",{name:"More",exact:true}).click();
- }else{
-  await page.getByRole("navigation",{name:"Primary navigation"}).getByRole("button",{name:"More",exact:true}).click();
- }
- await page.getByRole("navigation",{name:"Primary navigation"}).getByRole("button",{name:/^Release Readiness/}).click();
-}
+import {test,expect} from "@playwright/test";
+import {openAdvanced} from "./helpers";
 
 test("release readiness renders real gates with no fake verification and captures responsive UI",async({page,isMobile},testInfo)=>{
  await page.goto("/");
- await openReadiness(page,isMobile);
+ await openAdvanced(page,"Release Readiness",isMobile);
  await expect(page.locator("h1")).toHaveText("Release Readiness");
  await expect(page.getByText("RELEASE LOCKED",{exact:true}).first()).toBeVisible();
  await expect(page.getByText("Evidence before launch.")).toBeVisible();

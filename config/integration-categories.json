@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "status": "planned",
+  "notice": "Provider listing does not imply connection or permission.",
+  "categories": [
+    {
+      "category": "Project management",
+      "providers": [
+        "Notion",
+        "Asana",
+        "monday.com",
+        "ClickUp",
+        "Airtable",
+        "Jira"
+      ]
+    },
+    {
+      "category": "Productivity",
+      "providers": [
+        "Google Workspace",
+        "Microsoft 365",
+        "Google Drive",
+        "SharePoint"
+      ]
+    },
+    {
+      "category": "Email and calendar",
+      "providers": [
+        "Gmail",
+        "Outlook",
+        "Google Calendar",
+        "Calendly",
+        "Cal.com"
+      ]
+    },
+    {
+      "category": "Meetings and messaging",
+      "providers": [
+        "Google Meet",
+        "Microsoft Teams",
+        "Zoom",
+        "Slack"
+      ]
+    },
+    {
+      "category": "Marketing",
+      "providers": [
+        "Brevo",
+        "Mailchimp",
+        "Klaviyo",
+        "Google Analytics"
+      ]
+    },
+    {
+      "category": "CRM",
+      "providers": [
+        "HubSpot",
+        "Salesforce",
+        "Pipedrive",
+        "Zoho CRM"
+      ]
+    },
+    {
+      "category": "Development",
+      "providers": [
+        "GitHub",
+        "GitLab",
+        "Vercel",
+        "Railway",
+        "Supabase"
+      ]
+    },
+    {
+      "category": "Finance",
+      "providers": [
+        "Xero",
+        "QuickBooks",
+        "Stripe"
+      ]
+    },
+    {
+      "category": "Phone and interviews",
+      "providers": [
+        "Supported telephony services"
+      ]
+    },
+    {
+      "category": "Local computer",
+      "providers": [
+        "Permission-scoped desktop companion"
+      ]
+    }
+  ]
+}

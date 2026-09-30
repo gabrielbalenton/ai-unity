@@ -25,7 +25,7 @@ test("dangerous workflow patterns are explicitly rejected",()=>{
 test("independent recovery artifacts are excluded from source control",()=>{
  const ignore=read(".gitignore");
  assert.match(ignore,/recovery\//);
- assert.match(ignore(/\*\.bundle/));
+ assert.match(ignore,/\*\.bundle/);
 });
 test("security policy treats leaked credentials as compromised",()=>{
  const policy=read("SECURITY.md");

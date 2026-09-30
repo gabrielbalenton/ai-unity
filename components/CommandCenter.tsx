@@ -11,7 +11,7 @@ import type { Workspace } from "@/lib/types";
 import systemManifest from "@/config/system-manifest.json";
 
 export type Area =
- "Overview" | "Briefing" | "Projects" | "Cloud" | "Tasks" | "Chat" | "Memory" | "Models" | "Tools" | "Connections" | "Readiness";
+ "Overview" | "Projects" | "Chat" | "Memory" | "Settings" | "Briefing" | "Tasks" | "Cloud" | "Models" | "Tools" | "Connections" | "Readiness";
 
 type Props = {
  workspace:Workspace;

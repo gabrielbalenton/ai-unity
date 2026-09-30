@@ -1,4 +1,4 @@
-/** Shared narrow cookie update shape compatible with Next.js 15 and Supabase SSR. */
+/** Shared narrow cookie update shape compatible with Next.js 16 and Supabase SSR. */
 export type CookieUpdate={
  name:string;value:string;
  options?:{

@@ -51,11 +51,11 @@ Owner's development sequence: **GitHub first. No Vercel deployment or external a
 - [x] Proposed owner-scoped database schema with initial RLS policies, not applied anywhere.
 - [x] Expanded SQL design for conversations, tasks, revisions, approvals, usage and agents, **not applied**.
 - [x] Offline approved-memory-only task context and project-scope tests.
-- [ ] Create a **separate** non-production UNITY backend; never reuse another client's database.
+- [x] Create a **separate** non-production UNITY backend; dedicated isolated test project exists. Real Auth and private workspace connections remain pending.
 - [x] Optional Supabase SSR Auth and owner-scoped API source code scaffolded (not connected or live-tested).
-- [ ] Set up current supported Supabase Auth with real server-side token checks against a dedicated database.
+- [ ] Set up current supported Supabase Auth with real server-side token checks against the new dedicated database.
 - [ ] Implement real per-project persistent tables, transactional writes and signed audit history.
-- [ ] Execute SQL migrations on a dedicated local/test database and run security advisors.
+- [ ] Complete and live-test all required SQL migrations on the dedicated Supabase test project; the initial owner-scoped schema is installed and has no current security-advisor lints, but advanced proposals and real auth tests remain outstanding.
 - [ ] Two-user and two-project tests for all table reads, writes, searches and imported data.
 - [x] Offline versioned memory core with explicit approval, conflict checks and revocation tests (not authenticated or persistent).
 - [x] Transactional owner-checked server memory approval function and API proposal, with audit/version writes (not installed or live-tested).

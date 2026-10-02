@@ -24,5 +24,6 @@ test("Auth documentation names actual version and does not claim activation",()=
  const docs=readFileSync(path("docs/AUTH_INTEGRATION.md"),"utf8");
  assert.match(docs,/Next\.js \*\*16\*\* `proxy\.ts`/);
  assert.match(docs,/not an authorization substitute/);
- assert.match(docs,/No Supabase project has been created or modified/);
+ assert.match(docs,/dedicated UNITY Supabase project/);
+ assert.match(docs,/API routes are \*\*not yet connected or live-tested\*\*/);
 });

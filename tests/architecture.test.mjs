@@ -11,7 +11,7 @@ test("project identity and memory approval exist in client",()=>{
 test("secrets and non-functional integrations are explicitly disclaimed",()=>{
  const readme=read("README.md");
  assert.match(readme,/not production-ready/i);
- assert.match(readme,/no real account connections/i);
+ assert.match(readme,/external accounts are \*\*not yet connected\*\*/i);
  const page=read("app/page.tsx");
  assert.match(page,/not encrypted/i);
 });

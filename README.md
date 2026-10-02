@@ -16,7 +16,7 @@ Personal alpha: a provider-independent AI workspace, built in public during the 
 - Optional Supabase SSR Auth, owner-scoped project/draft-memory routes, unactivated transactional memory approval and a separate cloud workspace UI; **not activated or live-verified**. See `docs/AUTH_INTEGRATION.md`.
 - Offline versioned memory approval, conflict detection and revocation rules (not yet persisted or authenticated); see `docs/MEMORY_VERSIONING.md`.
 - Authentication-sensitive JSON routes and dormant GitHub webhook intake now enforce actual streamed byte limits, not just client-supplied Content-Length.
-- Architecture and a planned Supabase schema; no real account connections yet.
+- Architecture and a dedicated UNITY test database with the initial four owner-scoped tables created; the app, real authentication, AI execution and external accounts are **not yet connected**.
 
 See `docs/LOCAL_FIRST_CONTRACT.md` for the GitHub-first development and deployment boundary.
 
@@ -67,4 +67,4 @@ See [Deployment and infrastructure checklist](docs/DEPLOYMENT_CHECKLIST.md) for 
 ## Principles
 One approved source of truth per project; evidence over model claims; no production changes or spending without approval; portable providers and memory.
 
-Start with `AGENTS.md` and `docs/FEATURE_MATRIX.md` to understand the current verified scope. Architectural decisions are recorded in `docs/DECISIONS.md`. See `docs/ARCHITECTURE.md`, `docs/ROADMAP.md` and `supabase/migrations/0001_core.sql`. The migration is a design artifact until backend authentication and server authorization are implemented.
+Start with `AGENTS.md` and `docs/FEATURE_MATRIX.md` to understand the current verified scope. Architectural decisions are recorded in `docs/DECISIONS.md`. See `docs/ARCHITECTURE.md`, `docs/ROADMAP.md` and `supabase/migrations/0001_core.sql`. The initial owner-scoped migration has been applied to the dedicated UNITY test database. More advanced schema proposals and live backend authorization still require independent review and verification.

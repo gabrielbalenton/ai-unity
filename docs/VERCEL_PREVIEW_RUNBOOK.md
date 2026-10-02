@@ -2,6 +2,12 @@
 
 This runbook is for the **first hosted preview**, not production activation. The owner asked to finish and review the application in GitHub first, then connect Vercel and configure external services afterward.
 
+## October 2 backend status
+
+A dedicated UNITY Supabase test project now exists, with only the reviewed initial owner-scoped tables installed. Do **not** connect its publishable key, enable sign-in, upload client data or activate other providers before a protected test deployment and real end-to-end isolation checks.
+
+If using Vercel Hobby, Vercel Authentication with **Standard Protection** can protect preview URLs but **does not protect production domains**. Keep the first test limited to a non-sensitive disconnected preview, confirm the actual URL redirects unauthenticated visitors, and do not mistake a random URL for private access. No paid protection add-ons are authorized.
+
 ## Preview objective
 
 Deploy the exact reviewed GitHub commit so the owner can inspect responsive UI and existing offline/local functionality in a real browser. The first preview must work with **no secrets** and must not silently activate external execution.

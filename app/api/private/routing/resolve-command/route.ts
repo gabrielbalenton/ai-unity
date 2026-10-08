@@ -40,6 +40,7 @@ export async function POST(request:Request){
   if(resolution.status==="invalid_command")return NextResponse.json({error:"Use an explicit project command such as ‘Switch to FPX’."},{status:400,headers});
   if(resolution.status==="not_found")return NextResponse.json({error:"No owned UNITY project matches that exact project name."},{status:404,headers});
   if(resolution.status==="ambiguous")return NextResponse.json({error:"More than one owned UNITY project matches that name. Select the project manually."},{status:409,headers});
+  if(!resolution.project)return NextResponse.json({error:"Project resolution failed closed"},{status:409,headers});
   const project=resolution.project;
 
   const bindingResult=await admin.from("project_account_bindings").select("resource_id,permission_mode,account_connection_id").eq("project_id",project.id).limit(100);

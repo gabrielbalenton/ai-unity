@@ -1,0 +1,9 @@
+pre-commit:
+  jobs:
+    - name: unity-qa-commit
+      run: npm run qa:commit
+
+pre-push:
+  jobs:
+    - name: unity-qa-push
+      run: npm run qa:push

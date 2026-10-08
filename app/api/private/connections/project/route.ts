@@ -1,0 +1,53 @@
+import {NextResponse} from "next/server";
+import {isSupabaseConfigured} from "@/lib/supabase/config";
+import {getVerifiedUser} from "@/lib/supabase/server";
+import {createSupabaseAdmin,isSupabaseAdminConfigured} from "@/lib/supabase/admin";
+
+export const dynamic="force-dynamic";
+const headers={"Cache-Control":"private, no-store"};
+const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+export async function GET(request:Request){
+ if(!isSupabaseConfigured()||!isSupabaseAdminConfigured())
+  return NextResponse.json({error:"Connection backend is not configured"},{status:503,headers});
+ const url=new URL(request.url);
+ const projectId=url.searchParams.get("projectId")||"";
+ if(!UUID.test(projectId))return NextResponse.json({error:"Invalid project"},{status:400,headers});
+ try{
+  const {user}=await getVerifiedUser();
+  if(!user)return NextResponse.json({error:"Authentication required"},{status:401,headers});
+  const admin=createSupabaseAdmin();
+  const {data:project,error:projectError}=await admin.from("projects")
+   .select("id").eq("id",projectId).eq("owner_id",user.id).maybeSingle();
+  if(projectError)return NextResponse.json({error:"Project service unavailable"},{status:503,headers});
+  if(!project)return NextResponse.json({error:"Project not found"},{status:404,headers});
+
+  const {data:bindings,error:bindingError}=await admin.from("project_account_bindings")
+   .select("resource_id,permission_mode,account_connection_id")
+   .eq("project_id",projectId).limit(100);
+  if(bindingError)return NextResponse.json({error:"Connection storage is not ready"},{status:503,headers});
+  const connectionIds=[...new Set((bindings??[]).map(item=>item.account_connection_id).filter(Boolean))];
+  if(connectionIds.length===0)return NextResponse.json({connections:[]},{headers});
+
+  const {data:accounts,error:accountError}=await admin.from("account_connections")
+   .select("id,provider,account_label,status,updated_at")
+   .eq("owner_id",user.id).in("id",connectionIds).limit(100);
+  if(accountError)return NextResponse.json({error:"Connection storage is not ready"},{status:503,headers});
+  const byId=new Map((accounts??[]).map(item=>[item.id,item]));
+  const safe=(bindings??[]).flatMap(binding=>{
+   const account=byId.get(binding.account_connection_id);
+   if(!account)return [];
+   return [{
+    provider:account.provider,
+    accountLabel:account.account_label,
+    status:account.status,
+    resourceId:binding.resource_id,
+    permissionMode:binding.permission_mode,
+    updatedAt:account.updated_at
+   }];
+  });
+  return NextResponse.json({connections:safe},{headers});
+ }catch{
+  return NextResponse.json({error:"Connection status unavailable"},{status:503,headers});
+ }
+}

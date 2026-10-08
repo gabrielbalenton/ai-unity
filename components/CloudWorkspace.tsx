@@ -5,6 +5,7 @@ import {isSupabaseConfigured} from "@/lib/supabase/config";
 import {createBrowserSupabase} from "@/lib/supabase/browser";
 import ProjectControlPlane,{type ProjectControlPlaneSummary} from "@/components/ProjectControlPlane";
 import VercelConnectPanel from "@/components/VercelConnectPanel";
+import CloudCommandConsole from "@/components/CloudCommandConsole";
 
 type Project={id:string;name:string;description:string;created_at:string};
 type Memory={id:string;project_id:string;title:string;body:string;status:string;updated_at:string;evidence_ref:string|null};
@@ -196,6 +197,7 @@ export default function CloudWorkspace(){
    <form onSubmit={submitProject}><label>New project<input required minLength={2} maxLength={100} value={projectName} onChange={event=>setProjectName(event.target.value)}/></label><button disabled={busy||projectName.trim().length<2} className="primary">Create cloud project</button></form>
    <label>Selected project<select value={projectId} onChange={event=>setProjectId(event.target.value)}><option value="">Select a cloud project</option>{projects.map(project=><option key={project.id} value={project.id}>{project.name}</option>)}</select></label>
 
+   <CloudCommandConsole disabled={busy} onProjectResolved={(project,summary)=>{setProjectId(project.id);setControlPlane(summary);setStatus(`Resolved ${project.name}. Routing was checked only; nothing was executed.`);}}/>
    <ProjectControlPlane summary={controlPlane}/>
 
    <div className="controls"><button type="button" className="primary" disabled={busy||!projectId||Boolean(openRouter)} onClick={()=>void startProvider("openrouter")}>{openRouter?"OpenRouter connected":"Connect OpenRouter"}</button><small>{openRouter?"Key stored securely":"One-click authorization; key never appears in the browser."}</small></div>

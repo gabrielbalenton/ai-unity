@@ -11,6 +11,10 @@
     "check:repo": "node scripts/check-repository.mjs",
     "readiness": "node scripts/readiness.mjs",
     "test:e2e": "playwright test",
+    "qa:commit": "npm test && npm run typecheck && npm run check:repo",
+    "qa:push": "npm run verify:release",
+    "guard:install": "npx --yes lefthook@2.1.17 install",
+    "guard:validate": "npx --yes lefthook@2.1.17 validate",
     "verify:release": "npm test && npm run typecheck && npm run check:repo && npm run readiness && npm run build"
   },
   "dependencies": {

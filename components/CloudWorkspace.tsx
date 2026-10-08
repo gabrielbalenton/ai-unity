@@ -63,6 +63,24 @@ export default function CloudWorkspace(){
   }catch(error){setStatus(error instanceof Error?error.message:"Cloud project failed")}
   finally{setBusy(false)}
  }
+ async function connectOpenRouter(){
+  if(!configured||!authenticated||!projectId||busy)return;
+  setBusy(true);setStatus("");
+  try{
+   const res=await fetch("/api/private/connect/openrouter/start",{
+    method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({projectId})
+   });
+   const data:ApiError&{authorizationUrl?:string}=await res.json();
+   if(!res.ok||!data.authorizationUrl)throw Error(data.error||"OpenRouter connection could not be started");
+   const target=new URL(data.authorizationUrl);
+   if(target.origin!=="https://openrouter.ai")throw Error("Unexpected OpenRouter authorization destination");
+   window.location.assign(target.toString());
+  }catch(error){
+   setStatus(error instanceof Error?error.message:"OpenRouter connection failed");
+   setBusy(false);
+  }
+ }
  async function submitMemory(e:React.FormEvent<HTMLFormElement>){
   e.preventDefault();if(!configured||!authenticated||!projectId||busy)return;
   setBusy(true);setStatus("");
@@ -127,6 +145,10 @@ export default function CloudWorkspace(){
     <option value="">Select a cloud project</option>
     {projects.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}
    </select></label>
+   <div className="controls">
+    <button type="button" className="primary" disabled={busy||!projectId} onClick={()=>void connectOpenRouter()}>{busy?"Please wait...":"Connect OpenRouter"}</button>
+    <small>Opens OpenRouter authorization for this exact cloud project. No API key is shown in the browser.</small>
+   </div>
    {status&&<p role="status" className="notice">{status}</p>}
   </section>
   <section className="panel">

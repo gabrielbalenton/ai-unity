@@ -34,7 +34,7 @@ Expected deliberately disconnected areas:
 
 - Framework: Next.js.
 - Node.js: 22.x (also declared in package.json).
-- Install: `npm install --no-audit --no-fund`.
+- Install: `npm ci --no-audit --no-fund`.
 - Build: `npm run build`.
 - Root directory: repository root.
 - Do not add a production domain yet.

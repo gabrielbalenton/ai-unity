@@ -57,6 +57,51 @@ test("vault exchanges machine identity credentials and retrieves exactly one map
   assert.equal(calls[1].options.headers.Authorization,"Bearer short-lived-access-token");
 });
 
+test("vault creates a mapped secret without returning the secret value",async()=>{
+  const calls=[];
+  const fakeFetch=async(url,options={})=>{
+    calls.push({url:String(url),options});
+    if(String(url).endsWith("/api/v1/auth/universal-auth/login"))
+      return {ok:true,json:async()=>({accessToken:"short-lived-access-token"})};
+    return {ok:true,status:200,json:async()=>({secret:{secretValue:"must-not-leave-vault"}})};
+  };
+  const vault=createInfisicalVault({
+    locations:createInfisicalLocationRegistry([location()]),
+    getBootstrapCredentials:async()=>({clientId:"fake-client-id",clientSecret:"fake-client-secret"}),
+    fetchImpl:fakeFetch
+  });
+  const result=await vault.putSecret("secret:openrouter/fpx/main","new-fake-provider-value");
+  assert.deepEqual(result,{stored:true,secretRef:"secret:openrouter/fpx/main"});
+  assert.equal(calls[1].options.method,"POST");
+  const body=JSON.parse(calls[1].options.body);
+  assert.equal(body.projectId,"infisical-project-1");
+  assert.equal(body.environment,"prod");
+  assert.equal(body.secretPath,"/unity/fpx");
+  assert.equal(body.secretValue,"new-fake-provider-value");
+  assert.equal(JSON.stringify(result).includes("new-fake-provider-value"),false);
+  assert.equal(JSON.stringify(result).includes("must-not-leave-vault"),false);
+});
+
+test("vault replaces an existing secret after create conflict",async()=>{
+  const writes=[];
+  const fakeFetch=async(url,options={})=>{
+    if(String(url).endsWith("/api/v1/auth/universal-auth/login"))
+      return {ok:true,json:async()=>({accessToken:"short-lived-access-token"})};
+    writes.push({url:String(url),options});
+    if(options.method==="POST")return {ok:false,status:409,json:async()=>({})};
+    return {ok:true,status:200,json:async()=>({secret:{secretValue:"hidden"}})};
+  };
+  const vault=createInfisicalVault({
+    locations:createInfisicalLocationRegistry([location()]),
+    getBootstrapCredentials:async()=>({clientId:"fake-client-id",clientSecret:"fake-client-secret"}),
+    fetchImpl:fakeFetch
+  });
+  const result=await vault.putSecret("secret:openrouter/fpx/main","replacement-fake-value");
+  assert.equal(result.stored,true);
+  assert.deepEqual(writes.map(item=>item.options.method),["POST","PATCH"]);
+  assert.equal(JSON.parse(writes[1].options.body).secretValue,"replacement-fake-value");
+});
+
 test("vault refuses unreviewed hosts, unknown refs and missing machine identity",async()=>{
   const registry=createInfisicalLocationRegistry([location()]);
   assert.throws(()=>createInfisicalVault({
@@ -73,6 +118,7 @@ test("vault refuses unreviewed hosts, unknown refs and missing machine identity"
   });
   await assert.rejects(()=>vault.useSecret("secret:unknown/service/key",async()=>null),/Unknown Infisical secret reference/);
   await assert.rejects(()=>vault.useSecret("secret:openrouter/fpx/main",async()=>null),/machine identity is not configured/);
+  await assert.rejects(()=>vault.putSecret("secret:unknown/service/key","value"),/Unknown Infisical secret reference/);
 });
 
 test("Infisical errors are sanitized and never echo remote bodies",async()=>{

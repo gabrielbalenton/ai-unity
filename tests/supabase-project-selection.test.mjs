@@ -24,7 +24,7 @@ test("Supabase project selection re-fetches provider list instead of trusting br
  assert.match(selection,/checkWriteOrigin/);
  assert.match(selection,/readBoundedJson/);
  assert.match(selection,/listSupabaseProjects\(\{accessToken:typed\.accessToken\}\)/);
- assert.match(selection,/allowedProjects\.find\(\(?item(?::SupabaseProviderProject)?\)?=>item\.ref===parsed\.data\.supabaseProjectRef\)/);
+ assert.match(selection,/allowedProjects\.find\(\(?item(?::SupabaseProject)?\)?=>item\.ref===parsed\.data\.supabaseProjectRef\)/);
  assert.match(selection,/not authorized for this account/);
 });
 

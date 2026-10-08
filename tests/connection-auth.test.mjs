@@ -10,12 +10,21 @@ test("verified redirect-capable services can offer one-click setup",()=>{
   assert.equal(canOfferOneClick("github"),true);
   assert.equal(canOfferOneClick("supabase"),true);
   assert.equal(canOfferOneClick("openrouter"),true);
+  assert.equal(canOfferOneClick("vercel"),true);
 });
 
-test("unverified or key-based services do not pretend to support one-click OAuth",()=>{
-  for(const service of ["vercel","gemini","groq","mistral","huggingface","cerebras"]){
+test("key-based services do not pretend to support one-click OAuth",()=>{
+  for(const service of ["gemini","groq","mistral","huggingface","cerebras"]){
     assert.equal(canOfferOneClick(service),false);
   }
+});
+
+test("Vercel external integration planning remains inert",()=>{
+  const plan=planConnectionAuthorization({service:"vercel",projectId:"fpx-project"});
+  assert.equal(plan.kind,"external_integration_oauth");
+  assert.equal(plan.interactive,true);
+  assert.equal(plan.secretDestination,"server_vault");
+  assert.equal(plan.executable,false);
 });
 
 test("connection planning remains inert and project scoped",()=>{

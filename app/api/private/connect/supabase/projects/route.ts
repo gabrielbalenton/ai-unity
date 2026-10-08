@@ -40,12 +40,14 @@ export async function GET(request:Request){
    environment:bootstrap.environment,secretPath:secretPath(bootstrap.secretPath,projectId)
   })]);
   const vault=createInfisicalVault({locations:registry,getBootstrapCredentials:async()=>({clientId:bootstrap.clientId,clientSecret:bootstrap.clientSecret})});
-  const projects=await vault.useSecret(expectedRef,async raw=>{
-   let bundle;
+  const projects=await vault.useSecret(expectedRef,async (raw:string)=>{
+   let bundle:unknown;
    try{bundle=JSON.parse(raw)}catch{throw new Error("Stored Supabase authorization is invalid")}
-   if(!bundle||bundle.version!==1||typeof bundle.accessToken!=="string")throw new Error("Stored Supabase authorization is invalid");
-   if(typeof bundle.expiresAt==="string"&&Date.parse(bundle.expiresAt)<=Date.now())throw new Error("Supabase authorization expired");
-   return listSupabaseProjects({accessToken:bundle.accessToken});
+   if(!bundle||typeof bundle!=="object"||!("version" in bundle)||!("accessToken" in bundle))throw new Error("Stored Supabase authorization is invalid");
+   const typed=bundle as {version?:unknown;accessToken?:unknown;expiresAt?:unknown};
+   if(typed.version!==1||typeof typed.accessToken!=="string")throw new Error("Stored Supabase authorization is invalid");
+   if(typeof typed.expiresAt==="string"&&Date.parse(typed.expiresAt)<=Date.now())throw new Error("Supabase authorization expired");
+   return listSupabaseProjects({accessToken:typed.accessToken});
   });
   return NextResponse.json({projects},{headers});
  }catch(error){

@@ -1,84 +1,14 @@
 {
   "strategies": [
-    {
-      "service":"github",
-      "kind":"github_app_installation",
-      "interactive":true,
-      "secretDestination":"server_vault",
-      "status":"ready_for_app_registration",
-      "note":"User installs a dedicated UNITY GitHub App and chooses repository scope. Installation credentials remain server-side."
-    },
-    {
-      "service":"supabase",
-      "kind":"oauth2_authorization_code",
-      "interactive":true,
-      "secretDestination":"server_vault",
-      "status":"ready_for_oauth_app_registration",
-      "note":"Use Supabase Management API OAuth with explicit scopes. Start read-only and request write scopes only when needed."
-    },
-    {
-      "service":"openrouter",
-      "kind":"oauth_pkce",
-      "interactive":true,
-      "secretDestination":"server_vault",
-      "status":"ready_for_callback_configuration",
-      "note":"OpenRouter redirects back with an authorization code; UNITY exchanges it server-side for a user-controlled API key and stores only a vault reference."
-    },
-    {
-      "service":"vercel",
-      "kind":"vault_credential",
-      "interactive":false,
-      "secretDestination":"server_vault",
-      "status":"verified_one_click_account_flow_pending",
-      "note":"Do not claim one-click Vercel account authorization until UNITY's exact supported Vercel account flow is verified."
-    },
-    {
-      "service":"gemini",
-      "kind":"vault_credential",
-      "interactive":false,
-      "secretDestination":"server_vault",
-      "status":"api_key_setup",
-      "note":"Google sign-in to AI Studio does not itself authorize UNITY."
-    },
-    {
-      "service":"groq",
-      "kind":"vault_credential",
-      "interactive":false,
-      "secretDestination":"server_vault",
-      "status":"api_key_setup",
-      "note":"Provider dashboard sign-in remains separate from API authorization."
-    },
-    {
-      "service":"mistral",
-      "kind":"vault_credential",
-      "interactive":false,
-      "secretDestination":"server_vault",
-      "status":"api_key_setup",
-      "note":"Provider dashboard sign-in remains separate from API authorization."
-    },
-    {
-      "service":"huggingface",
-      "kind":"vault_credential",
-      "interactive":false,
-      "secretDestination":"server_vault",
-      "status":"access_token_setup",
-      "note":"Access token is stored in the vault, never in project records."
-    },
-    {
-      "service":"cerebras",
-      "kind":"vault_credential",
-      "interactive":false,
-      "secretDestination":"server_vault",
-      "status":"optional_api_key_setup",
-      "note":"Optional provider; UNITY must not use paid capacity automatically."
-    }
+    {"service":"github","kind":"github_app_installation","interactive":true,"secretDestination":"server_vault","status":"ready_for_app_registration","note":"User installs a dedicated UNITY GitHub App and chooses repository scope. Installation credentials remain server-side."},
+    {"service":"supabase","kind":"oauth2_authorization_code","interactive":true,"secretDestination":"server_vault","status":"ready_for_oauth_app_registration","note":"Use Supabase Management API OAuth with explicit scopes. Start read-only and request write scopes only when needed."},
+    {"service":"openrouter","kind":"oauth_pkce","interactive":true,"secretDestination":"server_vault","status":"ready_for_callback_configuration","note":"OpenRouter redirects back with an authorization code; UNITY exchanges it server-side for a user-controlled API key and stores only a vault reference."},
+    {"service":"vercel","kind":"external_integration_oauth","interactive":true,"secretDestination":"server_vault","status":"ready_for_integration_registration","note":"Use Vercel's external integration installation flow. The token stays server-side; bind one exact Vercel project read-only before any action is allowed."},
+    {"service":"gemini","kind":"vault_credential","interactive":false,"secretDestination":"server_vault","status":"api_key_setup","note":"Google sign-in to AI Studio does not itself authorize UNITY."},
+    {"service":"groq","kind":"vault_credential","interactive":false,"secretDestination":"server_vault","status":"api_key_setup","note":"Provider dashboard sign-in remains separate from API authorization."},
+    {"service":"mistral","kind":"vault_credential","interactive":false,"secretDestination":"server_vault","status":"api_key_setup","note":"Provider dashboard sign-in remains separate from API authorization."},
+    {"service":"huggingface","kind":"vault_credential","interactive":false,"secretDestination":"server_vault","status":"access_token_setup","note":"Access token is stored in the vault, never in project records."},
+    {"service":"cerebras","kind":"vault_credential","interactive":false,"secretDestination":"server_vault","status":"optional_api_key_setup","note":"Optional provider; UNITY must not use paid capacity automatically."}
   ],
-  "rules":[
-    "A website login is not an API authorization.",
-    "Redirect-based authorization must use state/PKCE or provider-equivalent anti-forgery protection.",
-    "Authorization callbacks exchange credentials only on the server.",
-    "Raw access tokens and API keys are written to the vault and never returned to the browser.",
-    "Provider scopes start read-only whenever the provider supports scoped authorization.",
-    "Unknown or unverified authorization methods fail closed."
-  ]
+  "rules":["A website login is not an API authorization.","Redirect-based authorization must use state/PKCE or provider-equivalent anti-forgery protection.","Authorization callbacks exchange credentials only on the server.","Raw access tokens and API keys are written to the vault and never returned to the browser.","Provider scopes start read-only whenever the provider supports scoped authorization.","Unknown or unverified authorization methods fail closed."]
 }

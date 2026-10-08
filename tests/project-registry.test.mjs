@@ -3,9 +3,11 @@ import assert from "node:assert/strict";
 import {
   createProjectProfile,
   createProjectRegistry,
+  validateProjectAccountBindings,
   routeProjectProfile,
   getProjectProfile
 } from "../lib/infrastructure/project-registry.mjs";
+import { createAccountConnectionRegistry } from "../lib/infrastructure/account-connections.mjs";
 
 const fpx = {
   id: "fpx",
@@ -17,6 +19,36 @@ const fpx = {
   },
   productionUrl: "https://www.fpx.nz/"
 };
+
+const accounts = createAccountConnectionRegistry([
+  {
+    id: "github-fpx",
+    provider: "github",
+    accountLabel: "FPX GitHub",
+    signInMethod: "google",
+    authMethod: "github_app_ref",
+    secretRef: "secret:accounts/github/fpx",
+    status: "ready"
+  },
+  {
+    id: "vercel-fpx",
+    provider: "vercel",
+    accountLabel: "FPX Vercel",
+    signInMethod: "github",
+    authMethod: "api_key_ref",
+    secretRef: "secret:accounts/vercel/fpx",
+    status: "ready"
+  },
+  {
+    id: "supabase-fpx",
+    provider: "supabase",
+    accountLabel: "FPX Supabase",
+    signInMethod: "github",
+    authMethod: "api_key_ref",
+    secretRef: "secret:accounts/supabase/fpx",
+    status: "ready"
+  }
+]);
 
 test("project profile maps multiple providers without storing credentials", () => {
   const profile = createProjectProfile(fpx);
@@ -37,6 +69,24 @@ test("credentials are rejected from project resources", () => {
 
 test("registry rejects duplicate project identities", () => {
   assert.throws(() => createProjectRegistry([fpx, fpx]), /Duplicate project id/);
+});
+
+test("project bindings resolve exact GitHub, Vercel and Supabase accounts", () => {
+  const profile = createProjectProfile(fpx);
+  const bound = validateProjectAccountBindings(profile, accounts);
+  assert.equal(bound.bindings.github.accountLabel, "FPX GitHub");
+  assert.equal(bound.bindings.vercel.connectionId, "vercel-fpx");
+  assert.equal(bound.bindings.supabase.resourceId, "project:example-ref");
+});
+
+test("wrong account provider cannot satisfy a project binding", () => {
+  const profile = createProjectProfile({
+    ...fpx,
+    resources: {
+      github: { connectorId: "vercel-fpx", resourceId: "repo:wrong" }
+    }
+  });
+  assert.throws(() => validateProjectAccountBindings(profile, accounts), /provider mismatch/);
 });
 
 test("routing returns exact account connector and resource references", () => {

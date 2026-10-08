@@ -7,6 +7,7 @@ import {buildProjectControlPlane} from "@/lib/infrastructure/project-connections
 export const dynamic="force-dynamic";
 const headers={"Cache-Control":"private, no-store"};
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+type SafeConnection={provider:string;accountLabel:string;status:string;resourceId:string;permissionMode:string;updatedAt:string};
 
 export async function GET(request:Request){
  if(!isSupabaseConfigured()||!isSupabaseAdminConfigured())return NextResponse.json({error:"Connection backend is not configured"},{status:503,headers});
@@ -30,7 +31,7 @@ export async function GET(request:Request){
    accounts=result.data??[];
   }
   const byId=new Map(accounts.map(item=>[item.id,item]));
-  const safe=(bindings??[]).flatMap(binding=>{
+  const safe:SafeConnection[]=(bindings??[]).flatMap((binding):SafeConnection[]=>{
    const account=byId.get(binding.account_connection_id);if(!account)return [];
    return [{provider:account.provider,accountLabel:account.account_label,status:account.status,resourceId:binding.resource_id,permissionMode:binding.permission_mode,updatedAt:account.updated_at}];
   });

@@ -15,11 +15,11 @@ test("provider records store secret references, never plaintext credentials", ()
   assert.equal(record.zeroPaidOnly, true);
 });
 
-test("plaintext-looking credentials cannot be used as provider secret refs", () => {
+test("plaintext-like values cannot be used as provider secret refs", () => {
   assert.throws(() => createProviderRecord({
     id: "google",
     displayName: "Google AI Studio",
-    secretRef: "AIza-this-is-not-a-secret-reference",
+    secretRef: "plain-text-value-not-a-secret-reference",
     status: "ready"
   }), /secret reference/);
 });

@@ -1,40 +1,41 @@
-# GitHub App connection: offline transport and activation plan
+# GitHub App connection and activation plan
 
-The current release implements **server-only cryptographic transport code**, not a live GitHub installation, OAuth login or an operating connection.
+UNITY uses a GitHub App for project-scoped GitHub access. The integration is intentionally read-only until a later, separately approved write milestone.
 
-## What exists
-- RS256 GitHub App JWT creation, using GitHub's documented short expiry and backdated issue time.
-- Raw-body HMAC SHA-256 verification for eventual GitHub webhooks.
-- Inert installation event normalization: events are NOT applied to any account or grant.
-- Token request restricted to explicit repository IDs and requested read-only contents/metadata permissions.
-- Read-only repository metadata retrieval filters returned records by explicit permitted IDs and uses bounded pagination.
-- Mocked unit tests run entirely offline; there are no real GitHub tokens in the repository.
+## One-click connection contract
 
-References: https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-json-web-token-jwt-for-a-github-app and https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app-installation .
+The Connect GitHub flow is designed around GitHub's documented **Request user authorization (OAuth) during installation** option. When the UNITY GitHub App is registered, that option must be enabled. The app installation URL may carry UNITY's short-lived `state` value; after installation GitHub starts the web application authorization flow and returns the user to the configured callback URL with an authorization `code`.
 
-## Activation prerequisites (later, with owner approval)
-1. Provision a dedicated UNITY backend, enable server-verified authentication and validate project isolation.
-2. Register a UNITY-specific GitHub App with minimal read-only permission, and configure exactly approved callback/webhook addresses.
-3. Keep GitHub App private keys and webhook secrets server-side in approved secrets storage, never in GitHub source, public environment values or client storage.
-4. Bind every installation, account, authorized repository ID and permission to one authenticated UNITY project.
-5. Validate raw webhook signatures **before parsing**; persist delivery IDs in a durable deduplication table, with replay rejection and revocation.
-6. Obtain installation tokens on demand for only currently authorized repositories. Never return installation tokens to browser clients or AI models.
-7. After a live call, verify GitHub installation repo access against stored project grants and cross-project denial.
-8. Deploy read-only API routes and independently test failure cases: missing grants, revoked installs, 403/429 responses and secret rotation.
+This is deliberately different from GitHub's optional setup URL. If Request user authorization during installation is enabled, GitHub uses the callback URL rather than a setup URL for this flow. UNITY must never trust a setup URL `installation_id` by itself.
 
-No installation events mutate storage until all these conditions are satisfied. Requests to third-party systems are prohibited by default. Public repository lookup remains a separate, unauthenticated preview.
+The user access token is stored only in Infisical. UNITY uses it server-side to list the GitHub App installations associated with the signed-in user. The user then chooses an installation and exact repository. Before saving the binding, UNITY re-fetches the installations and repositories from GitHub so a repository ID typed or modified in the browser cannot authorize itself.
 
-## Verified-delivery ingestion (implemented, not activated)
-The GitHub webhook route at `/api/webhooks/github` is off unless explicitly configured and enabled.
-It checks the SHA-256 signature of the raw request body, enforces a 1 MB payload
-limit, handles only supported installation events, and stores allowlisted metadata
-through a server-only durable store. The proposed SQL table gives browser sessions
-no permission to read deliveries. Duplicate IDs are acknowledged only when their
-stored payload hashes match. Unexpected storage failures return HTTP 503 so GitHub
-can retry delivery.
+References:
+- https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app
+- https://docs.github.com/en/apps/creating-github-apps/registering-a-github-app/about-the-setup-url
+- https://docs.github.com/en/apps/sharing-github-apps/sharing-your-github-app
 
-**No webhook creates or changes a project connector grant or authorizes an agent.**
-Production use additionally requires reviewing the SQL proposal, provisioning a
-separate database, configuring the server-only backend secret, binding installations
-to explicit user/project approvals, verifying replay behavior and conducting a live
-GitHub webhook integration test.
+## Existing server-side safeguards
+- RS256 GitHub App JWT creation for later installation-token operations.
+- Raw-body HMAC SHA-256 verification for GitHub webhooks.
+- Inert installation event normalization; webhook events do not authorize projects.
+- Installation token requests restricted to explicit repository IDs and minimal requested permissions.
+- Read-only repository discovery with bounded provider responses.
+- OAuth and provider tokens never return to the browser or AI model.
+- Every connection is bound to an authenticated UNITY owner and exact UNITY project.
+- Selected repositories start with `read` permission only.
+
+## Activation prerequisites
+1. Provision the dedicated UNITY backend and verify project isolation.
+2. Register a UNITY-specific GitHub App with minimal read-only permissions.
+3. Enable **Request user authorization (OAuth) during installation** and configure the exact UNITY callback URL.
+4. Store the GitHub App client secret, private key and webhook secret only in approved server-side secret storage. The client secret used by the Connect flow belongs in Infisical, never source or browser storage.
+5. Complete a real install/authorize test and confirm only installations belonging to the authorized GitHub user appear.
+6. Confirm a chosen repository is revalidated against GitHub before the project binding is saved.
+7. Confirm cross-project, revoked-installation, expired-token, 403 and 429 cases fail closed.
+8. Keep write/merge/workflow permissions disabled until a separate write milestone is reviewed and approved.
+
+## Webhook ingestion
+The GitHub webhook route at `/api/webhooks/github` remains off unless explicitly configured and enabled. It verifies the SHA-256 signature over the raw request bytes, bounds payload size, handles only allowlisted installation events, and uses a server-only durable store for delivery deduplication. No webhook event creates a connector grant or authorizes an agent.
+
+Production use still requires real-account testing, secret rotation, replay testing and explicit owner approval.

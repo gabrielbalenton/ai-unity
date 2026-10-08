@@ -1,10 +1,11 @@
 "use client";
-import {useCallback,useEffect,useState} from "react";
+import {useCallback,useEffect,useMemo,useState} from "react";
 import {isSupabaseConfigured} from "@/lib/supabase/config";
 import {createBrowserSupabase} from "@/lib/supabase/browser";
 
 type Project={id:string;name:string;description:string;created_at:string};
 type Memory={id:string;project_id:string;title:string;body:string;status:string;updated_at:string;evidence_ref:string|null};
+type Connection={provider:string;accountLabel:string;status:string;resourceId:string;permissionMode:string;updatedAt:string};
 type ApiError={error?:string};
 const configured=isSupabaseConfigured();
 
@@ -17,11 +18,13 @@ export default function CloudWorkspace(){
  const [projects,setProjects]=useState<Project[]>([]);
  const [projectId,setProjectId]=useState("");
  const [memories,setMemories]=useState<Memory[]>([]);
+ const [connections,setConnections]=useState<Connection[]>([]);
  const [projectName,setProjectName]=useState("");
  const [memoryTitle,setMemoryTitle]=useState("");
  const [memoryBody,setMemoryBody]=useState("");
  const [status,setStatus]=useState("");
  const [busy,setBusy]=useState(false);
+ const openRouter=useMemo(()=>connections.find(item=>item.provider==="openrouter"&&item.status==="ready"),[connections]);
 
  const refreshProjects=useCallback(async()=>{
   const res=await fetch("/api/private/projects",{credentials:"same-origin",cache:"no-store"});
@@ -38,6 +41,14 @@ export default function CloudWorkspace(){
   if(!res.ok)throw Error(data.error||"Cloud memories are unavailable");
   setMemories(data.memories||[]);
  },[]);
+ const refreshConnections=useCallback(async(id:string)=>{
+  if(!id){setConnections([]);return}
+  const res=await fetch("/api/private/connections/project?projectId="+encodeURIComponent(id),
+   {credentials:"same-origin",cache:"no-store"});
+  const data:ApiError&{connections?:Connection[]}=await res.json();
+  if(!res.ok){setConnections([]);return}
+  setConnections(data.connections||[]);
+ },[]);
  useEffect(()=>{
   if(!configured)return;
   let active=true;
@@ -47,7 +58,12 @@ export default function CloudWorkspace(){
    .catch(()=>{if(active){setAuthenticated(false);setStatus("Backend session could not be verified.")}});
   return()=>{active=false};
  },[refreshProjects]);
- useEffect(()=>{if(authenticated&&projectId)void refreshMemories(projectId).catch(()=>setStatus("Cloud memories could not be loaded."));else setMemories([])},[authenticated,projectId,refreshMemories]);
+ useEffect(()=>{
+  if(authenticated&&projectId){
+   void refreshMemories(projectId).catch(()=>setStatus("Cloud memories could not be loaded."));
+   void refreshConnections(projectId);
+  }else{setMemories([]);setConnections([])}
+ },[authenticated,projectId,refreshMemories,refreshConnections]);
  async function submitProject(e:React.FormEvent<HTMLFormElement>){
   e.preventDefault();if(!configured||!authenticated||busy)return;
   setBusy(true);setStatus("");
@@ -64,7 +80,7 @@ export default function CloudWorkspace(){
   finally{setBusy(false)}
  }
  async function connectOpenRouter(){
-  if(!configured||!authenticated||!projectId||busy)return;
+  if(!configured||!authenticated||!projectId||busy||openRouter)return;
   setBusy(true);setStatus("");
   try{
    const res=await fetch("/api/private/connect/openrouter/start",{
@@ -118,7 +134,7 @@ export default function CloudWorkspace(){
    const supabase=createBrowserSupabase();
    const {error}=await supabase.auth.signOut();
    if(error)throw Error("Sign-out could not be confirmed");
-   setAuthenticated(false);setProjects([]);setMemories([]);setProjectId("");
+   setAuthenticated(false);setProjects([]);setMemories([]);setConnections([]);setProjectId("");
   }catch{setStatus("Sign-out failed. Try again.")}
   finally{setBusy(false)}
  }
@@ -146,9 +162,10 @@ export default function CloudWorkspace(){
     {projects.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}
    </select></label>
    <div className="controls">
-    <button type="button" className="primary" disabled={busy||!projectId} onClick={()=>void connectOpenRouter()}>{busy?"Please wait...":"Connect OpenRouter"}</button>
-    <small>Opens OpenRouter authorization for this exact cloud project. No API key is shown in the browser.</small>
+    <button type="button" className="primary" disabled={busy||!projectId||Boolean(openRouter)} onClick={()=>void connectOpenRouter()}>{openRouter?"OpenRouter connected":busy?"Please wait...":"Connect OpenRouter"}</button>
+    <small>{openRouter?`${openRouter.accountLabel} · ${openRouter.permissionMode} access · key stored securely`:"Opens OpenRouter authorization for this exact cloud project. No API key is shown in the browser."}</small>
    </div>
+   {connections.length>0&&<div className="model-list" aria-label="Connected services">{connections.map(item=><article className="entry" key={`${item.provider}:${item.resourceId}`}><div className="entry-head"><strong>{item.accountLabel}</strong><span className="pill">{item.status}</span></div><small>{item.provider} · {item.resourceId} · {item.permissionMode} access</small></article>)}</div>}
    {status&&<p role="status" className="notice">{status}</p>}
   </section>
   <section className="panel">

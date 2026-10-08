@@ -2,28 +2,51 @@
 import {useMemo,useState} from "react";
 import {ArrowRight,CalendarDays,FolderSearch,LockKeyhole,Search,ShieldCheck} from "lucide-react";
 import catalog from "@/config/integration-categories.json";
+import connectionCatalog from "@/config/connection-services.json";
 import type {Workspace} from "@/lib/types";
 type Props={workspace:Workspace;onNavigate:(destination:"Connections"|"Projects")=>void};
+
 export function IntegrationCatalog(){
  const [query,setQuery]=useState("");
  const filtered=useMemo(()=>catalog.categories.map(group=>({
   ...group,providers:group.providers.filter(item=>(item+" "+group.category).toLowerCase().includes(query.toLowerCase()))
  })).filter(group=>group.providers.length>0),[query]);
- return <section className="panel universal-catalog" aria-label="Cross-platform integration roadmap">
-  <div className="entry-head"><h2>Universal connections</h2><span className="pill">PLANNED PROVIDERS</span></div>
-  <p className="muted">UNITY is organized around your projects, not GitHub. These are potential connectors, not installed integrations. Each provider needs a supported API and separate permission before UNITY can read or act on anything.</p>
+ const connectionReady=useMemo(()=>connectionCatalog.services.filter(item=>(item.name+" "+item.category+" "+item.connection+" "+item.signIn).toLowerCase().includes(query.toLowerCase())),[query]);
+ return <>
+ <section className="panel universal-catalog" aria-label="Cross-platform integration roadmap">
+  <div className="entry-head"><h2>Universal connections</h2><span className="pill">CONNECTION LAYER READY</span></div>
+  <p className="muted">UNITY is organized around your projects, not GitHub. The services below have a safe connection plan, but none is connected until you explicitly authorize an account and its exact project/resource.</p>
   <label className="universal-search"><Search size={17}/><input value={query} onChange={event=>setQuery(event.target.value)} placeholder="Search integrations or categories" aria-label="Search planned integrations"/></label>
-  <div className="universal-groups">
-   {filtered.map(group=><div key={group.category} className="universal-group">
-    <strong>{group.category}</strong><div className="universal-tags">
-     {group.providers.map(name=><span key={name}>{name}</span>)}
-    </div>
-   </div>)}
+  <div className="model-list" aria-label="Services prepared for account setup">
+   {connectionReady.map(item=><article className="entry" key={item.id}>
+    <div className="entry-head"><strong>{item.name}</strong><span className="pill">{item.state}</span></div>
+    <p>{item.category} · {item.connection}</p>
+    <small>Website sign-in: {item.signIn}. This does not authorize UNITY.</small>
+   </article>)}
   </div>
-  {filtered.length===0&&<p role="status">No matching provider in the current roadmap. A standards-based connector can be evaluated later.</p>}
-  <div className="universal-policy"><ShieldCheck size={18}/><span>Read-only first. Account-level permission, project scope, revocation and specific approval for external changes are mandatory.</span></div>
- </section>;
+  {connectionReady.length===0&&<p role="status">No connection-ready service matches this search.</p>}
+  <details>
+   <summary>See the wider integration roadmap</summary>
+   <div className="universal-groups">
+    {filtered.map(group=><div key={group.category} className="universal-group">
+     <strong>{group.category}</strong><div className="universal-tags">
+      {group.providers.map(name=><span key={name}>{name}</span>)}
+     </div>
+    </div>)}
+   </div>
+   {filtered.length===0&&<p role="status">No matching provider in the wider roadmap. A standards-based connector can be evaluated later.</p>}
+  </details>
+  <div className="universal-policy"><ShieldCheck size={18}/><span>Read-only first. Exact account, project scope, revocation and specific approval for external changes are mandatory. API keys and passwords never belong in project records.</span></div>
+ </section>
+ <section className="panel" aria-label="Connection rules">
+  <div className="entry-head"><h2>Connection rules</h2><span className="pill">SAFE DEFAULTS</span></div>
+  <div className="model-list">
+   {connectionCatalog.rules.map(rule=><div className="entry" key={rule}><p>{rule}</p></div>)}
+  </div>
+ </section>
+ </>;
 }
+
 export function DailyBriefPanel({workspace,onNavigate}:Props){
  const [expanded,setExpanded]=useState(false);
  return <div className="briefing-page">

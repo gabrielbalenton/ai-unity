@@ -19,7 +19,9 @@ test("connection write request is bounded and strict",()=>{
 });
 
 test("browser payload schema cannot contain credential values or credential references",()=>{
- const schemaBlock=route.slice(route.indexOf("const draftSchema"),route.indexOf("export async function GET"));
+ const schemaStart=route.indexOf("const draftSchema");
+ const schemaEnd=route.indexOf("}).strict();",schemaStart)+"}).strict();".length;
+ const schemaBlock=route.slice(schemaStart,schemaEnd);
  assert.doesNotMatch(schemaBlock,/apiKey|password|token|secretRef|credentialReference|credential_reference/);
  assert.match(schemaBlock,/connectionKey/);
  assert.match(schemaBlock,/accountLabel/);

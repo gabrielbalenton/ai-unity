@@ -15,7 +15,7 @@ export function IntegrationCatalog(){
  return <>
  <section className="panel universal-catalog" aria-label="Cross-platform integration roadmap">
   <div className="entry-head"><h2>Universal connections</h2><span className="pill">CONNECTION LAYER READY</span></div>
-  <p className="muted">UNITY is organized around your projects, not GitHub. The services below have a safe connection plan, but none is connected until you explicitly authorize an account and its exact project/resource.</p>
+  <p className="muted">UNITY is organized around your projects, not GitHub. These are not installed integrations. The services below have a safe connection plan, but each account still needs a supported API and separate permission before UNITY can read or act on anything.</p>
   <label className="universal-search"><Search size={17}/><input value={query} onChange={event=>setQuery(event.target.value)} placeholder="Search integrations or categories" aria-label="Search planned integrations"/></label>
   <div className="model-list" aria-label="Services prepared for account setup">
    {connectionReady.map(item=><article className="entry" key={item.id}>

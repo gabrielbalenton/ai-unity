@@ -5,7 +5,8 @@ const read=path=>readFileSync(new URL("../"+path,import.meta.url),"utf8");
 const routes=[
  "app/api/private/projects/route.ts",
  "app/api/private/memories/route.ts",
- "app/api/private/memories/approve/route.ts"
+ "app/api/private/memories/approve/route.ts",
+ "app/api/private/connections/route.ts"
 ];
 test("all authenticated JSON write routes use stream-aware size guards",()=>{
  for(const route of routes){

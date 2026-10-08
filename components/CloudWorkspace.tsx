@@ -3,6 +3,8 @@
 import {useCallback,useEffect,useMemo,useState} from "react";
 import {isSupabaseConfigured} from "@/lib/supabase/config";
 import {createBrowserSupabase} from "@/lib/supabase/browser";
+import ProjectControlPlane,{type ProjectControlPlaneSummary} from "@/components/ProjectControlPlane";
+import VercelConnectPanel from "@/components/VercelConnectPanel";
 
 type Project={id:string;name:string;description:string;created_at:string};
 type Memory={id:string;project_id:string;title:string;body:string;status:string;updated_at:string;evidence_ref:string|null};
@@ -20,6 +22,7 @@ export default function CloudWorkspace(){
  const [projectId,setProjectId]=useState("");
  const [memories,setMemories]=useState<Memory[]>([]);
  const [connections,setConnections]=useState<Connection[]>([]);
+ const [controlPlane,setControlPlane]=useState<ProjectControlPlaneSummary|null>(null);
  const [supabaseProjects,setSupabaseProjects]=useState<SupabaseProject[]>([]);
  const [supabaseProjectRef,setSupabaseProjectRef]=useState("");
  const [githubInstallations,setGithubInstallations]=useState<GitHubInstallation[]>([]);
@@ -53,11 +56,11 @@ export default function CloudWorkspace(){
   setMemories(data.memories||[]);
  },[]);
  const refreshConnections=useCallback(async(id:string)=>{
-  if(!id){setConnections([]);return}
+  if(!id){setConnections([]);setControlPlane(null);return}
   const res=await fetch("/api/private/connections/project?projectId="+encodeURIComponent(id),{credentials:"same-origin",cache:"no-store"});
-  const data:ApiError&{connections?:Connection[]}=await res.json();
-  if(!res.ok){setConnections([]);return}
-  setConnections(data.connections||[]);
+  const data:ApiError&{connections?:Connection[];controlPlane?:ProjectControlPlaneSummary}=await res.json();
+  if(!res.ok){setConnections([]);setControlPlane(null);return}
+  setConnections(data.connections||[]);setControlPlane(data.controlPlane||null);
  },[]);
  const refreshSupabaseProjects=useCallback(async(id:string)=>{
   const res=await fetch("/api/private/connect/supabase/projects?projectId="+encodeURIComponent(id),{credentials:"same-origin",cache:"no-store"});
@@ -86,8 +89,8 @@ export default function CloudWorkspace(){
   if(typeof window==="undefined")return;
   const params=new URLSearchParams(window.location.search);
   const provider=params.get("connection"),result=params.get("status");
-  if(["openrouter","supabase","github"].includes(provider||"")&&(result==="connected"||result==="error")){
-   const name=provider==="openrouter"?"OpenRouter":provider==="supabase"?"Supabase":"GitHub";
+  if(["openrouter","supabase","github","vercel"].includes(provider||"")&&(result==="connected"||result==="error")){
+   const name=provider==="openrouter"?"OpenRouter":provider==="supabase"?"Supabase":provider==="vercel"?"Vercel":"GitHub";
    setStatus(result==="connected"?`${name} connected successfully.`:`${name} connection failed.`);
    params.delete("connection");params.delete("status");
    window.history.replaceState({},"",window.location.pathname+(params.toString()?`?${params.toString()}`:"")+window.location.hash);
@@ -100,7 +103,7 @@ export default function CloudWorkspace(){
   if(authenticated&&projectId){
    void refreshMemories(projectId).catch(()=>setStatus("Cloud memories could not be loaded."));
    void refreshConnections(projectId);
-  }else{setMemories([]);setConnections([])}
+  }else{setMemories([]);setConnections([]);setControlPlane(null)}
  },[authenticated,projectId,refreshMemories,refreshConnections]);
  useEffect(()=>{if(projectId&&supabaseConnection)void refreshSupabaseProjects(projectId).catch(error=>setStatus(error instanceof Error?error.message:"Supabase projects are unavailable"));},[projectId,supabaseConnection,refreshSupabaseProjects]);
  useEffect(()=>{if(projectId&&githubConnection)void refreshGitHubInstallations(projectId).catch(error=>setStatus(error instanceof Error?error.message:"GitHub installations are unavailable"));},[projectId,githubConnection,refreshGitHubInstallations]);
@@ -174,7 +177,7 @@ export default function CloudWorkspace(){
 
  async function signOut(){
   setBusy(true);setStatus("");
-  try{const supabase=createBrowserSupabase();const {error}=await supabase.auth.signOut();if(error)throw Error("Sign-out could not be confirmed");setAuthenticated(false);setProjects([]);setMemories([]);setConnections([]);setProjectId("");}
+  try{const supabase=createBrowserSupabase();const {error}=await supabase.auth.signOut();if(error)throw Error("Sign-out could not be confirmed");setAuthenticated(false);setProjects([]);setMemories([]);setConnections([]);setControlPlane(null);setProjectId("");}
   catch{setStatus("Sign-out failed. Try again.")}finally{setBusy(false)}
  }
 
@@ -193,12 +196,16 @@ export default function CloudWorkspace(){
    <form onSubmit={submitProject}><label>New project<input required minLength={2} maxLength={100} value={projectName} onChange={event=>setProjectName(event.target.value)}/></label><button disabled={busy||projectName.trim().length<2} className="primary">Create cloud project</button></form>
    <label>Selected project<select value={projectId} onChange={event=>setProjectId(event.target.value)}><option value="">Select a cloud project</option>{projects.map(project=><option key={project.id} value={project.id}>{project.name}</option>)}</select></label>
 
+   <ProjectControlPlane summary={controlPlane}/>
+
    <div className="controls"><button type="button" className="primary" disabled={busy||!projectId||Boolean(openRouter)} onClick={()=>void startProvider("openrouter")}>{openRouter?"OpenRouter connected":"Connect OpenRouter"}</button><small>{openRouter?"Key stored securely":"One-click authorization; key never appears in the browser."}</small></div>
    <div className="controls"><button type="button" className="primary" disabled={busy||!projectId||Boolean(supabaseConnection)} onClick={()=>void startProvider("supabase")}>{supabaseConnection?"Supabase authorized":"Connect Supabase"}</button><small>{selectedSupabaseBinding?`Bound read-only to ${selectedSupabaseBinding.resourceId.replace("supabase:project:","")}`:"Authorize, then choose the exact Supabase project."}</small></div>
    {supabaseConnection&&!selectedSupabaseBinding&&<div className="controls"><label>Supabase project<select value={supabaseProjectRef} onChange={event=>setSupabaseProjectRef(event.target.value)}><option value="">Select project</option>{supabaseProjects.map(project=><option key={project.ref} value={project.ref}>{project.name} ({project.ref})</option>)}</select></label><button disabled={busy||!supabaseProjectRef} onClick={()=>void selectSupabaseProject()}>Use this Supabase project</button></div>}
 
    <div className="controls"><button type="button" className="primary" disabled={busy||!projectId||Boolean(githubConnection)} onClick={()=>void startProvider("github")}>{githubConnection?"GitHub authorized":"Connect GitHub"}</button><small>{selectedGithubBinding?`Bound read-only to ${selectedGithubBinding.resourceId.replace("github:repo:","")}`:"Install and authorize the UNITY GitHub App, then choose the exact repository."}</small></div>
    {githubConnection&&!selectedGithubBinding&&<div className="controls"><label>GitHub account/install<select value={githubInstallationId} onChange={event=>void loadGithubRepos(event.target.value)}><option value="">Select GitHub account</option>{githubInstallations.map(installation=><option key={installation.id} value={installation.id}>{installation.accountLogin} ({installation.accountType})</option>)}</select></label>{githubInstallationId&&<label>Repository<select value={githubRepoId} onChange={event=>setGithubRepoId(event.target.value)}><option value="">Select repository</option>{githubRepos.map(repo=><option key={repo.id} value={repo.id}>{repo.fullName}{repo.private?" · private":""}</option>)}</select></label>}<button disabled={busy||!githubRepoId} onClick={()=>void selectGithubRepo()}>Use this GitHub repository</button></div>}
+
+   {projectId&&<VercelConnectPanel projectId={projectId} embedded onChanged={()=>void refreshConnections(projectId)}/>} 
 
    {connections.length>0&&<div className="model-list" aria-label="Connected services">{connections.map(item=><article className="entry" key={`${item.provider}:${item.resourceId}`}><div className="entry-head"><strong>{item.accountLabel}</strong><span className="pill">{item.status}</span></div><small>{item.provider} · {item.resourceId} · {item.permissionMode} access</small></article>)}</div>}
    {status&&<p role="status" className="notice">{status}</p>}

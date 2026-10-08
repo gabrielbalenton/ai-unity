@@ -12,6 +12,7 @@ import {readBoundedJson} from "@/lib/security/bounded-body.mjs";
 export const dynamic="force-dynamic";
 const headers={"Cache-Control":"private, no-store"};
 const schema=z.object({projectId:z.string().uuid(),supabaseProjectRef:z.string().regex(/^[a-z0-9]{8,40}$/)}).strict();
+type SupabaseProject={ref:string;name:string;organizationId:string|null;status:string|null};
 function secretPath(base:string,projectId:string){return `${base.replace(/\/$/,"")}/${projectId.toLowerCase()}`}
 
 export async function POST(request:Request){
@@ -45,14 +46,16 @@ export async function POST(request:Request){
    environment:bootstrap.environment,secretPath:secretPath(bootstrap.secretPath,parsed.data.projectId)
   })]);
   const vault=createInfisicalVault({locations:registry,getBootstrapCredentials:async()=>({clientId:bootstrap.clientId,clientSecret:bootstrap.clientSecret})});
-  const allowedProjects=await vault.useSecret(expectedRef,async raw=>{
-   let bundle;
+  const allowedProjects=await vault.useSecret(expectedRef,async (raw:string)=>{
+   let bundle:unknown;
    try{bundle=JSON.parse(raw)}catch{throw new Error("Stored Supabase authorization is invalid")}
-   if(!bundle||bundle.version!==1||typeof bundle.accessToken!=="string")throw new Error("Stored Supabase authorization is invalid");
-   if(typeof bundle.expiresAt==="string"&&Date.parse(bundle.expiresAt)<=Date.now())throw new Error("Supabase authorization expired");
-   return listSupabaseProjects({accessToken:bundle.accessToken});
+   if(!bundle||typeof bundle!=="object"||!("version" in bundle)||!("accessToken" in bundle))throw new Error("Stored Supabase authorization is invalid");
+   const typed=bundle as {version?:unknown;accessToken?:unknown;expiresAt?:unknown};
+   if(typed.version!==1||typeof typed.accessToken!=="string")throw new Error("Stored Supabase authorization is invalid");
+   if(typeof typed.expiresAt==="string"&&Date.parse(typed.expiresAt)<=Date.now())throw new Error("Supabase authorization expired");
+   return listSupabaseProjects({accessToken:typed.accessToken}) as Promise<SupabaseProject[]>;
   });
-  const chosen=allowedProjects.find(item=>item.ref===parsed.data.supabaseProjectRef);
+  const chosen=allowedProjects.find((item:SupabaseProject)=>item.ref===parsed.data.supabaseProjectRef);
   if(!chosen)return NextResponse.json({error:"That Supabase project is not authorized for this account"},{status:403,headers});
 
   const {data:bindings,error:bindingReadError}=await admin.from("project_account_bindings")

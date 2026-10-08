@@ -1,6 +1,6 @@
 "use client";
 
-import {useMemo,useState} from "react";
+import {useEffect,useMemo,useState} from "react";
 import type {ProjectControlPlaneSummary} from "@/components/ProjectControlPlane";
 
 type Provider="github"|"vercel"|"supabase";
@@ -18,6 +18,8 @@ type RoutePlan={
  action?:Action;
  permissionMode?:string;
 };
+type SetupService={configured:boolean;required:string[]};
+type SetupReadiness={allConfigured:boolean;secretValuesExposed:false;services:Record<string,SetupService>};
 type ApiResponse={
  error?:string;
  project?:Project;
@@ -35,6 +37,7 @@ const ACTIONS:Record<Provider,Action[]>=Object.freeze({
  vercel:["read","propose","deploy"],
  supabase:["read","propose","write"]
 });
+const SETUP_LABELS:Record<string,string>=Object.freeze({backend:"UNITY backend",infisical:"Infisical vault",github:"GitHub App",supabase:"Supabase OAuth",vercel:"Vercel Integration"});
 
 export default function CloudCommandConsole({disabled=false,onProjectResolved}:Props){
  const [command,setCommand]=useState("");
@@ -43,7 +46,17 @@ export default function CloudCommandConsole({disabled=false,onProjectResolved}:P
  const [busy,setBusy]=useState(false);
  const [message,setMessage]=useState("");
  const [plan,setPlan]=useState<RoutePlan|null>(null);
+ const [readiness,setReadiness]=useState<SetupReadiness|null>(null);
  const actions=useMemo(()=>ACTIONS[provider],[provider]);
+
+ useEffect(()=>{
+  let active=true;
+  fetch("/api/private/setup/readiness",{credentials:"same-origin",cache:"no-store"})
+   .then(async response=>({ok:response.ok,data:await response.json()}))
+   .then(({ok,data})=>{if(active&&ok)setReadiness(data as SetupReadiness)})
+   .catch(()=>{});
+  return()=>{active=false};
+ },[]);
 
  function changeProvider(next:Provider){
   setProvider(next);
@@ -75,6 +88,9 @@ export default function CloudCommandConsole({disabled=false,onProjectResolved}:P
  return <div className="entry" aria-label="Cloud command console">
   <div className="entry-head"><strong>Project command</strong><span className="pill">{badge}</span></div>
   <p className="muted">Use an exact command such as <strong>Switch to FPX</strong>. UNITY resolves only projects you own, then checks the exact bound service and permission. This screen never executes the action.</p>
+  {readiness&&<div className="model-list" aria-label="External setup readiness">
+   {Object.entries(readiness.services).map(([key,item])=><article className="entry" key={key}><div className="entry-head"><strong>{SETUP_LABELS[key]||key}</strong><span className="pill">{item.configured?"CONFIGURED":"SETUP NEEDED"}</span></div>{!item.configured&&<small>Needs: {item.required.join(" · ")}</small>}</article>)}
+  </div>}
   <form onSubmit={submit}>
    <label>Command<input value={command} minLength={3} maxLength={180} placeholder="Switch to FPX" onChange={event=>setCommand(event.target.value)}/></label>
    <div className="controls">

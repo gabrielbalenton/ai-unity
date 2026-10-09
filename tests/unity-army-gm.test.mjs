@@ -35,7 +35,7 @@ test("army report separates status groups and owner decisions",()=>{
 
 test("interactive office exposes departments, right-click controls and truthful runtime state",()=>{
  const source=fs.readFileSync(new URL("../components/UnityArmyOffice.tsx",import.meta.url),"utf8");
- assert.match(source,/onContextMenu/);
+ assert.match(source,/addEventListener\("contextmenu"/);
  assert.match(source,/DEPARTMENT/);
  assert.match(source,/Continue working/);
  assert.match(source,/Request Gabriel decision/);

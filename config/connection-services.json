@@ -1,0 +1,20 @@
+{
+  "services": [
+    {"id":"github","name":"GitHub","category":"Development","signIn":"Google/email possible","connection":"GitHub App","state":"Ready for setup"},
+    {"id":"vercel","name":"Vercel","category":"Development","signIn":"GitHub possible","connection":"Scoped account token/reference","state":"Ready for setup"},
+    {"id":"supabase","name":"Supabase","category":"Development","signIn":"GitHub possible","connection":"Scoped project credential/reference","state":"Ready for setup"},
+    {"id":"openrouter","name":"OpenRouter","category":"AI models","signIn":"Google/GitHub/email possible","connection":"API key reference","state":"Ready for setup"},
+    {"id":"gemini","name":"Google AI Studio / Gemini","category":"AI models","signIn":"Google","connection":"API key reference","state":"Ready for setup"},
+    {"id":"groq","name":"Groq","category":"AI models","signIn":"Google/GitHub/email possible","connection":"API key reference","state":"Ready for setup"},
+    {"id":"mistral","name":"Mistral","category":"AI models","signIn":"Provider account","connection":"API key reference","state":"Ready for setup"},
+    {"id":"huggingface","name":"Hugging Face","category":"AI models","signIn":"Provider account","connection":"Access token reference","state":"Ready for setup"},
+    {"id":"cerebras","name":"Cerebras","category":"AI models","signIn":"Provider account","connection":"API key reference","state":"Optional"}
+  ],
+  "rules": [
+    "Website sign-in is not the same as UNITY authorization.",
+    "UNITY stores references to secrets, never secret values in project records.",
+    "Every development account is bound to an exact project/resource.",
+    "AI providers remain zero-paid-only unless the owner explicitly changes policy.",
+    "External writes and production deployment require fresh human approval."
+  ]
+}

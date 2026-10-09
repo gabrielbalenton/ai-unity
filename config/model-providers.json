@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "policy": {
+    "zeroPaidOnlyByDefault": true,
+    "liveFreeEligibilityRequired": true,
+    "plaintextSecretsForbidden": true,
+    "automaticPaidFallback": false
+  },
+  "providers": [
+    {
+      "id": "openrouter",
+      "displayName": "OpenRouter",
+      "status": "unconfigured",
+      "capabilities": ["chat"],
+      "priority": 10,
+      "zeroPaidOnly": true,
+      "secretRef": null
+    },
+    {
+      "id": "gemini",
+      "displayName": "Google AI Studio / Gemini",
+      "status": "unconfigured",
+      "capabilities": ["chat"],
+      "priority": 20,
+      "zeroPaidOnly": true,
+      "secretRef": null
+    },
+    {
+      "id": "groq",
+      "displayName": "GroqCloud",
+      "status": "unconfigured",
+      "capabilities": ["chat"],
+      "priority": 30,
+      "zeroPaidOnly": true,
+      "secretRef": null
+    },
+    {
+      "id": "mistral",
+      "displayName": "Mistral AI",
+      "status": "unconfigured",
+      "capabilities": ["chat"],
+      "priority": 40,
+      "zeroPaidOnly": true,
+      "secretRef": null
+    },
+    {
+      "id": "huggingface",
+      "displayName": "Hugging Face",
+      "status": "unconfigured",
+      "capabilities": ["chat"],
+      "priority": 50,
+      "zeroPaidOnly": true,
+      "secretRef": null
+    },
+    {
+      "id": "cerebras",
+      "displayName": "Cerebras",
+      "status": "unconfigured",
+      "capabilities": ["chat"],
+      "priority": 60,
+      "zeroPaidOnly": true,
+      "secretRef": null
+    }
+  ]
+}

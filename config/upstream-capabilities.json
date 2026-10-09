@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "strategy": "unity-owned-primitives-first",
+  "rules": {
+    "selfHostPreferred": true,
+    "paidDependencyDefault": "deny",
+    "productionWritesDefault": "deny",
+    "vendorSourceMayInformDesign": true,
+    "restrictedCodeMayBeCopied": false
+  },
+  "sources": [
+    {
+      "name": "Mastra",
+      "role": "agent-runtime-reference",
+      "capabilities": ["agent-loops", "tool-execution", "workflow-state", "human-approval"],
+      "unityTarget": ["lib/runtime", "lib/ai"]
+    },
+    {
+      "name": "Vercel AI SDK",
+      "role": "provider-transport-reference",
+      "capabilities": ["provider-abstraction", "streaming", "structured-output", "tool-call-transport"],
+      "unityTarget": ["lib/providers", "lib/ai"]
+    },
+    {
+      "name": "MCP TypeScript SDK",
+      "role": "protocol-runtime-reference",
+      "capabilities": ["mcp-client", "mcp-server", "tools", "resources", "prompts", "streamable-http", "auth-helpers"],
+      "unityTarget": ["lib/connectors", "lib/mcp-registry.mjs"]
+    },
+    {
+      "name": "GitHub MCP Server",
+      "role": "github-tool-reference",
+      "capabilities": ["repository-read", "code-search", "issues", "pull-requests", "actions", "security"],
+      "unityTarget": ["lib/github", "lib/connectors"]
+    },
+    {
+      "name": "Supabase MCP",
+      "role": "database-tool-reference",
+      "capabilities": ["database-query", "migrations", "logs", "project-scope", "read-only-mode"],
+      "unityTarget": ["lib/supabase", "lib/connectors"]
+    },
+    {
+      "name": "OpenTelemetry",
+      "role": "observability-standard",
+      "capabilities": ["traces", "metrics", "logs"],
+      "unityTarget": ["lib/observability"]
+    },
+    {
+      "name": "Langfuse",
+      "role": "ai-observability-reference",
+      "capabilities": ["llm-traces", "sessions", "costs", "evaluations", "prompt-versioning"],
+      "unityTarget": ["lib/observability"]
+    },
+    {
+      "name": "Trigger.dev / Temporal",
+      "role": "durable-execution-reference",
+      "capabilities": ["durable-jobs", "retries", "queues", "scheduling", "pause-resume"],
+      "unityTarget": ["lib/runtime"]
+    },
+    {
+      "name": "Infisical / Vault",
+      "role": "secrets-reference",
+      "capabilities": ["secret-storage", "machine-identity", "access-policy", "audit"],
+      "unityTarget": ["lib/security", "lib/infrastructure"]
+    },
+    {
+      "name": "LiteLLM",
+      "role": "model-routing-reference",
+      "capabilities": ["routing", "fallback", "budgets", "provider-normalization"],
+      "unityTarget": ["lib/runtime/model-router.mjs", "lib/providers"]
+    }
+  ]
+}

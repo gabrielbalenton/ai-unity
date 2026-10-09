@@ -11,10 +11,14 @@
     "check:repo": "node scripts/check-repository.mjs",
     "readiness": "node scripts/readiness.mjs",
     "test:e2e": "playwright test",
+    "qa:commit": "npm test && npm run typecheck && npm run check:repo",
+    "qa:push": "npm run verify:release",
+    "guard:install": "npx --yes lefthook@2.1.17 install",
+    "guard:validate": "npx --yes lefthook@2.1.17 validate",
     "verify:release": "npm test && npm run typecheck && npm run check:repo && npm run readiness && npm run build"
   },
   "dependencies": {
-    "next": "16.3.7",
+    "next": "16.4.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "zod": "3.25.76",
@@ -28,6 +32,9 @@
     "@types/react-dom": "19.0.0",
     "typescript": "5.9.3",
     "@playwright/test": "1.63.0"
+  },
+  "overrides": {
+    "source-map-js": "1.2.2"
   },
   "engines": {
     "node": "22.x"

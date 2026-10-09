@@ -1,0 +1,14 @@
+import {NextResponse} from "next/server";
+import {isSupabaseConfigured} from "@/lib/supabase/config";import {getVerifiedUser} from "@/lib/supabase/server";import {createSupabaseAdmin,isSupabaseAdminConfigured} from "@/lib/supabase/admin";
+import {requireInfisicalBootstrap,isInfisicalConfigured} from "@/lib/security/infisical-config";import {createInfisicalLocation,createInfisicalLocationRegistry,createInfisicalVault} from "@/lib/security/infisical-vault.mjs";import {listVercelProjects} from "@/lib/infrastructure/vercel-integration-auth.mjs";
+export const dynamic="force-dynamic";const headers={"Cache-Control":"private, no-store"};const UUID=/^[0-9a-f-]{36}$/i;type VercelBundle={version:number;accessToken:string;teamId:string|null};
+export async function GET(request:Request){
+ if(!isSupabaseConfigured()||!isSupabaseAdminConfigured()||!isInfisicalConfigured())return NextResponse.json({error:"Secure Vercel connection backend is not configured"},{status:503,headers});const projectId=new URL(request.url).searchParams.get("projectId")||"";if(!UUID.test(projectId))return NextResponse.json({error:"Invalid project"},{status:400,headers});
+ try{
+  const {user}=await getVerifiedUser();if(!user)return NextResponse.json({error:"Authentication required"},{status:401,headers});const admin=createSupabaseAdmin();const {data:project}=await admin.from("projects").select("id").eq("id",projectId).eq("owner_id",user.id).maybeSingle();if(!project)return NextResponse.json({error:"Project not found"},{status:404,headers});
+  const {data:account}=await admin.from("account_connections").select("credential_reference,status").eq("owner_id",user.id).eq("provider","vercel").eq("connection_key",`vercel:${projectId}`).maybeSingle();const expected=`secret:vercel/${projectId}/oauth`;if(!account||account.status!=="ready"||account.credential_reference!==expected)return NextResponse.json({error:"Connect Vercel first"},{status:409,headers});
+  const b=requireInfisicalBootstrap(),registry=createInfisicalLocationRegistry([createInfisicalLocation({secretRef:expected,secretName:"VERCEL_OAUTH_BUNDLE",projectId:b.projectId,environment:b.environment,secretPath:`${b.secretPath.replace(/\/$/,"")}/${projectId.toLowerCase()}`})]),vault=createInfisicalVault({locations:registry,getBootstrapCredentials:async()=>({clientId:b.clientId,clientSecret:b.clientSecret})});
+  const projects=await vault.useSecret(expected,async (raw:string)=>{const bundle=JSON.parse(raw) as VercelBundle;if(bundle?.version!==1||typeof bundle.accessToken!=="string")throw Error("invalid");return listVercelProjects({accessToken:bundle.accessToken,teamId:typeof bundle.teamId==="string"?bundle.teamId:null})});
+  return NextResponse.json({projects},{headers});
+ }catch{return NextResponse.json({error:"Vercel projects are unavailable"},{status:503,headers})}
+}
